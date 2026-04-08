@@ -1,0 +1,19 @@
+---
+const { titulo, descripcion, icono } = Astro.props;
+---
+
+<article
+    style="border: 1px solid #e1e4e8; padding: 1.5rem; border-radius: 8px; text-align: center; background: #fafafa;"
+>
+    <div style="font-size: 3rem; margin-bottom: 0.5rem;">{icono}</div>
+    <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">{titulo}</h3>
+    <p style="color: #666; font-size: 0.95rem; margin-bottom: 1.5rem;">
+        {descripcion}
+    </p>
+
+    <button
+        style="padding: 8px 16px; background: transparent; color: #3498db; border: 2px solid #3498db; border-radius: 4px; font-weight: bold; cursor: pointer;"
+    >
+        Ver contenido
+    </button>
+</article>

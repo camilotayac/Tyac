@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TarjetaCurso from '../components/TarjetaCurso.astro';
+---
+
+<Layout titulo="Temas disponibles">
+  <div style="max-width: 1000px; margin: 0 auto; padding: 2rem;">
+    <h1 style="color: #1e293b; margin-bottom: 2rem;">Explora por Temas</h1>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      <a href="/conjuntos/proposicion" style="text-decoration: none; color: inherit;">
+        <TarjetaCurso 
+          titulo="Matemáticas: Conjuntos" 
+          descripcion="Lógica proposicional, unión, intersección y teoría de conjuntos." 
+          icono="🔢" 
+        />
+      </a>
+    </div>
+  </div>
+</Layout>

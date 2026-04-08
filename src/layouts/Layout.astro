@@ -1,0 +1,133 @@
+---
+// 1. ZONA DE JAVASCRIPT
+// Extraemos "titulo" (para páginas normales) y "frontmatter" (para archivos Markdown)
+const { titulo, frontmatter } = Astro.props;
+
+// Le decimos a Astro: "Usa el título normal, o el del Markdown. Si no hay ninguno, usa Tyac"
+const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>{tituloFinal}</title>
+
+        <style>
+            .buscador-input {
+                background-color: #334155 !important;
+                color: white;
+                border: 1px solid transparent;
+                padding: 8px 16px;
+                border-radius: 20px;
+                outline: none;
+                width: 180px;
+                transition: all 0.3s ease;
+                cursor: text;
+                font-size: 14px;
+            }
+
+            .buscador-input:focus {
+                width: 250px;
+                background-color: #475569 !important;
+                border-color: #3b82f6;
+                box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+            }
+
+            input::placeholder {
+                color: #cbd5e1;
+            }
+        </style>
+
+        <style is:global>
+            .markdown-container {
+                color: #334155;
+                line-height: 1.8;
+                font-size: 1.1rem;
+            }
+
+            .markdown-container h1 {
+                color: #0f172a;
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 3px solid #3b82f6;
+                padding-bottom: 0.5rem;
+            }
+
+            .markdown-container h2 {
+                color: #1e293b;
+                font-size: 1.8rem;
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .markdown-container p {
+                margin-bottom: 1.5rem;
+            }
+
+            .markdown-container blockquote {
+                border-left: 5px solid #3b82f6;
+                background-color: #eff6ff;
+                padding: 1.5rem;
+                margin: 2rem 0;
+                border-radius: 0 12px 12px 0;
+                font-style: italic;
+                color: #1e3a8a;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+
+            .markdown-container table {
+                width: 100%;
+                max-width: 400px;
+                margin: 2rem auto;
+                border-collapse: collapse;
+                background-color: white;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .markdown-container th, 
+            .markdown-container td {
+                border: 1px solid #e2e8f0;
+                padding: 12px 16px;
+                text-align: center;
+            }
+
+            .markdown-container th {
+                background-color: #f8fafc;
+                font-weight: bold;
+                color: #0f172a;
+            }
+
+            .markdown-container strong {
+                color: #0f172a;
+                font-weight: 700;
+            }
+        </style>
+    </head>
+
+    <body style="font-family: system-ui, sans-serif; background-color: #f4f4f9; color: #333; margin: 0;">
+        <header style="background-color: #1e293b; color: white; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <a href="/" style="color: white; text-decoration: none; font-size: 24px; font-weight: bold;">
+                    Tyac
+                </a>
+                <form action="/buscar" method="GET" id="buscador-principal" style="display: flex;">
+                    <input type="text" name="q" id="q" placeholder="🔍 Buscar cursos..." class="buscador-input" required autocomplete="off" />
+                    <button type="submit" style="display: none;">Buscar</button>
+                </form>
+            </div>
+
+            <nav style="display: flex; align-items: center; gap: 24px;">
+                <a href="/cursos" style="color: white; text-decoration: none; font-weight: 500;">Cursos</a>
+                <a href="/temas" style="color: white; text-decoration: none; font-weight: 500;">Temas</a>
+            </nav>
+        </header>
+
+        <main class="markdown-container" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+            <slot />
+        </main>
+    </body>
+</html>
