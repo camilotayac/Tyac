@@ -1,19 +1,210 @@
 ---
-const { titulo, descripcion, icono } = Astro.props;
+// EL CEREBRO
+const { 
+    titulo, 
+    descripcion, 
+    imagenUrl, 
+    icono = "📚", 
+    etiqueta = "Curso", 
+    cantidadTemas = "1",
+    categoria = "general",
+    profesor = "Por definir", 
+    nivel = "Básico"
+} = Astro.props;
 ---
 
-<article
-    style="border: 1px solid #e1e4e8; padding: 1.5rem; border-radius: 8px; text-align: center; background: #fafafa;"
->
-    <div style="font-size: 3rem; margin-bottom: 0.5rem;">{icono}</div>
-    <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">{titulo}</h3>
-    <p style="color: #666; font-size: 0.95rem; margin-bottom: 1.5rem;">
-        {descripcion}
-    </p>
+<article class="tarjeta-tyac">
+    
+    <div class={`banner-superior fondo-${categoria}`}>
+        {imagenUrl && (
+            <img src={imagenUrl} alt={`Imagen de ${titulo}`} class="imagen-curso" />
+        )}
+        
+        <div class="icono-flotante">
+            {icono}
+        </div>
 
-    <button
-        style="padding: 8px 16px; background: transparent; color: #3498db; border: 2px solid #3498db; border-radius: 4px; font-weight: bold; cursor: pointer;"
-    >
-        Ver contenido
-    </button>
+        <span class="pildora label-flotante">{etiqueta}</span>
+    </div>
+
+    <div class="contenido-tarjeta">
+        
+        <div class="contenedor-pildoras">
+            <span class="pildora pildora-detalle">👨‍🏫 {profesor}</span>
+            <span class="pildora pildora-detalle">📊 Nivel {nivel}</span>
+        </div>
+
+        <h3 class="titulo">{titulo}</h3>
+        <p class="descripcion">{descripcion}</p>
+
+        <div class="pie-tarjeta">
+            <div class="estadistica">
+                <span style="font-size: 1.1rem;">📚</span> {cantidadTemas} lecciones
+            </div>
+            <div class="flecha-accion">
+                Explorar &rarr;
+            </div>
+        </div>
+    </div>
 </article>
+
+<style>
+    .tarjeta-tyac {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden; 
+    }
+
+    .tarjeta-tyac:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px -8px rgba(59, 130, 246, 0.2);
+        border-color: #3b82f6; 
+    }
+
+    /* --- Banner (Imagen Superior) --- */
+    .banner-superior {
+        width: 100%;
+        height: 200px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .imagen-curso {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        object-position: center;
+    }
+
+    /* --- Ícono Flotante (Izquierda) --- */
+    .icono-flotante {
+        position: absolute;
+        top: 16px;
+        left: 16px; /* Posición original */
+        width: 45px;
+        height: 45px;
+        background-color: var(--card-bg); 
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        z-index: 2;
+    }
+
+    /* --- 🔄 NUEVO: CSS para la Etiqueta Flotante (Derecha) --- */
+    .label-flotante {
+        position: absolute;
+        top: 16px; /* Misma altura que el icono */
+        right: 16px; /* Posición ESPEJADA (derecha) */
+        z-index: 2; /* Asegura que esté por encima de la imagen */
+        
+        /* Ajustes visuales opcionales para que se vea mejor sobre la imagen */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    }
+
+    /* --- Contenedor del texto (Abajo) --- */
+    .contenido-tarjeta {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; 
+    }
+
+    .contenedor-pildoras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 1rem;
+    }
+
+    /* Estilo base de todas las píldoras */
+    .pildora {
+        background-color: var(--bg-page);
+        color: var(--text-main);
+        font-size: 0.75rem;
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .pildora-detalle {
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
+    .titulo {
+        color: var(--title-color);
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem; 
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .descripcion {
+        color: var(--text-main);
+        font-size: 0.95rem; 
+        line-height: 1.5;
+        margin-bottom: 1.5rem; 
+        flex-grow: 1; 
+    }
+
+    .pie-tarjeta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem; 
+        margin-top: auto;
+    }
+
+    .estadistica {
+        color: var(--text-main);
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .flecha-accion {
+        color: #3b82f6;
+        font-weight: bold;
+        font-size: 0.9rem;
+        transition: transform 0.2s;
+    }
+
+    .tarjeta-tyac:hover .flecha-accion {
+        transform: translateX(4px);
+    }
+
+    /* --- Colores de Respaldo por Materia --- */
+    .fondo-quimica { background-color: #fef2f2; }     
+    .fondo-matematicas { background-color: #eff6ff; } 
+    .fondo-biologia { background-color: #f0fdf4; }    
+    .fondo-fisica { background-color: #fffbeb; }      
+    .fondo-general { background-color: #f8fafc; }     
+
+    /* --- Modo Oscuro Automático --- */
+    @media (prefers-color-scheme: dark) {
+        .fondo-quimica { background-color: #7f1d1d; }     
+        .fondo-matematicas { background-color: #1e3a8a; } 
+        .fondo-biologia { background-color: #14532d; }    
+        .fondo-fisica { background-color: #78350f; }      
+        .fondo-general { background-color: #334155; }   
+    }
+</style>

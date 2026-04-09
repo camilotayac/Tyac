@@ -1,9 +1,5 @@
 ---
-// 1. ZONA DE JAVASCRIPT
-// Extraemos "titulo" (para páginas normales) y "frontmatter" (para archivos Markdown)
 const { titulo, frontmatter } = Astro.props;
-
-// Le decimos a Astro: "Usa el título normal, o el del Markdown. Si no hay ninguno, usa Tyac"
 const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
 ---
 
@@ -15,6 +11,29 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
         <title>{tituloFinal}</title>
 
         <style>
+            /* 🎨 VARIABLES DE COLOR MAGICAS */
+            :root {
+                --bg-page: #f4f4f9;
+                --text-main: #334155;
+                --header-bg: #1e293b;
+                --text-header: #ffffff;
+                --title-color: #0f172a;
+                --card-bg: #ffffff;
+                --border-color: #e2e8f0;
+            }
+
+            /* 🌙 COLORES PARA EL MODO OSCURO */
+            html.dark {
+                --bg-page: #0f172a; /* Azul muy oscuro */
+                --text-main: #cbd5e1; /* Gris claro */
+                --header-bg: #020617; /* Casi negro */
+                --text-header: #f8fafc;
+                --title-color: #f8fafc;
+                --card-bg: #1e293b;
+                --border-color: #334155;
+            }
+
+            /* Estilos del Buscador */
             .buscador-input {
                 background-color: #334155 !important;
                 color: white;
@@ -24,7 +43,6 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
                 outline: none;
                 width: 180px;
                 transition: all 0.3s ease;
-                cursor: text;
                 font-size: 14px;
             }
 
@@ -35,83 +53,60 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
                 box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
             }
 
-            input::placeholder {
-                color: #cbd5e1;
+            /* Botón del Tema */
+            .btn-tema {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 4px 8px;
+                border-radius: 8px;
+                transition: background-color 0.2s;
+            }
+            .btn-tema:hover {
+                background-color: rgba(255, 255, 255, 0.1);
             }
         </style>
 
         <style is:global>
+            /* Actualizamos el Markdown para que use las variables */
             .markdown-container {
-                color: #334155;
+                color: var(--text-main);
                 line-height: 1.8;
                 font-size: 1.1rem;
             }
 
+            .markdown-container h1, 
+            .markdown-container h2, 
+            .markdown-container h3, 
+            .markdown-container strong {
+                color: var(--title-color);
+            }
+
             .markdown-container h1 {
-                color: #0f172a;
-                font-size: 2.5rem;
-                margin-bottom: 1.5rem;
                 border-bottom: 3px solid #3b82f6;
                 padding-bottom: 0.5rem;
             }
 
-            .markdown-container h2 {
-                color: #1e293b;
-                font-size: 1.8rem;
-                margin-top: 3rem;
-                margin-bottom: 1rem;
-            }
-
-            .markdown-container p {
-                margin-bottom: 1.5rem;
-            }
-
-            .markdown-container blockquote {
-                border-left: 5px solid #3b82f6;
-                background-color: #eff6ff;
-                padding: 1.5rem;
-                margin: 2rem 0;
-                border-radius: 0 12px 12px 0;
-                font-style: italic;
-                color: #1e3a8a;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            }
-
             .markdown-container table {
-                width: 100%;
-                max-width: 400px;
-                margin: 2rem auto;
-                border-collapse: collapse;
-                background-color: white;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
-                overflow: hidden;
+                background-color: var(--card-bg);
+                color: var(--text-main);
             }
-
-            .markdown-container th, 
-            .markdown-container td {
-                border: 1px solid #e2e8f0;
-                padding: 12px 16px;
-                text-align: center;
-            }
-
             .markdown-container th {
-                background-color: #f8fafc;
-                font-weight: bold;
-                color: #0f172a;
+                background-color: var(--border-color);
+                color: var(--title-color);
             }
-
-            .markdown-container strong {
-                color: #0f172a;
-                font-weight: 700;
+            .markdown-container td, .markdown-container th {
+                border-color: var(--border-color);
             }
         </style>
     </head>
 
-    <body style="font-family: system-ui, sans-serif; background-color: #f4f4f9; color: #333; margin: 0;">
-        <header style="background-color: #1e293b; color: white; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;">
+    <body style="font-family: system-ui, sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; transition: background-color 0.3s ease, color 0.3s ease;">
+        
+        <header style="background-color: var(--header-bg); color: var(--text-header); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease;">
             <div style="display: flex; align-items: center; gap: 24px;">
-                <a href="/" style="color: white; text-decoration: none; font-size: 24px; font-weight: bold;">
+                <a href="/" style="color: var(--text-header); text-decoration: none; font-size: 24px; font-weight: bold;">
                     Tyac
                 </a>
                 <form action="/buscar" method="GET" id="buscador-principal" style="display: flex;">
@@ -121,13 +116,49 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
             </div>
 
             <nav style="display: flex; align-items: center; gap: 24px;">
-                <a href="/cursos" style="color: white; text-decoration: none; font-weight: 500;">Cursos</a>
-                <a href="/temas" style="color: white; text-decoration: none; font-weight: 500;">Temas</a>
+                <a href="/cursos" style="color: var(--text-header); text-decoration: none; font-weight: 500;">Cursos</a>
+                <a href="/temas" style="color: var(--text-header); text-decoration: none; font-weight: 500;">Temas</a>
+                
+                <button id="theme-toggle" class="btn-tema" title="Cambiar tema oscuro/claro">
+                    🌓
+                </button>
             </nav>
         </header>
 
         <main class="markdown-container" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
             <slot />
         </main>
+
+<script>
+    // Se ejecuta tan pronto como la página carga
+    const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+            return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
+    })();
+
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+
+    // Esperamos a que el botón exista en la pantalla para conectarlo
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById("theme-toggle");
+        
+        if (toggleButton) {
+            toggleButton.addEventListener("click", () => {
+                document.documentElement.classList.toggle("dark");
+                const isDark = document.documentElement.classList.contains("dark");
+                localStorage.setItem("theme", isDark ? "dark" : "light");
+            });
+        }
+    });
+</script>
     </body>
 </html>
