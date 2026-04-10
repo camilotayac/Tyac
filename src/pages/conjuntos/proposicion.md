@@ -1,6 +1,7 @@
 ---
-layout: ../../layouts/Layout.astro
-titulo: Proposición y su negación
+layout: ../../layouts/LayoutCurso.astro
+curso: conjuntos
+id_clase: proposicion
 ---
 
 # Proposición y su negación

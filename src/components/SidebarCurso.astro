@@ -1,0 +1,152 @@
+---
+// src/components/SidebarCurso.astro
+
+export interface Leccion {
+    id: string;
+    titulo: string;
+    duracion: string;
+}
+
+export interface Props {
+    claseActualId?: string;
+    cursoActualId: string; // 🌟 AHORA ES OBLIGATORIO: Ya no tiene el "?" ni valor por defecto
+    lecciones?: Leccion[];
+}
+
+const { 
+    claseActualId, 
+    cursoActualId, // 🌟 ELIMINADO el ="conjuntos". Ahora confía 100% en lo que le mande el Layout.
+    lecciones = [] 
+} = Astro.props as Props;
+---
+
+<aside class="sidebar-curso">
+    <div class="cabecera-sidebar">
+        <h3>Contenido del Curso</h3>
+    </div>
+    
+    <nav class="navegacion-lecciones">
+        <ul class="lista-lecciones">
+            {/* 🌟 LA SOLUCIÓN AL ERROR ESTÁ AQUÍ: (leccion: Leccion) */}
+            {lecciones.map((leccion: Leccion) => {
+                const esActiva = leccion.id === claseActualId;
+                
+                return (
+                    <li>
+                        <a 
+                            href={`/${leccion.id}`} 
+                            class={`item-leccion ${esActiva ? 'activa' : ''}`}
+                        >
+                            <div class="info-leccion">
+                                <span class="icono-estado">
+                                    {esActiva ? '▶️' : '📄'}
+                                </span>
+                                <span class="titulo-leccion">{leccion.titulo}</span>
+                            </div>
+                            <span class="duracion">{leccion.duracion}</span>
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>
+    </nav>
+</aside>
+
+<style>
+    .sidebar-curso {
+        width: 320px; 
+        background-color: var(--card-bg); 
+        border-right: 1px solid var(--border-color);
+        height: 100vh; 
+        overflow-y: auto; 
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0; 
+    }
+
+    .cabecera-sidebar {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        position: sticky; 
+        top: 0;
+        background-color: var(--card-bg);
+        z-index: 10;
+    }
+
+    .cabecera-sidebar h3 {
+        margin: 0;
+        color: var(--title-color);
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    .lista-lecciones {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .item-leccion {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        text-decoration: none;
+        color: var(--text-main);
+        border-bottom: 1px solid var(--border-color);
+        transition: background-color 0.2s ease;
+        border-left: 4px solid transparent; 
+    }
+
+    .item-leccion:hover {
+        background-color: rgba(59, 130, 246, 0.05); 
+    }
+
+    .info-leccion {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .icono-estado {
+        font-size: 1.2rem;
+        opacity: 0.6;
+    }
+
+    .titulo-leccion {
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .duracion {
+        font-size: 0.8rem;
+        color: var(--text-main);
+        opacity: 0.7;
+        white-space: nowrap;
+    }
+
+    /* --- 🌟 EL ESTILO DE LA CLASE ACTIVA 🌟 --- */
+    .item-leccion.activa {
+        background-color: rgba(59, 130, 246, 0.1); 
+        border-left-color: #3b82f6; 
+    }
+
+    .item-leccion.activa .titulo-leccion {
+        font-weight: 700;
+        color: #3b82f6; 
+    }
+
+    .item-leccion.activa .icono-estado {
+        opacity: 1;
+    }
+
+    /* Adaptación extra para Modo Oscuro */
+    html.dark .item-leccion.activa {
+        background-color: rgba(59, 130, 246, 0.15);
+        border-left-color: #60a5fa;
+    }
+    html.dark .item-leccion.activa .titulo-leccion {
+        color: #60a5fa;
+    }
+</style>
