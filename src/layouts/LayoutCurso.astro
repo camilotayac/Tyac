@@ -95,9 +95,8 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
 
             <div class="markdown-container">
 
-                <!-- Botón "← Volver" — lleva al inicio (index) -->
-                <!-- Cambia href="/" si el índice de cursos está en otra ruta -->
-                <a href="/" class="boton-volver">&larr; Volver a los cursos</a>
+                <!-- Botón "← Volver" — lleva a la landing del curso -->
+                <a href={`/cursos/${cursoActual}`} class="boton-volver">&larr; Volver al temario</a>
 
                 <!-- Encabezado de la lección con su título oficial -->
                 <header class="encabezado-clase">

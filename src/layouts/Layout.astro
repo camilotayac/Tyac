@@ -17,6 +17,7 @@
 // Design tokens — variables de color globales (src/styles/tokens.css)
 import "../styles/tokens.css";
 import Buscador from "../components/Buscador.astro";
+import SearchModal from "../components/SearchModal.astro";
 
 const { titulo, frontmatter } = Astro.props;
 
@@ -101,13 +102,10 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
             style="position: sticky; top: 0; z-index: 1000; background-color: var(--header-bg); color: var(--text-header); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);"
         >
             <!-- Logo / nombre del sitio — clic lleva al inicio -->
-            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
-                <a
-                    href="/"
-                    class="header-logo"
-                >
-                    Tyac
-                </a>
+            <div
+                style="display: flex; align-items: center; gap: 20px; flex: 1;"
+            >
+                <a href="/" class="header-logo"> Tyac </a>
 
                 <Buscador mode="header" />
             </div>
@@ -130,6 +128,9 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
         <main>
             <slot />
         </main>
+
+        <!-- Componente de Búsqueda Global -->
+        <SearchModal />
     </body>
 </html>
 

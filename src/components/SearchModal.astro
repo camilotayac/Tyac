@@ -1,0 +1,319 @@
+---
+// src/components/SearchModal.astro
+// Este es el componente GLOBAL de búsqueda. Vive al final del body.
+---
+
+<div class="search-modal-root" id="search-modal" data-modal hidden>
+    <div class="search-modal-backdrop" id="search-backdrop"></div>
+    
+    <div class="search-modal-container">
+        <div class="search-modal-box">
+            <div class="search-modal-input-wrapper">
+                <span class="search-modal-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
+                <input 
+                    type="text" 
+                    id="search-modal-input" 
+                    placeholder="¿Qué quieres aprender hoy?" 
+                    autocomplete="off"
+                    aria-label="Caja de búsqueda global"
+                />
+                <kbd class="search-modal-esc">ESC</kbd>
+            </div>
+
+            <div class="search-modal-results" id="search-results-panel">
+                <div class="search-results-list" id="search-results-list"></div>
+                <div class="search-no-results" id="search-no-results" hidden>
+                    <div class="no-results-content">
+                        <span>🔍</span>
+                        <p>No encontramos lo que buscas. Intenta con otros conceptos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .search-modal-root {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        padding-top: 15vh;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .search-modal-root:not([hidden]) {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .search-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 11, 16, 0.7);
+        backdrop-filter: blur(8px);
+    }
+
+    .search-modal-container {
+        position: relative;
+        z-index: 10001;
+        width: 90%;
+        max-width: 650px;
+        transform: translateY(20px);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-modal-root:not([hidden]) .search-modal-container {
+        transform: translateY(0);
+    }
+
+    .search-modal-box {
+        background: #1e1f29;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+    }
+
+    .search-modal-input-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        gap: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .search-modal-icon {
+        color: var(--acento);
+        width: 24px;
+        height: 24px;
+        display: flex;
+    }
+
+    #search-modal-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .search-modal-esc {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--texto-atenuado);
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .search-modal-results {
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    /* Estilos de scrollbar premium */
+    .search-modal-results::-webkit-scrollbar { width: 6px; }
+    .search-modal-results::-webkit-scrollbar-track { background: transparent; }
+    .search-modal-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+    .search-no-results {
+        padding: 4rem 2rem;
+        text-align: center;
+    }
+
+    .no-results-content span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .no-results-content p { color: var(--texto-atenuado); font-size: 1rem; }
+
+    /* =========================================
+       ESTILOS DE RESULTADOS (Dentro del Modal)
+       ========================================= */
+    :global(.item-resultado) {
+        padding: 14px;
+        border-radius: 16px;
+        color: var(--texto-claro) !important;
+        text-decoration: none !important;
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 16px;
+        align-items: center;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 8px;
+        border: 1px solid transparent;
+    }
+
+    :global(.item-resultado:hover) {
+        background: rgba(189, 147, 249, 0.08);
+        border-color: rgba(189, 147, 249, 0.2);
+        transform: translateX(6px);
+    }
+
+    :global(.res-icono-box) {
+        width: 52px;
+        height: 52px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    :global(.res-info) {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    :global(.res-titulo) {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--texto-claro);
+        line-height: 1.2;
+    }
+
+    :global(.res-meta) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 2px;
+    }
+
+    :global(.res-tipo) {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    :global(.res-subtipo) {
+        font-size: 0.7rem;
+        color: var(--texto-atenuado);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    /* Colores por Materia */
+    :global(.materia-matematicas) { background: var(--dracula-purple); color: #191a21 !important; }
+    :global(.materia-tecnologia) { background: var(--dracula-cyan); color: #191a21 !important; }
+    :global(.materia-quimica) { background: var(--dracula-red); color: #ffffff !important; }
+    :global(.materia-biologia) { background: var(--dracula-green); color: #191a21 !important; }
+    :global(.materia-general) { background: var(--texto-atenuado); color: #191a21 !important; }
+
+    :global(.res-snippet) {
+        font-size: 0.9rem;
+        color: var(--texto-atenuado);
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        opacity: 0.8;
+    }
+</style>
+
+<script>
+    interface SearchItem {
+        titulo: string;
+        descripcion: string;
+        url: string;
+        materia: string;
+        tipo: string;
+        icono: string;
+    }
+
+    let searchData: SearchItem[] = [];
+    const modal = document.getElementById("search-modal");
+    const backdrop = document.getElementById("search-backdrop");
+    const input = document.getElementById("search-modal-input") as HTMLInputElement;
+    const list = document.getElementById("search-results-list");
+    const noResults = document.getElementById("search-no-results");
+
+    async function fetchData() {
+        if (searchData.length > 0) return searchData;
+        const res = await fetch("/api/buscador.json");
+        searchData = await res.json();
+        return searchData;
+    }
+
+    function openModal() {
+        modal?.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+        setTimeout(() => input?.focus(), 50);
+        fetchData(); // Carga proactiva
+    }
+
+    function closeModal() {
+        modal?.setAttribute("hidden", "");
+        document.body.style.overflow = "";
+        input.value = "";
+        if (list) list.innerHTML = "";
+    }
+
+    // Registrar eventos globales para los disparadores
+    window.addEventListener("open-search", openModal);
+
+    backdrop?.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+            e.preventDefault();
+            openModal();
+        }
+    });
+
+    // Lógica de búsqueda interna
+    input?.addEventListener("input", async (e) => {
+        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        if (query.length < 2) {
+            if (list) list.innerHTML = "";
+            return;
+        }
+
+        const data = await fetchData();
+        const results = data.filter(item => 
+            item.titulo.toLowerCase().includes(query) || 
+            item.descripcion.toLowerCase().includes(query) ||
+            item.materia.toLowerCase().includes(query)
+        ).slice(0, 10);
+
+        if (list) {
+            list.innerHTML = "";
+            if (results.length > 0) {
+                noResults?.setAttribute("hidden", "");
+                results.forEach(item => {
+                    const itemEl = document.createElement("a");
+                    itemEl.href = item.url;
+                    itemEl.className = "item-resultado"; // Reutiliza estilos globales
+                    itemEl.innerHTML = `
+                        <div class="res-icono-box">${item.icono || "📄"}</div>
+                        <div class="res-info">
+                            <div class="res-meta">
+                                <span class="res-tipo materia-${item.materia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}">${item.materia}</span>
+                                <span class="res-subtipo">${item.tipo === "curso" ? "Curso" : "Clase"}</span>
+                            </div>
+                            <div class="res-titulo">${item.titulo}</div>
+                            <div class="res-snippet">${item.descripcion}</div>
+                        </div>
+                    `;
+                    list.appendChild(itemEl);
+                });
+            } else {
+                noResults?.removeAttribute("hidden");
+            }
+        }
+    });
+</script>

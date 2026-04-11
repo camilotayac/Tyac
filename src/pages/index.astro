@@ -5,91 +5,7 @@ import BotonMateria from "../components/BotonMateria.astro";
 import Buscador from "../components/Buscador.astro";
 import { todosLosTemarios } from "../data/temarios.js";
 
-// Lista de Cursos (Materias académicas)
-const cursosCiencia = [
-    {
-        titulo: "Matemáticas: Conjuntos",
-        descripcion:
-            "Lógica proposicional, unión, intersección y teoría de conjuntos.",
-        icono: "🔢",
-        materia: "Matemáticas",
-        href: "/apuntes/conjuntos/proposicion",
-        lecciones: todosLosTemarios.conjuntos.length,
-    },
-    {
-        titulo: "Química Orgánica",
-        descripcion:
-            "Introducción a los hidrocarburos, enlaces y estructuras moleculares.",
-        icono: "🧪",
-        materia: "Química",
-        href: "#",
-        lecciones: 12,
-    },
-    {
-        titulo: "Biología Celular",
-        descripcion:
-            "Estudio de la célula, orgánulos y procesos metabólicos básicos.",
-        icono: "🧬",
-        materia: "Biología",
-        href: "#",
-        lecciones: 10,
-    },
-    {
-        titulo: "Física Mecánica",
-        descripcion: "Leyes de Newton, cinemática y dinámica de partículas.",
-        icono: "🎡",
-        materia: "Física",
-        href: "#",
-        lecciones: 15,
-    },
-];
-
-// Lista de Apuntes (Tecnología y herramientas)
-const apuntesTecnicos = [
-    {
-        titulo: "Guía de Astro",
-        descripcion:
-            "Aprende a crear sitios web rápidos y modernos con Astro desde cero.",
-        icono: "🚀",
-        materia: "Astro",
-        href: "/apuntes/astro/introduccion",
-        lecciones: todosLosTemarios.astro.length,
-    },
-    {
-        titulo: "JavaScript Moderno",
-        descripcion: "Domina ES6+, callbacks, promesas y async/await.",
-        icono: "🟨",
-        materia: "JavaScript",
-        href: "#",
-        lecciones: 15,
-    },
-    {
-        titulo: "Node.js Backend",
-        descripcion:
-            "Construye APIs escalables con Express y bases de datos NoSQL.",
-        icono: "🟢",
-        materia: "Node.js",
-        href: "#",
-        lecciones: 20,
-    },
-    {
-        titulo: "Docker para Devs",
-        descripcion: "Contenedores, imágenes y despliegue continuo.",
-        icono: "🐳",
-        materia: "Docker",
-        href: "#",
-        lecciones: 9,
-    },
-    {
-        titulo: "Git & GitHub",
-        descripcion:
-            "Control de versiones, flujo de ramas y colaboración en equipo.",
-        icono: "🐙",
-        materia: "Git",
-        href: "#",
-        lecciones: 5,
-    },
-];
+import { cursosCiencia, apuntesTecnicos } from "../data/cursos.js";
 ---
 
 <Layout titulo="Tyac - Plataforma Educativa">
@@ -108,7 +24,7 @@ const apuntesTecnicos = [
         <div class="hero-contenido">
             <h1 class="hero-titulo">
                 La biblioteca de conocimiento <br />
-                <span class="hero-acento">de Ciencias y Tecnología</span>
+                <span class="hero-acento">de Tyac</span>
             </h1>
             <p class="hero-subtitulo">
                 Aprende conceptos complejos de forma sencilla, rápida y
@@ -278,7 +194,7 @@ const apuntesTecnicos = [
         background-color: var(--fondo-pagina);
         background-image: var(--fondo-hero-glow);
         color: var(--texto-claro);
-        padding: 12rem 2rem 4rem 2rem; /* Reducido abajo para compensar el layout */
+        padding: 3rem 2rem 6rem 2rem; /* Más espacio abajo sin mover el texto */
         text-align: center;
     }
 
@@ -319,14 +235,19 @@ const apuntesTecnicos = [
         z-index: 10;
         max-width: 900px;
         margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centrado flex */
+        text-align: center;
     }
 
     .hero-titulo {
-        font-size: 4.5rem;
+        font-size: 3.8rem;
         font-weight: 900;
         line-height: 1.05;
-        margin-bottom: 3.5rem; /* Más espacio bajo el título */
+        margin-bottom: 0.8rem; /* Mínimo */
         letter-spacing: -2px;
+        text-align: center; /* Forzado */
         animation: reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
@@ -338,15 +259,14 @@ const apuntesTecnicos = [
     }
 
     .hero-subtitulo {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         color: var(--texto-atenuado);
-        margin-bottom: 4.5rem; /* Más espacio bajo el subtítulo */
+        margin-bottom: 1rem; /* Mínimo */
         max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
         line-height: 1.6;
         text-wrap: balance;
         opacity: 0;
+        text-align: center; /* Forzado */
         animation: reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
 
@@ -356,15 +276,17 @@ const apuntesTecnicos = [
         text-transform: uppercase;
         letter-spacing: 2px;
         color: var(--acento);
-        margin-bottom: 3rem; /* Más espacio bajo la pregunta */
+        margin-bottom: 0.8rem; /* Mínimo */
         opacity: 0;
+        text-align: center; /* Forzado */
         animation: reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
     }
 
     .hero-buscador {
         width: 100%;
         max-width: 600px;
-        margin: 0 auto;
+        display: flex;
+        justify-content: center; /* Centrar el buscador */
         opacity: 0;
         animation: reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
         filter: drop-shadow(0 0 20px rgba(189, 147, 249, 0.2));
@@ -409,7 +331,7 @@ const apuntesTecnicos = [
         padding: 8rem 5% 12rem 5%; /* Ajustado a 10rem */
         display: flex;
         flex-direction: column;
-        gap: 8rem; /* Ajustado a 10rem */
+        gap: 6rem; /* Ajustado a 10rem */
         background: linear-gradient(
             to bottom,
             var(--fondo-pagina) 0%,
