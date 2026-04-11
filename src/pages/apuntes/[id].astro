@@ -1,0 +1,489 @@
+---
+// src/pages/apuntes/[id].astro
+import Layout from "../../layouts/Layout.astro";
+import { apuntesTecnicos } from "../../data/cursos.js";
+import { todosLosTemarios } from "../../data/temarios.js";
+
+export async function getStaticPaths() {
+    return apuntesTecnicos.map((apunte) => ({
+        params: { id: apunte.id },
+        props: { apunte },
+    }));
+}
+
+const { id } = Astro.params;
+const { apunte } = Astro.props;
+
+// Obtener el temario específico de este apunte
+type TemarioKey = keyof typeof todosLosTemarios;
+const temarioRaw = todosLosTemarios[id as TemarioKey] || [];
+---
+
+<Layout titulo={`${apunte.titulo} - Tyac`}>
+    <div class="apunte-landing">
+        <!-- 1. HERO DEL APUNTE (Efecto Spotlight) -->
+        <header class="curso-hero">
+            <div class="curso-hero-glow"></div>
+            <div class="container container-hero">
+                <div class="btn-back-container">
+                    <a href="/" class="btn-minimal-back">&larr; Volver al inicio</a>
+                </div>
+                <div class="curso-meta">
+                    <span class="badge badge-materia">{apunte.materia}</span>
+                    <span class="badge badge-nivel">{apunte.nivel}</span>
+                    <span class="badge badge-lecciones">{temarioRaw.length} temas</span>
+                </div>
+                <h1 class="curso-titulo">{apunte.titulo}</h1>
+                <p class="curso-descripcion">
+                    {apunte.descripcion} Guía técnica especializada para dominar {apunte.materia}. Aprende las mejores prácticas y arquitecturas modernas paso a paso.
+                </p>
+            </div>
+        </header>
+
+        <!-- 2. CONTENIDO PRINCIPAL (Syllabus + Sidebar) -->
+        <main class="curso-grid-container">
+            <div class="container grid-landing">
+                <!-- Columna Izquierda: Temario (Timeline ADN Tyac) -->
+                <section class="curso-syllabus">
+                    <h2 class="syllabus-titulo">Contenido técnico</h2>
+                    <div class="timeline">
+                        {temarioRaw.length > 0 ? (
+                            temarioRaw.map((leccion, index) => (
+                                <a href={`/apuntes/${id}/${leccion.id}`} class="timeline-item">
+                                    <div class="timeline-v-line"></div>
+                                    <div class="timeline-marker">
+                                        <div class="diamond-box">
+                                            <span>{index + 1}</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="leccion-bloque">
+                                            <div class="leccion-info">
+                                                <h3>{leccion.titulo}</h3>
+                                                <span class="leccion-duracion">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                    {leccion.duracion} min
+                                                </span>
+                                            </div>
+                                            <span class="btn-play">Ver capítulo &rarr;</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            ))
+                        ) : (
+                            <div class="empty-syllabus">
+                                <p>Esta guía se está redactando. Estamos documentando cada detalle para ofrecerte la mejor experiencia técnica.</p>
+                            </div>
+                        )}
+                    </div>
+                </section>
+
+                <!-- Columna Derecha: Sidebar Sticky (CTA & Info) -->
+                <aside class="curso-sidebar">
+                    <div class="sticky-card">
+                        <div class="card-glass">
+                            <div class="video-preview-placeholder">
+                                <div class="preview-overlay"></div>
+                                <div class="preview-gradient"></div>
+                                <span class="play-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                </span>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="card-pricing">
+                                    <span class="price-label">Acceso Libre</span>
+                                    <h3 class="price-value">Gratis y Abierto</h3>
+                                </div>
+
+                                <div class="cta-wrapper">
+                                    <a href={temarioRaw.length > 0 ? `/apuntes/${id}/${temarioRaw[0].id}` : "#"} class="btn-cta">
+                                        Empezar lectura
+                                    </a>
+                                </div>
+
+                                <ul class="curso-highlights">
+                                    <li><span class="icon-check">✓</span> Documentación experta</li>
+                                    <li><span class="icon-check">✓</span> 100% público y gratuito</li>
+                                    <li><span class="icon-check">✓</span> Enfoque en desarrollo real</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</Layout>
+
+<style>
+    .apunte-landing {
+        min-height: 100vh;
+        background-color: var(--bg-page);
+        color: var(--text-main);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* --- HERO --- */
+    .curso-hero {
+        position: relative;
+        padding: 4rem 0 3.5rem 0;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-back-container {
+        margin-bottom: 2rem;
+    }
+
+    .btn-minimal-back {
+        color: var(--texto-atenuado);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .btn-minimal-back:hover {
+        color: var(--acento);
+    }
+
+    .curso-hero-glow {
+        position: absolute;
+        top: -20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1000px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(189, 147, 249, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .container-hero { position: relative; z-index: 1; }
+
+    .curso-meta {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 1rem;
+    }
+
+    .badge {
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .badge-materia { background: var(--acento); color: #191a21; border: none; }
+    .badge-nivel { background: rgba(255, 255, 255, 0.05); color: var(--texto-atenuado); }
+    .badge-lecciones { background: rgba(255, 255, 255, 0.05); color: var(--texto-atenuado); }
+
+    .curso-titulo {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.2rem;
+        color: var(--texto-claro);
+    }
+
+    .curso-descripcion {
+        font-size: 1.1rem;
+        color: var(--texto-atenuado);
+        max-width: 700px;
+        line-height: 1.6;
+    }
+
+    /* --- GRID --- */
+    .curso-grid-container {
+        padding: 3.5rem 0 8rem 0;
+    }
+
+    .grid-landing {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 4rem;
+        align-items: start;
+    }
+
+    /* --- SYLLABUS (Timeline Diamond) --- */
+    .syllabus-titulo {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 2.5rem;
+        color: var(--texto-claro);
+    }
+
+    .timeline {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .timeline-item {
+        position: relative;
+        display: flex;
+        gap: 2rem;
+        padding-bottom: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-v-line {
+        position: absolute;
+        left: 20px;
+        top: 35px;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, rgba(189, 147, 249, 0.2) 0%, transparent 100%);
+        z-index: 0;
+    }
+
+    .timeline-item:last-child .timeline-v-line { display: none; }
+
+    .timeline-marker {
+        position: relative;
+        z-index: 1;
+        margin-top: 2px;
+    }
+
+    .diamond-box {
+        width: 38px;
+        height: 38px;
+        background: #1e1f29;
+        border: 2px solid var(--acento);
+        transform: rotate(45deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 12px rgba(189, 147, 249, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .diamond-box span {
+        transform: rotate(-45deg);
+        font-weight: 800;
+        font-size: 1rem;
+        color: var(--acento);
+    }
+
+    /* --- HOVER EFFECTS --- */
+    .timeline-item:hover .diamond-box {
+        background: var(--acento);
+        box-shadow: 0 0 20px rgba(189, 147, 249, 0.4);
+    }
+
+    .timeline-item:hover .diamond-box span {
+        color: #191a21;
+    }
+
+    .timeline-content {
+        flex: 1;
+    }
+
+    .leccion-bloque {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 1.2rem 1.5rem;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover .leccion-bloque {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(189, 147, 249, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .leccion-info h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+        color: var(--texto-claro);
+    }
+
+    .leccion-duracion {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: var(--texto-atenuado);
+    }
+
+    .btn-play {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--acento);
+        opacity: 0.6;
+        transition: all 0.2s;
+    }
+
+    .timeline-item:hover .btn-play {
+        opacity: 1;
+        transform: translateX(3px);
+    }
+
+    .empty-syllabus {
+        padding: 3rem;
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        text-align: center;
+        color: var(--texto-atenuado);
+        border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    /* --- SIDEBAR STICKY CARD --- */
+    .curso-sidebar {
+        position: sticky;
+        top: 100px;
+        z-index: 10;
+    }
+
+    .card-glass {
+        background: rgba(30, 31, 41, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-preview-placeholder {
+        aspect-ratio: 16/9;
+        background: #0d0d0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        inset: 0;
+        background: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800') center/cover;
+        opacity: 0.25;
+        z-index: 1;
+    }
+
+    .preview-gradient {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+        z-index: 2;
+    }
+
+    .play-icon {
+        position: relative;
+        z-index: 3;
+        color: white;
+        filter: drop-shadow(0 0 15px rgba(189, 147, 249, 0.6));
+        transition: transform 0.3s ease;
+    }
+
+    .card-glass:hover .play-icon {
+        transform: scale(1.1);
+    }
+
+    .card-body {
+        padding: 1.8rem;
+    }
+
+    .card-pricing {
+        margin-bottom: 1.8rem;
+        text-align: center;
+    }
+
+    .price-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--texto-atenuado);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+    }
+
+    .price-value {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: var(--texto-claro);
+        margin-top: 0.4rem;
+        letter-spacing: -0.5px;
+    }
+
+    /* --- FIX: BOTÓN POR FUERA DE LA CAJA --- */
+    .cta-wrapper {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 1.8rem;
+    }
+
+    .btn-cta {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 1.1rem;
+        background: linear-gradient(135deg, var(--acento) 0%, #a275e5 100%);
+        color: #191a21;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(189, 147, 249, 0.2);
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(189, 147, 249, 0.4);
+        filter: brightness(1.1);
+    }
+
+    .curso-highlights {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .curso-highlights li {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 0.8rem;
+        font-size: 0.85rem;
+        color: var(--texto-atenuado);
+        line-height: 1.4;
+    }
+
+    .icon-check {
+        color: var(--dracula-green);
+        font-weight: 900;
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+        .grid-landing {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .curso-sidebar {
+            order: -1;
+            position: static;
+        }
+
+        .curso-titulo {
+            font-size: 2.2rem;
+        }
+    }
+</style>
