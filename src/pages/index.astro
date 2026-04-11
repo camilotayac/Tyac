@@ -335,9 +335,9 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         width: 100%;
         max-width: 600px;
         display: flex;
-        justify-content: center; /* Centrar el buscador */
-        opacity: 0;
-        animation: reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        justify-content: center;
+        /* Eliminamos opacity 0 inicial para asegurar que siempre sea visible */
+        animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
         filter: drop-shadow(0 0 20px rgba(189, 147, 249, 0.2));
     }
 

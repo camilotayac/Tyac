@@ -226,6 +226,8 @@ const { mode = "hero" } = Astro.props;
 </style>
 
 <script>
+    import { normalize, calculateScore } from "../utils/search.js";
+
     interface SearchItem {
         titulo: string;
         descripcion: string;
@@ -269,10 +271,17 @@ const { mode = "hero" } = Astro.props;
                     }
 
                     const data = await fetchData();
-                    const results = data.filter(item => 
-                        item.titulo.toLowerCase().includes(query) || 
-                        item.materia.toLowerCase().includes(query)
-                    ).slice(0, 6);
+                    
+                    // Aplicar filtrado inteligente y puntuación
+                    const resultsWithScore = data.map(item => ({
+                        item,
+                        score: calculateScore(query, item)
+                    }))
+                    .filter(res => res.score > 15) // Umbral mínimo para mostrar algo útil
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 7);
+
+                    const results = resultsWithScore.map(res => res.item);
 
                     if (panel && lista) {
                         panel.removeAttribute("hidden");
