@@ -24,6 +24,7 @@ import Layout from './Layout.astro';
 import SidebarCurso from '../components/SidebarCurso.astro';
 // Importamos los datos de todos los cursos y sus lecciones
 import { todosLosTemarios } from '../data/temarios.js';
+import { cursosCiencia } from '../data/cursos.js';
 
 // ── Estilos modulares del contenido Markdown ────────────────────────
 // Cada archivo controla un aspecto específico. Edítalos en src/styles/
@@ -51,6 +52,10 @@ const cursoActual = frontmatter.curso as CursoValido;
 const temarioSeleccionado = (cursoActual && todosLosTemarios[cursoActual])
     ? todosLosTemarios[cursoActual]
     : [];
+
+// Determinar el prefijo correcto (cursos vs apuntes)
+const esCursoAcadémico = cursosCiencia.some(c => c.id === cursoActual);
+const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
 
 // Buscamos los datos completos de ESTA lección específica
 // (para obtener su título oficial desde temarios.js)
@@ -96,7 +101,7 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
             <div class="markdown-container">
 
                 <!-- Botón "← Volver" — lleva a la landing del curso -->
-                <a href={`/cursos/${cursoActual}`} class="boton-volver">&larr; Volver al temario</a>
+                <a href={`${urlPrefix}/${cursoActual}`} class="boton-volver">&larr; Volver al temario</a>
 
                 <!-- Encabezado de la lección con su título oficial -->
                 <header class="encabezado-clase">

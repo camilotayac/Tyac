@@ -2,23 +2,20 @@
 // Este archivo genera el índice de búsqueda para Tyac
 // Se ejecuta durante el build para crear un JSON estático.
 
-import { todosLosTemarios } from "../../data/temarios.js";
+import { cursosCiencia } from "../../data/cursos.js";
+import { apuntesTecnicos } from "../../data/apuntes.js";
 
 export async function GET() {
-    // 1. Recoger todas las lecciones de los archivos Markdown
-    // Usamos import.meta.glob para encontrar todos los .md en la carpeta apuntes
-    const archivos = import.meta.glob('../apuntes/**/*.md', { eager: true });
+    // 1. Recoger todas las lecciones de ambos directorios: apuntes y cursos
+    const archivos = import.meta.glob(['../apuntes/**/*.md', '../cursos/**/*.md'], { eager: true });
     
-    // Mapeo de iconos por curso para que las lecciones hereden el icono principal
-    const cursoIcons = {
-        "astro": "🚀",
-        "conjuntos": "🔢",
-        "quimica": "🧪",
-        "biologia": "🧬"
-    };
+    // Mapeo de iconos dinámico desde cursos.js
+    const cursoIcons = {};
+    [...cursosCiencia, ...apuntesTecnicos].forEach(c => {
+        cursoIcons[c.id] = c.icono;
+    });
     
     const leccionesIndices = Object.values(archivos).map((archivo) => {
-        // ... (limpieza de contenido existente) ...
         const content = archivo.rawContent ? archivo.rawContent() : "";
         const contentWithoutCode = content.replace(/```[\s\S]*?```/g, '');
         const cleanContent = contentWithoutCode
@@ -30,7 +27,7 @@ export async function GET() {
         const idCurso = archivo.frontmatter.curso || "";
 
         return {
-            titulo: archivo.frontmatter.titulo || archivo.url.split('/').pop(),
+            titulo: archivo.frontmatter.titulo || idCurso,
             descripcion: archivo.frontmatter.descripcion || "",
             cuerpo: cleanContent,
             url: archivo.url,
@@ -41,28 +38,18 @@ export async function GET() {
         };
     });
 
-    // 2. Recoger metadatos de los Cursos (desde temarios.js o constantes)
-    // Para simplificar, añadiremos los cursos base aquí
-    const cursosIndices = [
-        {
-            titulo: "Curso de Conjuntos",
-            descripcion: "Lógica proposicional, unión, intersección y teoría de conjuntos.",
-            cuerpo: "matematicas logica union interseccion conjuntos academia ciencia",
-            url: "/apuntes/conjuntos/proposicion",
-            tipo: "curso",
-            curso: "conjuntos",
-            materia: "Matemáticas"
-        },
-        {
-            titulo: "Curso de Astro",
-            descripcion: "Aprende a crear sitios web rápidos y modernos con Astro desde cero.",
-            cuerpo: "tecnologia frontend javascript static site generator componentes islas web",
-            url: "/apuntes/astro/introduccion",
-            tipo: "curso",
-            curso: "astro",
-            materia: "Tecnología"
-        }
-    ];
+    // 2. Generar índices de cursos dinámicamente desde cursos.js
+    const cursosIndices = [...cursosCiencia, ...apuntesTecnicos].map(curso => ({
+        titulo: `Curso de ${curso.materia}`,
+        subtitulo: curso.titulo,
+        descripcion: curso.descripcion,
+        cuerpo: `${curso.titulo} ${curso.descripcion} ${curso.materia} academia ciencia tecnologia`,
+        url: curso.href, // Ahora apunta a la LANDING dinámica (/cursos/id o /apuntes/id)
+        tipo: "curso",
+        curso: curso.id,
+        materia: curso.materia,
+        icono: curso.icono
+    }));
 
     const indiceCompleto = [...leccionesIndices, ...cursosIndices];
 

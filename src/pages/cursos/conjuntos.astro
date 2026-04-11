@@ -1,0 +1,9 @@
+---
+// src/pages/cursos/conjuntos.astro
+import LandingPageTemplate from "../../components/LandingPageTemplate.astro";
+import { cursosCiencia } from "../../data/cursos.js";
+
+const curso = cursosCiencia.find(c => c.id === "conjuntos");
+---
+
+{curso ? <LandingPageTemplate curso={curso} tipo="curso" /> : <h1>Curso no encontrado</h1>}

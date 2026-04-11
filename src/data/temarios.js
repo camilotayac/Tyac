@@ -30,4 +30,13 @@ export const todosLosTemarios = {
         { id: "estilos", titulo: "8. Estilos en Astro: Scoped vs Global", duracion: "11:00" },
         { id: "estilos-markdown", titulo: "9. Personalizar Estilos de Markdown", duracion: "12:00" }
     ],
+
+    // 🧪 Curso de Química General
+    quimica_general: [
+        { id: "materia", titulo: "1. ¿Qué es la Materia?", duracion: "08:00" },
+        { id: "atomos", titulo: "2. Estructura Atómica", duracion: "12:00" },
+        { id: "tabla_periodica", titulo: "3. La Tabla Periódica Moderna", duracion: "10:00" },
+        { id: "enlaces", titulo: "4. Enlace Iónico y Covalente", duracion: "15:00" },
+        { id: "reacciones", titulo: "5. Reacciones Químicas", duracion: "20:00" },
+    ],
 };
