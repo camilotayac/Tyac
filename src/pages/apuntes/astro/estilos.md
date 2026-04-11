@@ -81,7 +81,7 @@ Las variables CSS son valores reutilizables que puedes definir una vez y usar en
 
 ```css
 :root {
-    --color-primario: #3b82f6;
+    --color-primario: #8e1dc1;
     --bg-page: #f4f4f9;
     --text-main: #334155;
 }

@@ -73,7 +73,7 @@ Por ejemplo, para cambiar el color de la barra lateral de las citas:
 ```css
 /* Dentro de LayoutCurso.astro */
 .markdown-container blockquote {
-    border-left: 5px solid #ff5733; /* Cambia el azul por naranja */
+    border-left: 5px solid #ff5733; /* Cambia el púrpura por naranja */
     background-color: #fff5f0;      /* Un fondo más cálido */
 }
 ```
@@ -90,4 +90,4 @@ Por ejemplo, para cambiar el color de la barra lateral de las citas:
 ---
 
 ### Ejercicio para ti:
-Prueba cambiar el color de `--title-color` en `Layout.astro` a un azul oscuro (`#1e3a8a`) y verás cómo todos los títulos de tus lecciones cambian al instante.
+Prueba cambiar el color de `--title-color` en `Layout.astro` a un púrpura profundo (`#4a0e66`) y verás cómo todos los títulos de tus lecciones cambian al instante.

@@ -100,7 +100,7 @@ Puedes escribir CSS directamente en el archivo `.astro`. Lo especial es que ese 
 <style>
     /* Este estilo SOLO afecta al h1 de ESTE componente */
     .titulo {
-        color: #3b82f6;
+        color: #8e1dc1;
         font-size: 2rem;
     }
 </style>
