@@ -25,6 +25,15 @@ import SidebarCurso from '../components/SidebarCurso.astro';
 // Importamos los datos de todos los cursos y sus lecciones
 import { todosLosTemarios } from '../data/temarios.js';
 
+// ── Estilos modulares del contenido Markdown ────────────────────────
+// Cada archivo controla un aspecto específico. Edítalos en src/styles/
+import '../styles/markdown-base.css';      // Tipografía, párrafos, encabezados
+import '../styles/markdown-code.css';      // Bloques de código e inline code
+import '../styles/markdown-tables.css';    // Tablas
+import '../styles/markdown-examples.css';  // Blockquotes y ejemplos
+import '../styles/markdown-links.css';     // Hipervínculos
+import '../styles/markdown-formulas.css';  // Fórmulas (KaTeX - futuro)
+
 // "frontmatter" contiene todos los datos del encabezado del archivo .md
 const { frontmatter } = Astro.props;
 
@@ -199,13 +208,13 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
        Línea separadora debajo del título h1
     ================================================ */
     .encabezado-clase {
-        border-bottom: 2px solid var(--border-color);
+        border-bottom: 2px solid var(--markdown-borde);
         padding-bottom: 1.5rem;
         margin-bottom: 2rem;
     }
 
     .encabezado-clase h1 {
-        color: var(--title-color);
+        color: var(--markdown-titulo);
         font-size: 2.2rem;              /* Tamaño del título de la lección */
         margin: 0 0 0.5rem 0;
         line-height: 1.2;
@@ -238,10 +247,10 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
         max-width: 45%;
     }
 
-    /* Al pasar el mouse: borde cyan + sombra + sube ligeramente */
+    /* Al pasar el mouse: borde acento + sombra + sube ligeramente */
     .btn-navegacion:hover {
-        border-color: var(--color-cyan-dark);
-        box-shadow: 0 4px 12px rgba(3, 106, 150, 0.15);
+        border-color: var(--acento-oscuro);
+        box-shadow: var(--sombra-btn-nav);
         transform: translateY(-2px);
     }
 
@@ -256,14 +265,14 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
     .etiqueta-nav {
         font-size: 0.8rem;
         font-weight: 700;
-        color: var(--color-cyan-dark);
+        color: var(--acento);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     /* Título de la lección dentro del botón de navegación */
     .titulo-nav {
-        color: var(--title-color);
+        color: var(--card-titulo);
         font-weight: 600;
         font-size: 1.05rem;
         line-height: 1.3;
@@ -274,40 +283,8 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
         flex: 1;
     }
 
-    /* --- ESTILOS PARA LA BARRA DE LENGUAJE DEL CÓDIGO --- */
-    :global(.codigo-wrapper) {
-        position: relative;
-        margin: 2rem 0;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    :global(.codigo-header) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--header-bg); 
-        padding: 8px 16px;
-        color: var(--color-cyan); 
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    :global(.codigo-header .copy-btn) {
-        cursor: pointer;
-        opacity: 0.6;
-        transition: opacity 0.2s;
-    }
-
-    :global(.codigo-header .copy-btn:hover) {
-        opacity: 1;
-    }
-
+    /* --- Los estilos de .codigo-wrapper y .codigo-header
+       ahora están en: src/styles/markdown-code.css --- */
 
     /* ================================================
        RESPONSIVIDAD PARA MÓVIL (pantallas ≤ 768px)
@@ -357,140 +334,19 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
     }
 </style>
 
+
 <style is:global>
     /* ================================================
-       ESTILOS GLOBALES DEL CONTENIDO MARKDOWN
+       SCROLL LOCK — exclusivo de este layout
        ================================================
-       "is:global" es necesario porque el HTML del .md
-       lo genera Astro internamente; sin esto, los estilos
-       no llegarían a ese contenido generado.
-
-       ⚠️ Estos estilos sobreescriben el scroll del body
-       para que SOLO el .area-principal pueda hacer scroll.
+       El layout de curso usa scroll SOLO dentro del
+       .area-principal. Bloqueamos el scroll del body
+       para que la página completa no sea scrolleable.
+       Este estilo NO va en los archivos de src/styles/
+       porque es específico de LayoutCurso.
     ================================================ */
-
-    /* Bloqueamos el scroll de la página completa.
-       Solo el .area-principal (definido arriba) puede scrollear. */
     body {
         overflow: hidden !important;
-    }
-
-    /* Contenedor del texto de la lección */
-    .markdown-container {
-        max-width: 850px;               /* Ancho máximo del texto — cambia si quieres más/menos */
-        margin: 0 auto;
-        font-size: 1.15rem;             /* Ligeramente más grande para mejor lectura */
-        line-height: 1.8;               /* Espaciado generoso */
-    }
-
-    /* Bloques de código (PRE) --- */
-    /* Personalizados para que se vean premium */
-    .markdown-container pre {
-        margin: 0 !important; /* El margen lo controla el wrapper generado por JS */
-        padding: 1.5rem !important;
-        background-color: var(--bg-page) !important; 
-        font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace !important;
-        font-size: 0.95rem !important;
-        line-height: 1.6 !important;
-        overflow-x: auto;
-    }
-
-    /* Scrollbar sutil para el código */
-    .markdown-container pre::-webkit-scrollbar {
-        height: 6px;
-    }
-    .markdown-container pre::-webkit-scrollbar-thumb {
-        background: var(--color-comment-dark);
-        border-radius: 10px;
-    }
-
-
-    /* Subtítulos h2, h3, h4 dentro del contenido */
-    .markdown-container h2,
-    .markdown-container h3,
-    .markdown-container h4 {
-        color: var(--title-color);
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Párrafos */
-    .markdown-container p {
-        margin-bottom: 1.5rem;
-    }
-
-    /* Tablas dentro del contenido markdown */
-    .markdown-container table {
-        width: auto;
-        min-width: 50%;
-        max-width: 100%;
-        border-collapse: separate; 
-        border-spacing: 0;
-        margin: 2.5rem 0;
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        overflow: hidden;
-        /* Sombra con un toque aguamarina oscuro */
-        box-shadow: 0 10px 30px -10px rgba(44, 124, 140, 0.35); 
-        border: none; /* Sin borde exterior duro */
-    }
-
-    .markdown-container th,
-    .markdown-container td {
-        padding: 14px 18px;
-        text-align: left;
-        border: none; /* Sin líneas separadoras de filas */
-    }
-    
-    /* Sin colores intercalados para las filas de la tabla */
-    .markdown-container tr:nth-child(even) {
-        background-color: transparent; 
-    }
-
-    .markdown-container th {
-        background-color: var(--header-bg); 
-        font-weight: 700;
-        color: var(--text-header); 
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-    }
-
-    /* Enlaces dentro del contenido Markdown */
-    .markdown-container a {
-        color: var(--color-cyan); 
-        text-decoration-color: rgba(139, 233, 253, 0.4);
-        text-underline-offset: 4px;
-        font-weight: 600;
-    }
-
-    .markdown-container a:hover {
-        text-decoration-color: var(--color-cyan);
-    }
-
-    /* Blockquote — bloque de cita/ejemplo -->
-       Ahora es transparente siguiendo la directiva visual */
-    .markdown-container blockquote {
-        background: transparent;
-        border-left: 4px solid var(--color-cyan-dark); 
-        padding: 1.5rem 2rem;
-        margin: 2.5rem 0;
-        font-style: italic;
-        color: var(--text-main);
-    }
-
-    .markdown-container blockquote p {
-        margin: 0;
-    }
-
-
-    /* Código inline: `como este` */
-    .markdown-container code:not(pre code) {
-        padding: 0;
-        font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
-        font-size: 0.9em;
-        font-weight: 600;
-        color: var(--color-cyan); 
     }
 </style>
 

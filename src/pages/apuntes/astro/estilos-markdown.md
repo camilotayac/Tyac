@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: estilos-markdown
+titulo: "Estilismo de Markdown"
+descripcion: "Personaliza la apariencia de tus lecciones con CSS específico."
+materia: "Tecnología"
 ---
 
 # Cómo personalizar el estilo del Markdown
@@ -20,8 +23,8 @@ Busca el bloque `:root` y cambia los valores:
 :root {
     --bg-page:      #f4f4f9; /* Color de fondo */
     --text-main:    #334155; /* Color del texto */
-    --title-color:  #0f172a; /* Color de los títulos */
-    --border-color: #e2e8f0; /* Color de líneas y bordes */
+    --markdown-titulo:  #0f172a; /* Color de los títulos */
+    --markdown-texto:   #334155; /* Color del texto del párrafo */
     --code-bg:      #e2e8f0; /* Fondo del código pequeño */
     --code-text:    #be123c; /* Color del código pequeño */
 }
@@ -90,4 +93,4 @@ Por ejemplo, para cambiar el color de la barra lateral de las citas:
 ---
 
 ### Ejercicio para ti:
-Prueba cambiar el color de `--title-color` en `Layout.astro` a un púrpura profundo (`#4a0e66`) y verás cómo todos los títulos de tus lecciones cambian al instante.
+Prueba cambiar el color de `--markdown-titulo` en `tokens.css` a un púrpura profundo (`#4a0e66`) y verás cómo todos los títulos de tus lecciones cambian al instante.

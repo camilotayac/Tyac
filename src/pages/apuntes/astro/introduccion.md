@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: introduccion
+titulo: "¿Qué es Astro y por qué usarlo?"
+descripcion: "Descubre las ventajas de Astro: velocidad extrema y Zero JavaScript por defecto."
+materia: "Tecnología"
 ---
 
 # ¿Qué es Astro y por qué usarlo?

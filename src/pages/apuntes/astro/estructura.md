@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: estructura
+titulo: "Estructura de Proyecto"
+descripcion: "Guía sobre la organización de carpetas y archivos en el framework."
+materia: "Tecnología"
 ---
 
 # Estructura de un proyecto Astro

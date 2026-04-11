@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: layouts
+titulo: "Layouts y Slots"
+descripcion: "Reutiliza esqueletos HTML para envolver tus páginas."
+materia: "Tecnología"
 ---
 
 # Layouts y `<slot />`

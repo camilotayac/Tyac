@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: estilos
+titulo: "Estilos Scoped vs Global"
+descripcion: "Entiende el aislamiento de CSS y cómo usar estilos globales."
+materia: "Tecnología"
 ---
 
 # Estilos en Astro: Scoped vs Global
@@ -61,8 +64,8 @@ Para eso usas la directiva `is:global`:
 ```astro
 <style is:global>
     /* Este estilo afecta a TODA la página */
-    .markdown-container h2 {
-        color: var(--title-color);
+    .titulo-personalizado {
+        color: var(--markdown-titulo);
     }
 
     body {
@@ -101,8 +104,8 @@ En Tyac, las variables están definidas en `Layout.astro` dentro de `:root`, lo 
 :root {
     --bg-page:      #f4f4f9;
     --text-main:    #334155;
-    --header-bg:    #1e293b;
-    --title-color:  #0f172a;
+    /* Los títulos ahora usan --markdown-titulo */
+    --markdown-titulo:  #0f172a;
     --card-bg:      #ffffff;
     --border-color: #e2e8f0;
 }

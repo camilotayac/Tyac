@@ -38,9 +38,8 @@ import Layout from "../layouts/Layout.astro";
         background-color: var(--card-bg);
         padding: 4rem 3rem;
         border-radius: 24px;
-        border: 1px solid var(--border-color);
-        /* Usamos la sombra aguamarina característica del rediseño */
-        box-shadow: 0 20px 40px -15px rgba(44, 124, 140, 0.15); 
+        border: 1px solid var(--card-borde);
+        box-shadow: var(--sombra-tarjeta-curso);
     }
 
     .icono-404 {
@@ -57,15 +56,15 @@ import Layout from "../layouts/Layout.astro";
         margin: 0;
         line-height: 1.1;
         letter-spacing: -3px;
-        /* Un gradiente elegante usando el nuevo dracula dark y tu aguamarina */
-        background: linear-gradient(135deg, var(--bg-card) 0%, var(--color-cyan-dark) 100%);
+        /* Un gradiente elegante usando los nuevos tokens */
+        background: linear-gradient(135deg, var(--acento) 0%, var(--acento-oscuro) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .subtitulo-404 {
         font-size: 1.8rem;
-        color: var(--title-color);
+        color: var(--seccion-titulo);
         margin-top: 0.5rem;
         margin-bottom: 1.5rem;
         font-weight: 700;
@@ -73,10 +72,9 @@ import Layout from "../layouts/Layout.astro";
 
     .texto-404 {
         font-size: 1.15rem;
-        color: var(--text-main);
+        color: var(--seccion-desc);
         line-height: 1.6;
         margin-bottom: 2.5rem;
-        opacity: 0.9;
     }
 
     .acciones-404 {
@@ -101,24 +99,25 @@ import Layout from "../layouts/Layout.astro";
 
     .btn-primario {
         background-color: var(--header-bg); /* Color Drácula */
-        color: var(--text-light);
-        box-shadow: 0 4px 12px rgba(40, 42, 54, 0.2);
+        color: var(--texto-claro);
+        box-shadow: var(--sombra-label);
     }
 
     .btn-primario:hover {
-        background-color: var(--bg-card);
+        background-color: var(--acento);
+        color: var(--fondo-pagina);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(40, 42, 54, 0.3);
+        box-shadow: var(--sombra-flotante);
     }
 
     .btn-secundario {
-        background-color: var(--bg-page);
-        color: var(--title-color);
-        border: 1px solid var(--border-color);
+        background-color: var(--fondo-pagina);
+        color: var(--seccion-titulo);
+        border: 1px solid var(--card-borde);
     }
 
     .btn-secundario:hover {
-        background-color: var(--border-dark);
+        background-color: var(--overlay-hover);
         transform: translateY(-2px);
     }
 

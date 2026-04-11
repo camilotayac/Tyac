@@ -1,0 +1,99 @@
+---
+interface Props {
+	texto: string;
+	tipo: 'purpura' | 'rojo' | 'verde' | 'amarillo' | 'gris';
+	href?: string;
+    [key: string]: any; // Permite atributos adicionales como data-tags
+}
+
+const { texto, tipo, href, class: className, ...rest } = Astro.props;
+---
+
+{
+	href ? (
+		<a href={href} class:list={[`boton-materia cat-${tipo}`, className]} {...rest}>
+			{texto}
+		</a>
+	) : (
+		<button class:list={[`boton-materia cat-${tipo}`, className]} {...rest}>
+			{texto}
+		</button>
+	)
+}
+
+<style>
+	.boton-materia {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		padding: 8px 18px;
+		border-radius: 99px;
+		text-transform: uppercase;
+		letter-spacing: 0.8px;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		border: 1px solid transparent;
+		user-select: none;
+	}
+
+	.boton-materia:hover {
+		transform: translateY(-2px) scale(1.05);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	.boton-materia:active {
+		transform: translateY(0) scale(0.98);
+	}
+
+	/* Colores temáticos dinámicos */
+	.cat-purpura { 
+		background-color: rgba(189, 147, 249, 0.1); 
+		color: var(--cat-purpura); 
+		border-color: rgba(189, 147, 249, 0.2); 
+	}
+	.cat-purpura:hover {
+		background-color: rgba(189, 147, 249, 0.2);
+		border-color: var(--cat-purpura);
+	}
+
+	.cat-rojo { 
+		background-color: rgba(255, 85, 85, 0.1); 
+		color: var(--cat-rojo); 
+		border-color: rgba(255, 85, 85, 0.2); 
+	}
+	.cat-rojo:hover {
+		background-color: rgba(255, 85, 85, 0.2);
+		border-color: var(--cat-rojo);
+	}
+
+	.cat-verde { 
+		background-color: rgba(80, 250, 123, 0.1); 
+		color: var(--cat-verde); 
+		border-color: rgba(80, 250, 123, 0.2); 
+	}
+	.cat-verde:hover {
+		background-color: rgba(80, 250, 123, 0.2);
+		border-color: var(--cat-verde);
+	}
+
+	.cat-amarillo { 
+		background-color: rgba(241, 250, 140, 0.1); 
+		color: var(--cat-amarillo); 
+		border-color: rgba(241, 250, 140, 0.2); 
+	}
+	.cat-amarillo:hover {
+		background-color: rgba(241, 250, 140, 0.2);
+		border-color: var(--cat-amarillo);
+	}
+
+	.cat-gris { 
+		background-color: rgba(98, 114, 164, 0.1); 
+		color: var(--cat-gris); 
+		border-color: rgba(98, 114, 164, 0.2); 
+	}
+	.cat-gris:hover {
+		background-color: rgba(98, 114, 164, 0.2);
+		border-color: var(--cat-gris);
+	}
+</style>

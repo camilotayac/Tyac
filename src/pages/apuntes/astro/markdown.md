@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: markdown
+titulo: "Markdown Nativo"
+descripcion: "Cómo gestionar contenido educativo usando archivos .md."
+materia: "Tecnología"
 ---
 
 # Markdown en Astro

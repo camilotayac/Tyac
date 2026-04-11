@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: props
+titulo: "Props y Astro.props"
+descripcion: "Cómo pasar datos dinámicos entre componentes y layouts."
+materia: "Tecnología"
 ---
 
 # Props y `Astro.props`

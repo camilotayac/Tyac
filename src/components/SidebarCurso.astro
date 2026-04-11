@@ -93,13 +93,13 @@ const {
         padding: 1.2rem 1.5rem;
         text-decoration: none;
         color: var(--text-light); 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--separador-oscuro);
         transition: background-color 0.2s ease;
         border-left: 4px solid transparent; 
     }
 
     .item-leccion:hover {
-        background-color: rgba(255, 255, 255, 0.05); 
+        background-color: var(--overlay-hover);
     }
 
     .info-leccion {
@@ -128,8 +128,8 @@ const {
 
     /* --- 🌟 EL ESTILO DE LA CLASE ACTIVA 🌟 --- */
     .item-leccion.activa {
-        background-color: rgba(139, 233, 253, 0.1); 
-        border-left-color: var(--color-cyan); 
+        background-color: var(--acento-fondo-activo);
+        border-left-color: var(--acento); 
     }
     
     .item-leccion.activa .titulo-leccion {
@@ -143,10 +143,10 @@ const {
 
     /* Adaptación extra para Modo Oscuro */
     html.dark .item-leccion.activa {
-        background-color: rgba(142, 29, 193, 0.15);
-        border-left-color: #8e1dc1;
+        background-color: var(--acento-fondo-activo);
+        border-left-color: var(--acento);
     }
     html.dark .item-leccion.activa .titulo-leccion {
-        color: #8e1dc1;
+        color: var(--acento);
     }
 </style>

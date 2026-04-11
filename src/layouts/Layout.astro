@@ -14,6 +14,10 @@
 //   - titulo:      string — Texto que aparece en la pestaña del navegador.
 //   - frontmatter: object — Se usa cuando lo llama un archivo .md (automático).
 
+// Design tokens — variables de color globales (src/styles/tokens.css)
+import "../styles/tokens.css";
+import Buscador from "../components/Buscador.astro";
+
 const { titulo, frontmatter } = Astro.props;
 
 // Determina el título final con este orden de prioridad:
@@ -54,116 +58,26 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
             rel="stylesheet"
         />
 
-        <style is:global>
-            /* =====================================================
-               VARIABLES DE COLOR GLOBALES
-               ===================================================== */
-            :root {
-                /* Fondos / Backgrounds */
-                --bg-page: #191a21;
-                --bg-sidebar: #191a21;
-                --bg-card: #191a21;
-                --bg-content: #f8f8f2;
-                --header-bg: #191a21;
-
-                /* Colores de Texto */
-                --text-light: #f8f8f2;
-                --text-dark: #282a36;
-                --text-muted: #a1a1aa;
-                --text-header: #f8f8f2;
-
-                /* Paleta de Acentos (Dracula Original - Updated with Purple Theme) */
-                --color-cyan: #8e1dc1;
-                --color-purple: #bd93f9;
-                --color-red: #ff5555;
-                --color-green: #50fa7b;
-                --color-yellow: #f1fa8c;
-                --color-comment: #6272a4;
-
-                /* Variantes oscuras para las categorías */
-                --color-red-dark: #7f1d1d;
-                --color-purple-dark: #4a0e66;
-                --color-green-dark: #14532d;
-                --color-yellow-dark: #78350f;
-                --color-comment-dark: #334155;
-                --color-cyan-dark: #6b1592;
-
-                /* UI / Elementos Decorativos */
-                --border-light: rgba(255, 255, 255, 0.1);
-                --border-dark: #e2e8f0;
-                --code-inline-bg: #e2e8f0;
-                --code-inline-text: #be123c;
-
-                /* Aliases de compatibilidad */
-                --bg-page-old: var(--bg-page);
-                --text-main: var(--text-dark);
-                --title-color: var(--text-dark);
-                --card-bg: #ffffff;
-                --border-color: var(--border-dark);
-            }
-        </style>
+        <!-- ================================================
+             DESIGN TOKENS: Variables de color globales
+             Editar en: src/styles/tokens.css
+        ================================================ -->
 
         <style is:global>
-            /* =====================================================
-               ESTILOS GLOBALES PARA CONTENIDO MARKDOWN
-               =====================================================
-               "is:global" significa que estos estilos se aplican
-               a TODA la página, no solo a este componente.
-               Esto es necesario porque el HTML del Markdown lo
-               genera Astro internamente y no tiene acceso a los
-               estilos con scope normal.
+            /* ================================================
+               ESTILOS BASE DEL LAYOUT
+               Los estilos de markdown están en src/styles/
+            ================================================ */
 
-               La clase ".markdown-container" debe estar presente
-               en el elemento que envuelve el contenido markdown.
-            ===================================================== */
-
-            /* Arreglo para el 'rebote' (overscroll) en macOS/iOS. 
-               Pintamos el fondo del HTML del mismo color oscuro que el header,
-               y el body lo mantiene blanco. Así al estirar la página hacia abajo
-               aparece el color oscuro sin interrumpir el diseño. */
+            /* Arreglo para el 'rebote' (overscroll) en macOS/iOS.
+               Pintamos el <html> con el color del header para que al
+               estirar la página hacia arriba no se vea un fondo blanco. */
             html {
-                background-color: var(--header-bg);
+                background-color: var(--fondo-header);
             }
 
             body {
                 min-height: 100vh;
-                /* El fondo del body se define en la etiqueta <body> más abajo */
-            }
-
-            /* Texto general del artículo */
-            .markdown-container {
-                color: var(--text-main);
-                line-height: 1.8; /* Espaciado entre líneas — más alto = más legible */
-                font-size: 1.1rem;
-            }
-
-            /* Títulos y texto en negrita */
-            .markdown-container h1,
-            .markdown-container h2,
-            .markdown-container h3,
-            .markdown-container strong {
-                color: var(--title-color);
-            }
-
-            /* El h1 tiene una línea púrpura decorativa debajo */
-            /* Cambia el color #8e1dc1 para modificar el acento */
-            .markdown-container h1 {
-                border-bottom: 3px solid #8e1dc1;
-                padding-bottom: 0.5rem;
-            }
-
-            /* Tablas: fondo y colores usando variables */
-            .markdown-container table {
-                background-color: var(--card-bg);
-                color: var(--text-main);
-            }
-            .markdown-container th {
-                background-color: var(--border-color);
-                color: var(--title-color);
-            }
-            .markdown-container td,
-            .markdown-container th {
-                border-color: var(--border-color);
             }
         </style>
     </head>
@@ -187,25 +101,21 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
             style="position: sticky; top: 0; z-index: 1000; background-color: var(--header-bg); color: var(--text-header); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);"
         >
             <!-- Logo / nombre del sitio — clic lleva al inicio -->
-            <a
-                href="/"
-                style="color: var(--text-header); text-decoration: none; font-size: 30px; font-weight: 700; letter-spacing: -0.5px;"
-            >
-                Tyac
-            </a>
+            <div style="display: flex; align-items: center; gap: 20px; flex: 1;">
+                <a
+                    href="/"
+                    class="header-logo"
+                >
+                    Tyac
+                </a>
+
+                <Buscador mode="header" />
+            </div>
 
             <!-- Navegación derecha -->
             <nav style="display: flex; gap: 20px;">
-                <a
-                    href="/cursos"
-                    style="color: var(--text-header); text-decoration: none; font-weight: 500; font-size: 0.95rem; opacity: 0.9;font-size: 22px"
-                    >Cursos</a
-                >
-                <a
-                    href="/apuntes"
-                    style="color: var(--text-header); text-decoration: none; font-weight: 500; font-size: 0.95rem; opacity: 0.9;font-size: 22px"
-                    >Apuntes</a
-                >
+                <a href="/#cursos" class="nav-link">Cursos</a>
+                <a href="/#apuntes" class="nav-link">Apuntes</a>
             </nav>
         </header>
 
@@ -217,11 +127,42 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
              la página que usa este layout.
              Si quieres más ancho, cambia el 800px.
         ================================================ -->
-        <main
-            class="markdown-container"
-            style="max-width: 800px; margin: 0 auto; padding: 2rem;"
-        >
+        <main>
             <slot />
         </main>
     </body>
 </html>
+
+<style>
+    /* Estilos para los links de navegación del header */
+    .nav-link {
+        color: var(--acento); /* Color púrpura del tema */
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 20px;
+        opacity: 0.9;
+        transition: all 0.2s ease;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+
+    .nav-link:hover {
+        opacity: 1;
+        background-color: var(--overlay-hover);
+        transform: translateY(-1px);
+    }
+
+    /* Ajuste para el logo Tyac para que sea coherente */
+    .header-logo {
+        color: var(--text-header);
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        transition: color 0.2s ease;
+    }
+
+    .header-logo:hover {
+        color: var(--acento);
+    }
+</style>

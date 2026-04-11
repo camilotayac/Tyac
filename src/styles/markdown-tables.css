@@ -1,0 +1,81 @@
+/* ============================================================
+   src/styles/markdown-tables.css
+   TABLAS EN EL CONTENIDO MARKDOWN
+   ============================================================
+   Controla el aspecto de las tablas escritas en Markdown:
+
+     | Columna A | Columna B |
+     | --------- | --------- |
+     | Dato 1    | Dato 2    |
+
+   Para cambiar colores de encabezado de tabla, fondo de filas
+   o el estilo de borde, edita ESTE archivo.
+   ============================================================ */
+
+/* ── Contenedor de la tabla ─────────────────────────────────
+   Esquinas redondeadas y sombra sutil. El overflow: hidden
+   hace que los bordes internos respeten las esquinas del padre.
+────────────────────────────────────────────────────────── */
+.markdown-container table {
+    width: auto;
+    min-width: 50%;
+    max-width: 100%;
+    border-collapse: separate;   /* Necesario para que funcionen las esquinas */
+    border-spacing: 0;
+    margin: 2.5rem 0;
+
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+
+    /* Sombra con un toque del acento para darle identidad visual */
+    box-shadow:
+        var(--sombra-tarjeta-curso),
+        0 2px 8px -4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ── Celdas (th y td) ───────────────────────────────────────
+   Padding generoso para un look premium. Sin bordes internos
+   para un diseño más limpio y moderno.
+────────────────────────────────────────────────────────── */
+.markdown-container th,
+.markdown-container td {
+    padding: 14px 18px;
+    text-align: left;
+    border: none;
+}
+
+
+/* ── Encabezado de la tabla (fila th) ───────────────────────
+   Usa el fondo oscuro del header para coherencia visual.
+   El texto en mayúsculas le da aspecto de etiqueta/categoría.
+────────────────────────────────────────────────────────── */
+.markdown-container th {
+    background-color: var(--fondo-header);
+    color: var(--texto-header);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+
+/* ── Filas de datos (td) ────────────────────────────────────
+   Con un separador sutil entre filas.
+────────────────────────────────────────────────────────── */
+.markdown-container td {
+    color: var(--texto-oscuro);
+    border-bottom: 1px solid var(--borde-oscuro);
+}
+
+/* La última fila no necesita el borde inferior */
+.markdown-container tr:last-child td {
+    border-bottom: none;
+}
+
+/* Filas alternadas: transparente para no interrumpir el diseño */
+.markdown-container tr:nth-child(even) {
+    background-color: var(--acento-fondo-activo);  /* Tinte muy sutil del acento */
+}

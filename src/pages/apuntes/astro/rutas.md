@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: rutas
+titulo: "Sistema de Rutas"
+descripcion: "Enrutamiento basado en el sistema de archivos de Astro."
+materia: "Tecnología"
 ---
 
 # Sistema de rutas en Astro

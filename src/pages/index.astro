@@ -1,37 +1,93 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import TarjetaHorizontal from "../components/TarjetaHorizontal.astro";
+import BotonMateria from "../components/BotonMateria.astro";
+import Buscador from "../components/Buscador.astro";
 import { todosLosTemarios } from "../data/temarios.js";
 
 // Lista de Cursos (Materias académicas)
-const cursosCiencia: any[] = [
+const cursosCiencia = [
     {
-        titulo: "Prueba",
+        titulo: "Matemáticas: Conjuntos",
         descripcion:
             "Lógica proposicional, unión, intersección y teoría de conjuntos.",
         icono: "🔢",
+        materia: "Matemáticas",
         href: "/apuntes/conjuntos/proposicion",
         lecciones: todosLosTemarios.conjuntos.length,
+    },
+    {
+        titulo: "Química Orgánica",
+        descripcion:
+            "Introducción a los hidrocarburos, enlaces y estructuras moleculares.",
+        icono: "🧪",
+        materia: "Química",
+        href: "#",
+        lecciones: 12,
+    },
+    {
+        titulo: "Biología Celular",
+        descripcion:
+            "Estudio de la célula, orgánulos y procesos metabólicos básicos.",
+        icono: "🧬",
+        materia: "Biología",
+        href: "#",
+        lecciones: 10,
+    },
+    {
+        titulo: "Física Mecánica",
+        descripcion: "Leyes de Newton, cinemática y dinámica de partículas.",
+        icono: "🎡",
+        materia: "Física",
+        href: "#",
+        lecciones: 15,
     },
 ];
 
 // Lista de Apuntes (Tecnología y herramientas)
 const apuntesTecnicos = [
     {
-        titulo: "Matemáticas: Conjuntos",
-        descripcion:
-            "Lógica proposicional, unión, intersección y teoría de conjuntos.",
-        icono: "🔢",
-        href: "/apuntes/conjuntos/proposicion",
-        lecciones: todosLosTemarios.conjuntos.length,
-    },
-    {
-        titulo: "Curso de Astro",
+        titulo: "Guía de Astro",
         descripcion:
             "Aprende a crear sitios web rápidos y modernos con Astro desde cero.",
         icono: "🚀",
+        materia: "Astro",
         href: "/apuntes/astro/introduccion",
         lecciones: todosLosTemarios.astro.length,
+    },
+    {
+        titulo: "JavaScript Moderno",
+        descripcion: "Domina ES6+, callbacks, promesas y async/await.",
+        icono: "🟨",
+        materia: "JavaScript",
+        href: "#",
+        lecciones: 15,
+    },
+    {
+        titulo: "Node.js Backend",
+        descripcion:
+            "Construye APIs escalables con Express y bases de datos NoSQL.",
+        icono: "🟢",
+        materia: "Node.js",
+        href: "#",
+        lecciones: 20,
+    },
+    {
+        titulo: "Docker para Devs",
+        descripcion: "Contenedores, imágenes y despliegue continuo.",
+        icono: "🐳",
+        materia: "Docker",
+        href: "#",
+        lecciones: 9,
+    },
+    {
+        titulo: "Git & GitHub",
+        descripcion:
+            "Control de versiones, flujo de ramas y colaboración en equipo.",
+        icono: "🐙",
+        materia: "Git",
+        href: "#",
+        lecciones: 5,
     },
 ];
 ---
@@ -50,87 +106,153 @@ const apuntesTecnicos = [
             </p>
             <p class="hero-pregunta">¿Qué quieres aprender hoy?</p>
 
-            <div class="buscador-contenedor">
-                <input
-                    type="text"
-                    placeholder="Ej. JavaScript, Física..."
-                    class="buscador-input"
-                />
-                <span class="buscador-icono">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </span>
+            <div class="hero-buscador">
+                <Buscador mode="hero" />
             </div>
         </div>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL (División de Layout) -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <div class="contenedor-layout">
-        {/* SECCIÓN CURSOS: Solo se renderiza si hay cursos disponibles */}
+        {/* SECCIÓN CURSOS */}
         {
             cursosCiencia.length > 0 && (
-                <section class="columna-contenido">
-                    <h2 class="titulo-seccion">
-                        <span class="icono-seccion">📚</span> Cursos de Ciencias
-                    </h2>
-                    <div class="grid-tarjetas">
-                        {cursosCiencia.map((curso) => (
-                            <a
-                                href={curso.href}
-                                style="text-decoration: none; color: inherit;"
-                            >
-                                <TarjetaHorizontal
-                                    titulo={curso.titulo}
-                                    descripcion={curso.descripcion}
-                                    icono={curso.icono}
-                                    cantidadTemas={String(curso.lecciones)}
-                                />
-                            </a>
-                        ))}
+                <section class="seccion-grid" id="cursos">
+                    <div class="info-sticky">
+                        <h2 class="titulo-seccion">
+                            <span class="icono-seccion">📚</span> Cursos
+                        </h2>
+                        <p class="desc-seccion">
+                            Explora nuestra lista de materias enfocadas en las
+                            ciencias exactas. Aprende a tu propio ritmo con
+                            contenido estructurado y de alta calidad.
+                        </p>
+                        <div class="contenedor-pildoras">
+                            <BotonMateria 
+                                texto="General" 
+                                tipo="gris" 
+                                data-filter="all" 
+                                class="filtro-btn activo"
+                            />
+                            <BotonMateria
+                                texto="Matemáticas"
+                                tipo="purpura"
+                                data-filter="Matemáticas"
+                                class="filtro-btn"
+                            />
+                            <BotonMateria 
+                                texto="Química" 
+                                tipo="rojo" 
+                                data-filter="Química"
+                                class="filtro-btn"
+                            />
+                            <BotonMateria 
+                                texto="Biología" 
+                                tipo="verde" 
+                                data-filter="Biología"
+                                class="filtro-btn"
+                            />
+                            <BotonMateria 
+                                texto="Física" 
+                                tipo="amarillo" 
+                                data-filter="Física"
+                                class="filtro-btn"
+                            />
+                        </div>
+                    </div>
+                    <div class="contenido-scroll">
+                        <div class="grid-tarjetas">
+                            {cursosCiencia.map((curso) => (
+                                <a
+                                    href={curso.href}
+                                    style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
+                                    data-materia={curso.materia}
+                                    class="tarjeta-link"
+                                >
+                                    <TarjetaHorizontal
+                                        titulo={curso.titulo}
+                                        descripcion={curso.descripcion}
+                                        icono={curso.icono}
+                                        cantidadTemas={String(curso.lecciones)}
+                                    />
+                                </a>
+                            ))}
+                        </div>
                     </div>
                 </section>
             )
         }
 
-        {
-            /* SECCIÓN APUNTES: Ocupa toda la pantalla si Cursos no está abierto */
-        }
-        <section
-            class={`columna-contenido ${cursosCiencia.length === 0 ? "ancho-completo" : ""}`}
-        >
-            <h2 class="titulo-seccion">
-                <span class="icono-seccion">📝</span> Apuntes Técnicos
-            </h2>
-            <div
-                class={cursosCiencia.length === 0
-                    ? "grid-tarjetas-amplio"
-                    : "grid-tarjetas"}
-            >
-                {
-                    apuntesTecnicos.map((apunte) => (
-                        <a
-                            href={apunte.href}
-                            style="text-decoration: none; color: inherit;"
-                        >
-                            <TarjetaHorizontal
-                                titulo={apunte.titulo}
-                                descripcion={apunte.descripcion}
-                                icono={apunte.icono}
-                                cantidadTemas={String(apunte.lecciones)}
-                            />
-                        </a>
-                    ))
-                }
+        {/* SECCIÓN APUNTES */}
+        <section class="seccion-grid invertida" id="apuntes">
+            <div class="contenido-scroll">
+                <div class="grid-tarjetas">
+                    {
+                        apuntesTecnicos.map((apunte) => (
+                            <a
+                                href={apunte.href}
+                                style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
+                                data-materia={apunte.materia}
+                                class="tarjeta-link"
+                            >
+                                <TarjetaHorizontal
+                                    titulo={apunte.titulo}
+                                    descripcion={apunte.descripcion}
+                                    icono={apunte.icono}
+                                    cantidadTemas={String(apunte.lecciones)}
+                                />
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+            <div class="info-sticky">
+                <h2 class="titulo-seccion">
+                    <span class="icono-seccion">📝</span> Apuntes
+                </h2>
+                <p class="desc-seccion">
+                    Guías de desarrollo, documentación tecnológica y resúmenes
+                    sobre herramientas modernas. Todo lo que necesitas para tu
+                    carrera técnica en un solo lugar.
+                </p>
+                <div class="contenedor-pildoras">
+                    <BotonMateria 
+                        texto="General" 
+                        tipo="gris" 
+                        data-filter="all" 
+                        class="filtro-btn activo"
+                    />
+                    <BotonMateria
+                        texto="Astro"
+                        tipo="purpura"
+                        data-filter="Astro"
+                        class="filtro-btn"
+                    />
+                    <BotonMateria 
+                        texto="Docker" 
+                        tipo="gris" 
+                        data-filter="Docker"
+                        class="filtro-btn"
+                    />
+                    <BotonMateria 
+                        texto="JavaScript" 
+                        tipo="rojo" 
+                        data-filter="JavaScript"
+                        class="filtro-btn"
+                    />
+                    <BotonMateria 
+                        texto="Node.js" 
+                        tipo="verde" 
+                        data-filter="Node.js"
+                        class="filtro-btn"
+                    />
+                    <BotonMateria 
+                        texto="Git" 
+                        tipo="amarillo" 
+                        data-filter="Git"
+                        class="filtro-btn"
+                    />
+                </div>
             </div>
         </section>
     </div>
@@ -138,18 +260,17 @@ const apuntesTecnicos = [
 
 <style>
     /* =========================================
-       HERO SECTION (Clon visual de la ref)
+       HERO SECTION
        ========================================= */
     .hero-platzi {
         background: linear-gradient(
             180deg,
-            var(--bg-card) 0%,
-            var(--bg-page) 100%
-        ); /* Dracula ultra dark */
-        color: var(--text-light);
-        padding: 6rem 2rem;
+            var(--card-bg) 0%,
+            var(--fondo-pagina) 70%
+        );
+        color: var(--texto-claro);
+        padding: 6rem 2rem 8rem 2rem;
         text-align: center;
-        border-bottom: 1px solid var(--border-light);
     }
 
     .hero-contenido {
@@ -165,14 +286,13 @@ const apuntesTecnicos = [
         letter-spacing: -1px;
     }
 
-    /* El color de acento "Verde/Cyan" */
     .hero-acento {
-        color: var(--color-cyan); 
+        color: var(--color-cyan);
     }
 
     .hero-subtitulo {
         font-size: 1.1rem;
-        color: var(--text-muted); 
+        color: var(--text-muted);
         margin-bottom: 2rem;
     }
 
@@ -182,107 +302,183 @@ const apuntesTecnicos = [
         margin-bottom: 1rem;
     }
 
-    /* Buscador visualmente idéntico a la referencia */
-    .buscador-contenedor {
-        position: relative;
-        max-width: 500px;
+    .hero-buscador {
+        width: 100%;
+        max-width: 600px;
         margin: 0 auto;
     }
+</style>
 
-    .buscador-input {
-        width: 100%;
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        background-color: var(--bg-page); 
-        border: 1px solid var(--color-cyan); 
-        color: var(--text-light);
-        font-size: 1.1rem;
-        outline: none;
-        box-sizing: border-box;
-    }
-
-    .buscador-input::placeholder {
-        color: #52525b;
-    }
-
-    .buscador-icono {
-        position: absolute;
-        right: 1.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        color: var(--text-muted);
-    }
-
+<style>
     /* =========================================
-       LAYOUT DE DOS COLUMNAS
+       LAYOUT DE SECCIONES GRID (Sticky)
        ========================================= */
     .contenedor-layout {
-        max-width: 1200px; /* Ancho máximo amplio para albergar 2 columnas */
+        max-width: 100%;
         margin: 0 auto;
-        padding: 4rem 2rem;
+        padding: 0 5% 12rem 5%;
         display: flex;
-        gap: 4rem; /* Separación entre la columna Izq y Der */
+        flex-direction: column;
+        gap: 8rem;
+        background: linear-gradient(
+            to bottom,
+            var(--fondo-pagina) 0%,
+            var(--fondo-seccion) 30%,
+            var(--fondo-seccion) 70%,
+            var(--fondo-pagina) 100%
+        );
     }
 
-    /* Cada columna ocupa el 50% de la pantalla */
-    .columna-contenido {
-        flex: 1;
-        min-width: 0; /* Previene desbordamiento en flexbox */
+    .seccion-grid {
+        display: grid;
+        grid-template-columns: 1fr 2.5fr;
+        gap: 4rem;
+        align-items: start;
+        scroll-margin-top: 100px; /* Evita que el header sticky tape el contenido */
     }
 
-    /* Redefinición cuando la sección es completa (ej. no hay Cursos) */
-    .columna-contenido.ancho-completo {
-        max-width: 900px; /* Limita el ancho para que no se vea exagerado */
-        margin: 0 auto;
-        flex: none; /* Quita el flex:1 para que el margen auto funcione */
-        width: 100%;
+    .seccion-grid.invertida {
+        grid-template-columns: 2.5fr 1fr;
     }
 
-    /* Títulos de las columnas */
+    .info-sticky {
+        position: sticky;
+        top: 100px;
+    }
+
     .titulo-seccion {
-        color: var(--title-color);
-        font-size: 1.8rem;
-        margin-bottom: 1.5rem;
+        color: var(--seccion-titulo);
+        font-size: 2.2rem;
+        margin: 0 0 1rem 0;
         display: flex;
         align-items: center;
         gap: 12px;
-        border-bottom: 2px solid var(--border-color);
-        padding-bottom: 1rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .desc-seccion {
+        color: var(--seccion-desc);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .contenedor-pildoras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
     .icono-seccion {
-        background: #e2e8f0;
-        padding: 8px;
-        border-radius: 12px;
-        font-size: 1.2rem;
+        background: var(--borde-oscuro);
+        padding: 10px;
+        border-radius: 14px;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* Cuadrículas de las Tarjetas */
+    .contenido-scroll {
+        min-width: 0;
+    }
+
     .grid-tarjetas {
         display: flex;
-        flex-direction: column; /* Apiladas verticalmente como en la imagen */
+        flex-direction: column;
         gap: 1.5rem;
     }
 
-    /* Si toma el ancho completo de la pantalla, podemos mostrar las tarjetas lado a lado */
-    .grid-tarjetas-amplio {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 1.5rem;
-    }
-
-    /* Responsividad: En móvil todo se apila a una columna */
     @media (max-width: 900px) {
+        .seccion-grid,
+        .seccion-grid.invertida {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .info-sticky {
+            position: static;
+        }
+
+        .titulo-seccion {
+            font-size: 1.8rem;
+        }
+
         .contenedor-layout {
-            flex-direction: column; /* Pasa Cursos arriba y Apuntes abajo */
-            gap: 3rem;
-            padding: 3rem 1.5rem;
+            padding: 2rem 1.5rem;
+            gap: 4rem;
         }
 
         .hero-titulo {
             font-size: 2.5rem;
         }
+
+        .seccion-grid.invertida {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    /* Estilo para ocultar tarjetas con transición */
+    .tarjeta-link.hidden-card {
+        display: none;
+        opacity: 0;
+        transform: scale(0.95);
+        pointer-events: none;
+    }
+
+    /* Resaltado del botón activo */
+    .filtro-btn.activo {
+        border-color: var(--acento) !important;
+        background-color: rgba(189, 147, 249, 0.2) !important;
+        box-shadow: 0 0 15px rgba(189, 147, 249, 0.3);
     }
 </style>
+
+<script>
+    function setupFilters() {
+        const sections = document.querySelectorAll('.seccion-grid');
+
+        sections.forEach(section => {
+            const filterBtns = section.querySelectorAll('.filtro-btn');
+            const cards = section.querySelectorAll('.tarjeta-link');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const filter = (btn as HTMLElement).dataset.filter;
+
+                    // Actualizar estado activo de botones en esta sección
+                    filterBtns.forEach(b => b.classList.remove('activo'));
+                    btn.classList.add('activo');
+
+                    // Filtrar tarjetas
+                    cards.forEach(card => {
+                        const cardMateria = (card as HTMLElement).dataset.materia;
+                        const cardElement = card as HTMLElement;
+                        
+                        if (filter === 'all' || cardMateria === filter) {
+                            // Mostrar: Primero el display, luego la animación
+                            cardElement.style.display = 'block';
+                            // Pequeño delay para que el navegador registre el display antes de animar
+                            requestAnimationFrame(() => {
+                                cardElement.classList.remove('hidden-card');
+                            });
+                        } else {
+                            // Ocultar: Instantáneo para evitar que ocupen espacio
+                            cardElement.classList.add('hidden-card');
+                            cardElement.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    }
+
+    // Ejecutar al cargar la página y en transiciones de Astro
+    document.addEventListener('astro:page-load', () => {
+        setupFilters();
+    });
+
+    // Carga inicial
+    setupFilters();
+</script>

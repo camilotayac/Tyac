@@ -18,7 +18,7 @@ export const todosLosTemarios = {
 
     // 🧬 Agrega más cursos aquí a medida que los vayas creando...
 
-    // 🚀 Apuntesde Astro (lecciones que surgen de preguntas reales)
+    // 🚀 Apuntes de Astro (lecciones que surgen de preguntas reales)
     astro: [
         { id: "introduccion", titulo: "1. ¿Qué es Astro y por qué usarlo?", duracion: "08:00" },
         { id: "estructura", titulo: "2. Estructura de un proyecto Astro", duracion: "10:00" },

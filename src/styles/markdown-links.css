@@ -1,0 +1,40 @@
+/* ============================================================
+   src/styles/markdown-links.css
+   ENLACES DENTRO DEL CONTENIDO MARKDOWN
+   ============================================================
+   Controla el aspecto de los hipervínculos [texto](url)
+   que aparecen dentro de los apuntes.
+
+   Los enlaces aparecen sobre el fondo blanco (--fondo-contenido),
+   por eso se usa --acento-oscuro para garantizar contraste y
+   que sean legibles.
+   ============================================================ */
+
+/* ── Enlace base ────────────────────────────────────────────
+   Color oscuro del acento para contraste sobre fondo blanco.
+   Subrayado sutil que se intensifica al hover.
+────────────────────────────────────────────────────────── */
+.markdown-container a {
+    color: var(--acento-oscuro);           /* Púrpura oscuro — legible en blanco */
+    text-decoration-color: var(--acento-sombra);
+    text-underline-offset: 4px;            /* Separa el subrayado del texto */
+    font-weight: 600;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+
+/* ── Enlace al pasar el mouse ────────────────────────────────
+   El subrayado se vuelve sólido y el color puede intensificarse.
+────────────────────────────────────────────────────────── */
+.markdown-container a:hover {
+    color: var(--acento-oscuro);
+    text-decoration-color: var(--acento-oscuro);  /* Subrayado sólido al hover */
+}
+
+
+/* ── Enlace visitado ─────────────────────────────────────────
+   Tono más atenuado para indicar que ya fue visitado.
+────────────────────────────────────────────────────────── */
+.markdown-container a:visited {
+    color: var(--cat-gris);               /* Gris-azulado para "ya visitado" */
+}

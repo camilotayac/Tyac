@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: conjuntos
 id_clase: proposicion
+titulo: "Proposición y su negación"
+descripcion: "Conceptos fundamentales de lógica proposicional y enunciados matemáticos."
+materia: "Matemáticas"
 ---
 
 # Proposición y su negación

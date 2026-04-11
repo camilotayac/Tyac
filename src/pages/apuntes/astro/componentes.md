@@ -2,6 +2,9 @@
 layout: ../../../layouts/LayoutCurso.astro
 curso: astro
 id_clase: componentes
+titulo: "Componentes .astro"
+descripcion: "Estructura base y anatomía de los archivos de Astro."
+materia: "Tecnología"
 ---
 
 # Componentes `.astro`: la sintaxis base

@@ -1,0 +1,100 @@
+/* ============================================================
+   src/styles/markdown-base.css
+   BASE DEL CONTENIDO MARKDOWN
+   ============================================================
+   Estilos fundamentales que aplican a TODO el contenido
+   generado desde archivos .md: contenedor, fuente, párrafos
+   y encabezados h1–h4.
+
+   Para editar estilos específicos de un elemento, ve a:
+     💻 Código    → markdown-code.css
+     📊 Tablas    → markdown-tables.css
+     📝 Ejemplos  → markdown-examples.css
+     🔗 Enlaces   → markdown-links.css
+     ➗ Fórmulas  → markdown-formulas.css
+   ============================================================ */
+
+/* ── Contenedor principal ───────────────────────────────────
+   Envuelve todo el contenido de la lección.
+   Clase aplicada en LayoutCurso.astro: <div class="markdown-container">
+────────────────────────────────────────────────────────── */
+.markdown-container {
+    max-width: 850px;        /* Ancho máximo del texto — ajusta si quieres más/menos */
+    margin: 0 auto;
+    font-size: 1.15rem;      /* Ligeramente más grande para mejor lectura */
+    line-height: 1.8;        /* Espaciado generoso entre líneas */
+    color: var(--markdown-texto);
+}
+
+
+/* ── Párrafos ───────────────────────────────────────────────
+   Espacio inferior para separar cada bloque de texto.
+────────────────────────────────────────────────────────── */
+.markdown-container p {
+    margin-bottom: 1.5rem;
+}
+
+
+/* ── Encabezado H1 (Título de la lección) ───────────────────
+   Tiene una línea de acento abajo. El color usa --acento-oscuro
+   porque H1 siempre aparece sobre el fondo blanco (--fondo-contenido).
+────────────────────────────────────────────────────────── */
+.markdown-container h1 {
+    color: var(--markdown-titulo);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid var(--acento-oscuro);  /* Línea decorativa de acento */
+    padding-bottom: 0.5rem;
+}
+
+
+/* ── Subtítulos H2, H3, H4 ──────────────────────────────────
+   Separación superior generosa para respiro visual.
+────────────────────────────────────────────────────────── */
+.markdown-container h2,
+.markdown-container h3,
+.markdown-container h4 {
+    color: var(--markdown-titulo);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.markdown-container h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.markdown-container h4 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+
+/* ── Texto en negrita ───────────────────────────────────────
+   Hereda el color de los títulos para coherencia.
+────────────────────────────────────────────────────────── */
+.markdown-container strong {
+    color: var(--markdown-titulo);
+    font-weight: 700;
+}
+
+
+/* ── Listas (ul / ol) ───────────────────────────────────────
+   Espacio y sangría estándar.
+────────────────────────────────────────────────────────── */
+.markdown-container ul,
+.markdown-container ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-container li {
+    margin-bottom: 0.4rem;
+}

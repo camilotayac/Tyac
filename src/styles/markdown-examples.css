@@ -1,0 +1,56 @@
+/* ============================================================
+   src/styles/markdown-examples.css
+   EJEMPLOS, CITAS Y BLOQUES DESTACADOS (BLOCKQUOTES)
+   ============================================================
+   Controla el aspecto de los bloques "> texto" en Markdown,
+   es decir, los blockquotes / citas / ejemplos.
+
+   En Markdown se escriben así:
+     > Este es un blockquote o ejemplo.
+
+   En el futuro, aquí también se agregarán los estilos de
+   alertas tipo:
+     > [!NOTE]
+     > [!TIP]
+     > [!WARNING]
+   ============================================================ */
+
+/* ── Blockquote base (ejemplos / citas) ─────────────────────
+   Borde izquierdo de acento y fondo transparente/sutil.
+   El fondo oscuro del acento da contexto visual sin distraer.
+────────────────────────────────────────────────────────── */
+.markdown-container blockquote {
+    background: var(--acento-fondo-activo);  /* Fondo muy sutil con el acento oscuro */
+    border-left: 4px solid var(--acento-oscuro);
+    border-radius: 0 8px 8px 0;           /* Esquinas redondeadas en el lado derecho */
+    padding: 1.25rem 1.75rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--texto-oscuro);
+}
+
+/* El párrafo dentro del blockquote no necesita margen extra */
+.markdown-container blockquote p {
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* Citas anidadas (blockquote dentro de blockquote) */
+.markdown-container blockquote blockquote {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    border-left-color: var(--acento);  /* Usa el acento brillante para el anidado */
+    background: var(--acento-fondo-activo);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   ALERTAS (Futuro — cuando se agregue soporte para >[!TYPE])
+   ══════════════════════════════════════════════════════════
+   Cuando se agregue soporte para alertas tipo GitHub/Obsidian,
+   los estilos van aquí. Ejemplo de lo que se preparará:
+
+   .markdown-container blockquote.alert-note { ... }
+   .markdown-container blockquote.alert-tip  { ... }
+   .markdown-container blockquote.alert-warn { ... }
+   ══════════════════════════════════════════════════════════ */
