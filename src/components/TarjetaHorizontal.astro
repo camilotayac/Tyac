@@ -1,0 +1,127 @@
+---
+// src/components/TarjetaHorizontal.astro
+export interface Props {
+    titulo: string;
+    descripcion?: string;
+    icono: string;
+    cantidadTemas: string;
+}
+
+const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
+---
+
+<div class="tarjeta-platzi">
+    <div class="cuerpo-superior">
+        <div class="icono-contenedor">
+            <span class="emoji">{icono}</span>
+        </div>
+        <div class="info-contenedor">
+            <h3>{titulo}</h3>
+            {descripcion && <p>{descripcion}</p>}
+        </div>
+    </div>
+    <div class="pie-inferior">
+        <span>{cantidadTemas} rutas de aprendizaje</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="chevron"
+        >
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </div>
+</div>
+
+<style>
+    .tarjeta-platzi {
+        background-color: var(
+            --bg-tarjetas
+        ); /* Fondo dedicado para tarjetas */
+        border-radius: 16px;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid transparent;
+        cursor: pointer;
+        /* Sombra flotante base */
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Efecto al hacer hover (pasar el mouse) */
+    .tarjeta-platzi:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 20px 25px -5px #44475a,
+            0 10px 10px -5px #44475a;
+        border-color: var(--color-cyan); /* Acento cyan de dracula */
+    }
+
+    .cuerpo-superior {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .icono-contenedor {
+        font-size: 4rem; /* Icono muy grande (como el escudo de Platzi) */
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    .info-contenedor h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--text-light); /* Letras blancas rígidas */
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .info-contenedor p {
+        margin: 0.5rem 0 0 0;
+        font-size: 0.95rem;
+        color: var(--text-muted); /* Gris claro para la descripción si la hay */
+        line-height: 1.4;
+    }
+
+    .pie-inferior {
+        background-color: var(
+            --bg-sidebar
+        ); /* Background diferente (más bajito) para el footer */
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .pie-inferior span {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(
+            --color-cyan
+        ); /* Color turquesa simulando el verde de la foto */
+    }
+
+    .chevron {
+        width: 18px;
+        height: 18px;
+        color: var(--color-cyan);
+        margin-top: 2px;
+    }
+</style>

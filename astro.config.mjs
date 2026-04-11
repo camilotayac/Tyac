@@ -1,5 +1,10 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-    // Todo limpio por ahora
+    markdown: {
+        shikiConfig: {
+            // Tema Dracula clásico para los bloques de código
+            theme: 'dracula',
+        },
+    },
 });

@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutCurso.astro
 curso: conjuntos
 id_clase: proposicion
 ---
@@ -35,7 +35,7 @@ La proposición **P** puede tener su negación. La negación se representa con e
 ### Tabla de verdad
 Las proposiciones *P* y *¬P* pueden valorarse como V o F. Si *P* es V, entonces *¬P* es F; y si *P* es F, entonces *¬P* es V.
 
-| $P$ | $\neg P$ |
+| P | ¬P |
 | :---: | :---: |
 | V | F |
 | F | V |

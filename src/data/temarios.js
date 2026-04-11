@@ -17,4 +17,17 @@ export const todosLosTemarios = {
     ],
 
     // 🧬 Agrega más cursos aquí a medida que los vayas creando...
+
+    // 🚀 Apuntesde Astro (lecciones que surgen de preguntas reales)
+    astro: [
+        { id: "introduccion", titulo: "1. ¿Qué es Astro y por qué usarlo?", duracion: "08:00" },
+        { id: "estructura", titulo: "2. Estructura de un proyecto Astro", duracion: "10:00" },
+        { id: "componentes", titulo: "3. Componentes .astro: la sintaxis base", duracion: "12:00" },
+        { id: "props", titulo: "4. Props y Astro.props", duracion: "07:00" },
+        { id: "layouts", titulo: "5. Layouts y <slot />", duracion: "09:00" },
+        { id: "rutas", titulo: "6. Sistema de rutas en Astro", duracion: "08:00" },
+        { id: "markdown", titulo: "7. Markdown en Astro", duracion: "10:00" },
+        { id: "estilos", titulo: "8. Estilos en Astro: Scoped vs Global", duracion: "11:00" },
+        { id: "estilos-markdown", titulo: "9. Personalizar Estilos de Markdown", duracion: "12:00" }
+    ],
 };

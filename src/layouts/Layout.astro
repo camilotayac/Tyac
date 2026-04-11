@@ -1,101 +1,158 @@
 ---
+// ============================================================
+// src/layouts/Layout.astro — Layout base de toda la plataforma
+// ============================================================
+// Este es el "esqueleto" HTML que envuelve TODAS las páginas.
+// Cualquier página que use <Layout> heredará el header y los estilos globales.
+//
+// CÓMO USARLO desde una página:
+//   <Layout titulo="Mi Página">
+//       <p>Mi contenido aquí</p>
+//   </Layout>
+//
+// PROPS que acepta:
+//   - titulo:      string — Texto que aparece en la pestaña del navegador.
+//   - frontmatter: object — Se usa cuando lo llama un archivo .md (automático).
+
 const { titulo, frontmatter } = Astro.props;
+
+// Determina el título final con este orden de prioridad:
+//   1. El prop "titulo" (enviado desde páginas .astro)
+//   2. frontmatter.titulo (cuando lo llama un .md directamente)
+//   3. "Tyac" como valor por defecto si no se pasa nada
 const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
     <head>
+        <!-- Codificación de caracteres: permite usar tildes y ñ -->
         <meta charset="utf-8" />
+
+        <!-- Viewport: hace que la página se vea bien en celulares -->
+        <!-- initial-scale=1 evita que iOS haga zoom automático -->
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Tyac - Plataforma educativa para dominar ciencias a tu propio ritmo." />
+
+        <!-- Descripción que ven los buscadores (Google, etc.) -->
+        <!-- Cambia este texto si quieres una descripción diferente en SEO -->
+        <meta
+            name="description"
+            content="Tyac - Plataforma educativa para dominar ciencias a tu propio ritmo."
+        />
+
+        <!-- Título dinámico de la pestaña del navegador -->
         <title>{tituloFinal}</title>
+
+        <!-- Fuente Inter desde Google Fonts -->
+        <!-- "preconnect" acelera la descarga conectando antes de pedirla -->
+        <!-- Pesos cargados: 400 (normal), 500 (medio), 600 (semibold), 700 (bold) -->
+        <!-- Para agregar más pesos, añade :wght@400;500;600;700;900 etc. -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=SUSE:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
 
-        <style>
-            /* 🎨 VARIABLES DE COLOR MAGICAS */
+        <style is:global>
+            /* =====================================================
+               VARIABLES DE COLOR GLOBALES
+               ===================================================== */
             :root {
-                --bg-page: #f4f4f9;
-                --text-main: #334155;
-                --header-bg: #1e293b;
-                --text-header: #ffffff;
-                --title-color: #0f172a;
+                /* Fondos / Backgrounds */
+                --bg-page: #191a21;
+                --bg-sidebar: #191a21;
+                --bg-card: #191a21;
+                --bg-content: #f8f8f2;
+                --header-bg: #191a21;
+
+                /* Colores de Texto */
+                --text-light: #f8f8f2;
+                --text-dark: #282a36;
+                --text-muted: #a1a1aa;
+                --text-header: #f8f8f2;
+
+                /* Paleta de Acentos (Dracula Original) */
+                --color-cyan: #8be9fd;
+                --color-purple: #bd93f9;
+                --color-red: #ff5555;
+                --color-green: #50fa7b;
+                --color-yellow: #f1fa8c;
+                --color-comment: #6272a4;
+
+                /* Variantes oscuras para las categorías */
+                --color-red-dark: #7f1d1d;
+                --color-purple-dark: #1e3a8a;
+                --color-green-dark: #14532d;
+                --color-yellow-dark: #78350f;
+                --color-comment-dark: #334155;
+                --color-cyan-dark: #036a96;
+
+                /* UI / Elementos Decorativos */
+                --border-light: rgba(255, 255, 255, 0.1);
+                --border-dark: #e2e8f0;
+                --code-inline-bg: #e2e8f0;
+                --code-inline-text: #be123c;
+
+                /* Aliases de compatibilidad */
+                --bg-page-old: var(--bg-page);
+                --text-main: var(--text-dark);
+                --title-color: var(--text-dark);
                 --card-bg: #ffffff;
-                --border-color: #e2e8f0;
-                --code-bg: #e2e8f0;
-                --code-text: #be123c;
-            }
-
-            /* 🌙 COLORES PARA EL MODO OSCURO */
-            html.dark {
-                --bg-page: #0f172a; /* Azul muy oscuro */
-                --text-main: #cbd5e1; /* Gris claro */
-                --header-bg: #020617; /* Casi negro */
-                --text-header: #f8fafc;
-                --title-color: #f8fafc;
-                --card-bg: #1e293b;
-                --border-color: #334155;
-                --code-bg: #1e293b;
-                --code-text: #f87171;
-            }
-
-            /* Estilos del Buscador */
-            .buscador-input {
-                background-color: #334155 !important;
-                color: white;
-                border: 1px solid transparent;
-                padding: 8px 16px;
-                border-radius: 20px;
-                outline: none;
-                width: 180px;
-                transition: all 0.3s ease;
-                font-size: 14px;
-            }
-
-            .buscador-input:focus {
-                width: 250px;
-                background-color: #475569 !important;
-                border-color: #3b82f6;
-                box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
-            }
-
-            /* Botón del Tema */
-            .btn-tema {
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                padding: 4px 8px;
-                border-radius: 8px;
-                transition: background-color 0.2s;
-            }
-            .btn-tema:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+                --border-color: var(--border-dark);
             }
         </style>
 
         <style is:global>
-            /* Actualizamos el Markdown para que use las variables */
+            /* =====================================================
+               ESTILOS GLOBALES PARA CONTENIDO MARKDOWN
+               =====================================================
+               "is:global" significa que estos estilos se aplican
+               a TODA la página, no solo a este componente.
+               Esto es necesario porque el HTML del Markdown lo
+               genera Astro internamente y no tiene acceso a los
+               estilos con scope normal.
+
+               La clase ".markdown-container" debe estar presente
+               en el elemento que envuelve el contenido markdown.
+            ===================================================== */
+
+            /* Arreglo para el 'rebote' (overscroll) en macOS/iOS. 
+               Pintamos el fondo del HTML del mismo color oscuro que el header,
+               y el body lo mantiene blanco. Así al estirar la página hacia abajo
+               aparece el color oscuro sin interrumpir el diseño. */
+            html {
+                background-color: var(--header-bg);
+            }
+
+            body {
+                min-height: 100vh;
+                /* El fondo del body se define en la etiqueta <body> más abajo */
+            }
+
+            /* Texto general del artículo */
             .markdown-container {
                 color: var(--text-main);
-                line-height: 1.8;
+                line-height: 1.8; /* Espaciado entre líneas — más alto = más legible */
                 font-size: 1.1rem;
             }
 
-            .markdown-container h1, 
-            .markdown-container h2, 
-            .markdown-container h3, 
+            /* Títulos y texto en negrita */
+            .markdown-container h1,
+            .markdown-container h2,
+            .markdown-container h3,
             .markdown-container strong {
                 color: var(--title-color);
             }
 
+            /* El h1 tiene una línea azul decorativa debajo */
+            /* Cambia el color #3b82f6 para modificar el acento azul */
             .markdown-container h1 {
                 border-bottom: 3px solid #3b82f6;
                 padding-bottom: 0.5rem;
             }
 
+            /* Tablas: fondo y colores usando variables */
             .markdown-container table {
                 background-color: var(--card-bg);
                 color: var(--text-main);
@@ -104,69 +161,67 @@ const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
                 background-color: var(--border-color);
                 color: var(--title-color);
             }
-            .markdown-container td, .markdown-container th {
+            .markdown-container td,
+            .markdown-container th {
                 border-color: var(--border-color);
             }
         </style>
     </head>
 
-    <body style="font-family: 'Inter', system-ui, sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; transition: background-color 0.3s ease, color 0.3s ease;">
-        
-        <header style="background-color: var(--header-bg); color: var(--text-header); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease;">
-            <div style="display: flex; align-items: center; gap: 24px;">
-                <a href="/" style="color: var(--text-header); text-decoration: none; font-size: 24px; font-weight: bold;">
-                    Tyac
-                </a>
-                <form action="/buscar" method="GET" id="buscador-principal" style="display: flex;">
-                    <input type="text" name="q" id="q" placeholder="🔍 Buscar cursos..." class="buscador-input" required autocomplete="off" />
-                    <button type="submit" style="display: none;">Buscar</button>
-                </form>
-            </div>
+    <!-- BODY: Fuente principal + colores desde variables CSS -->
+    <!-- Para cambiar la fuente global, cambia 'Inter' por otra (ej: 'Roboto') -->
+    <body
+        style="font-family: 'SUSE', system-ui, sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0;"
+    >
+        <!-- ================================================
+             HEADER — Barra superior de navegación
+             ================================================
+             Por ahora solo muestra el logo "Tyac".
+             Si quieres agregar links de navegación, añádelos
+             aquí dentro, por ejemplo:
+               <nav>
+                 <a href="/cursos">Cursos</a>
+               </nav>
+        ================================================ -->
+        <header
+            style="position: sticky; top: 0; z-index: 1000; background-color: var(--header-bg); color: var(--text-header); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);"
+        >
+            <!-- Logo / nombre del sitio — clic lleva al inicio -->
+            <a
+                href="/"
+                style="color: var(--text-header); text-decoration: none; font-size: 30px; font-weight: 700; letter-spacing: -0.5px;"
+            >
+                Tyac
+            </a>
 
-            <nav style="display: flex; align-items: center; gap: 24px;">
-                <a href="/cursos" style="color: var(--text-header); text-decoration: none; font-weight: 500;">Cursos</a>
-                <a href="/temas" style="color: var(--text-header); text-decoration: none; font-weight: 500;">Temas</a>
-                
-                <button id="theme-toggle" class="btn-tema" title="Cambiar tema oscuro/claro">
-                    🌓
-                </button>
+            <!-- Navegación derecha -->
+            <nav style="display: flex; gap: 20px;">
+                <a
+                    href="/cursos"
+                    style="color: var(--text-header); text-decoration: none; font-weight: 500; font-size: 0.95rem; opacity: 0.9;font-size: 22px"
+                    >Cursos</a
+                >
+                <a
+                    href="/apuntes"
+                    style="color: var(--text-header); text-decoration: none; font-weight: 500; font-size: 0.95rem; opacity: 0.9;font-size: 22px"
+                    >Apuntes</a
+                >
             </nav>
         </header>
 
-        <main class="markdown-container" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+        <!-- ================================================
+             MAIN — Contenido principal de cada página
+             ================================================
+             "max-width: 800px" limita el ancho para legibilidad.
+             El <slot /> es donde se inyecta el contenido de
+             la página que usa este layout.
+             Si quieres más ancho, cambia el 800px.
+        ================================================ -->
+        <main
+            class="markdown-container"
+            style="max-width: 800px; margin: 0 auto; padding: 2rem;"
+        >
             <slot />
         </main>
-
-<script>
-    // Se ejecuta tan pronto como la página carga
-    const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-            return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
-        }
-        return 'light';
-    })();
-
-    if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-
-    // Esperamos a que el botón exista en la pantalla para conectarlo
-    document.addEventListener('DOMContentLoaded', () => {
-        const toggleButton = document.getElementById("theme-toggle");
-        
-        if (toggleButton) {
-            toggleButton.addEventListener("click", () => {
-                document.documentElement.classList.toggle("dark");
-                const isDark = document.documentElement.classList.contains("dark");
-                localStorage.setItem("theme", isDark ? "dark" : "light");
-            });
-        }
-    });
-</script>
     </body>
 </html>

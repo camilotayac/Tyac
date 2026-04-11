@@ -1,52 +1,288 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TarjetaCurso from "../components/TarjetaCurso.astro";
-import { todosCursosPlataforma } from "../data/cursos.js";
+import TarjetaHorizontal from "../components/TarjetaHorizontal.astro";
+import { todosLosTemarios } from "../data/temarios.js";
 
-// Mostramos solo los primeros cursos destacados en la home
-const cursosDestacados = todosCursosPlataforma.slice(0, 4);
+// Lista de Cursos (Materias académicas)
+const cursosCiencia: any[] = [
+    {
+        titulo: "Prueba",
+        descripcion:
+            "Lógica proposicional, unión, intersección y teoría de conjuntos.",
+        icono: "🔢",
+        href: "/apuntes/conjuntos/proposicion",
+        lecciones: todosLosTemarios.conjuntos.length,
+    },
+];
+
+// Lista de Apuntes (Tecnología y herramientas)
+const apuntesTecnicos = [
+    {
+        titulo: "Matemáticas: Conjuntos",
+        descripcion:
+            "Lógica proposicional, unión, intersección y teoría de conjuntos.",
+        icono: "🔢",
+        href: "/apuntes/conjuntos/proposicion",
+        lecciones: todosLosTemarios.conjuntos.length,
+    },
+    {
+        titulo: "Curso de Astro",
+        descripcion:
+            "Aprende a crear sitios web rápidos y modernos con Astro desde cero.",
+        icono: "🚀",
+        href: "/apuntes/astro/introduccion",
+        lecciones: todosLosTemarios.astro.length,
+    },
+];
 ---
 
 <Layout titulo="Tyac - Plataforma Educativa">
-    <div
-        style="max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: background-color 0.3s ease;"
-    >
-        <h1 style="color: var(--title-color); font-size: 2.5rem; margin-bottom: 0.5rem; transition: color 0.3s ease;">
-            Bienvenido a Tyac 🔬
-        </h1>
-        <p style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 2rem; transition: color 0.3s ease;">
-            Domina la ciencia a tu propio ritmo. Explora nuestras guías
-            estructuradas.
-        </p>
+    <!-- SECCIÓN HERO (Estilo Platzi) -->
+    <div class="hero-platzi">
+        <div class="hero-contenido">
+            <h1 class="hero-titulo">
+                La biblioteca de conocimiento <br />
+                <span class="hero-acento">de Ciencias y Tecnología</span>
+            </h1>
+            <p class="hero-subtitulo">
+                Aprende conceptos complejos de forma sencilla, rápida y
+                organizada.
+            </p>
+            <p class="hero-pregunta">¿Qué quieres aprender hoy?</p>
 
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;"
-        >
-            {cursosDestacados.map((curso) => (
-                curso.href ? (
-                    <a href={curso.href} style="text-decoration: none; color: inherit;">
-                        <TarjetaCurso
-                            titulo={curso.titulo}
-                            descripcion={curso.descripcion}
-                            icono={curso.icono}
-                            categoria={curso.categoria}
-                            profesor={curso.profesor}
-                            nivel={curso.nivel}
-                            etiqueta={curso.etiqueta}
-                        />
-                    </a>
-                ) : (
-                    <TarjetaCurso
-                        titulo={curso.titulo}
-                        descripcion={curso.descripcion}
-                        icono={curso.icono}
-                        categoria={curso.categoria}
-                        profesor={curso.profesor}
-                        nivel={curso.nivel}
-                        etiqueta={curso.etiqueta}
-                    />
-                )
-            ))}
+            <div class="buscador-contenedor">
+                <input
+                    type="text"
+                    placeholder="Ej. JavaScript, Física..."
+                    class="buscador-input"
+                />
+                <span class="buscador-icono">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+            </div>
         </div>
     </div>
+
+    <!-- CONTENEDOR PRINCIPAL (División de Layout) -->
+    <div class="contenedor-layout">
+        {/* SECCIÓN CURSOS: Solo se renderiza si hay cursos disponibles */}
+        {
+            cursosCiencia.length > 0 && (
+                <section class="columna-contenido">
+                    <h2 class="titulo-seccion">
+                        <span class="icono-seccion">📚</span> Cursos de Ciencias
+                    </h2>
+                    <div class="grid-tarjetas">
+                        {cursosCiencia.map((curso) => (
+                            <a
+                                href={curso.href}
+                                style="text-decoration: none; color: inherit;"
+                            >
+                                <TarjetaHorizontal
+                                    titulo={curso.titulo}
+                                    descripcion={curso.descripcion}
+                                    icono={curso.icono}
+                                    cantidadTemas={String(curso.lecciones)}
+                                />
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+
+        {
+            /* SECCIÓN APUNTES: Ocupa toda la pantalla si Cursos no está abierto */
+        }
+        <section
+            class={`columna-contenido ${cursosCiencia.length === 0 ? "ancho-completo" : ""}`}
+        >
+            <h2 class="titulo-seccion">
+                <span class="icono-seccion">📝</span> Apuntes Técnicos
+            </h2>
+            <div
+                class={cursosCiencia.length === 0
+                    ? "grid-tarjetas-amplio"
+                    : "grid-tarjetas"}
+            >
+                {
+                    apuntesTecnicos.map((apunte) => (
+                        <a
+                            href={apunte.href}
+                            style="text-decoration: none; color: inherit;"
+                        >
+                            <TarjetaHorizontal
+                                titulo={apunte.titulo}
+                                descripcion={apunte.descripcion}
+                                icono={apunte.icono}
+                                cantidadTemas={String(apunte.lecciones)}
+                            />
+                        </a>
+                    ))
+                }
+            </div>
+        </section>
+    </div>
 </Layout>
+
+<style>
+    /* =========================================
+       HERO SECTION (Clon visual de la ref)
+       ========================================= */
+    .hero-platzi {
+        background: linear-gradient(
+            180deg,
+            var(--bg-card) 0%,
+            var(--bg-page) 100%
+        ); /* Dracula ultra dark */
+        color: var(--text-light);
+        padding: 6rem 2rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .hero-contenido {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero-titulo {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        letter-spacing: -1px;
+    }
+
+    /* El color de acento "Verde/Cyan" */
+    .hero-acento {
+        color: var(--color-cyan); 
+    }
+
+    .hero-subtitulo {
+        font-size: 1.1rem;
+        color: var(--text-muted); 
+        margin-bottom: 2rem;
+    }
+
+    .hero-pregunta {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    /* Buscador visualmente idéntico a la referencia */
+    .buscador-contenedor {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .buscador-input {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        background-color: var(--bg-page); 
+        border: 1px solid var(--color-cyan); 
+        color: var(--text-light);
+        font-size: 1.1rem;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .buscador-input::placeholder {
+        color: #52525b;
+    }
+
+    .buscador-icono {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: var(--text-muted);
+    }
+
+    /* =========================================
+       LAYOUT DE DOS COLUMNAS
+       ========================================= */
+    .contenedor-layout {
+        max-width: 1200px; /* Ancho máximo amplio para albergar 2 columnas */
+        margin: 0 auto;
+        padding: 4rem 2rem;
+        display: flex;
+        gap: 4rem; /* Separación entre la columna Izq y Der */
+    }
+
+    /* Cada columna ocupa el 50% de la pantalla */
+    .columna-contenido {
+        flex: 1;
+        min-width: 0; /* Previene desbordamiento en flexbox */
+    }
+
+    /* Redefinición cuando la sección es completa (ej. no hay Cursos) */
+    .columna-contenido.ancho-completo {
+        max-width: 900px; /* Limita el ancho para que no se vea exagerado */
+        margin: 0 auto;
+        flex: none; /* Quita el flex:1 para que el margen auto funcione */
+        width: 100%;
+    }
+
+    /* Títulos de las columnas */
+    .titulo-seccion {
+        color: var(--title-color);
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 1rem;
+    }
+
+    .icono-seccion {
+        background: #e2e8f0;
+        padding: 8px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+    }
+
+    /* Cuadrículas de las Tarjetas */
+    .grid-tarjetas {
+        display: flex;
+        flex-direction: column; /* Apiladas verticalmente como en la imagen */
+        gap: 1.5rem;
+    }
+
+    /* Si toma el ancho completo de la pantalla, podemos mostrar las tarjetas lado a lado */
+    .grid-tarjetas-amplio {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* Responsividad: En móvil todo se apila a una columna */
+    @media (max-width: 900px) {
+        .contenedor-layout {
+            flex-direction: column; /* Pasa Cursos arriba y Apuntes abajo */
+            gap: 3rem;
+            padding: 3rem 1.5rem;
+        }
+
+        .hero-titulo {
+            font-size: 2.5rem;
+        }
+    }
+</style>

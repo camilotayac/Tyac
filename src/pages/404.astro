@@ -1,0 +1,143 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout titulo="404: Página no encontrada - Tyac">
+    <div class="contenedor-404">
+        <div class="contenido-404">
+            <div class="icono-404">🌌</div>
+            <h1 class="titulo-404">404</h1>
+            <h2 class="subtitulo-404">Punto ciego de investigación</h2>
+            <p class="texto-404">
+                Parece que has intentado acceder a una coordenada o lección que no existe en nuestra base de datos. Es posible que el enlace esté roto o que el contenido ya haya sido movido.
+            </p>
+            <div class="acciones-404">
+                <a href="/" class="btn-primario">
+                    <span class="btn-icono">🏠</span> Volver al Inicio
+                </a>
+                <a href="/apuntes" class="btn-secundario">
+                    <span class="btn-icono">📚</span> Ver Apuntes
+                </a>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .contenedor-404 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 180px); /* Resta altura del header/padding */
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .contenido-404 {
+        max-width: 600px;
+        background-color: var(--card-bg);
+        padding: 4rem 3rem;
+        border-radius: 24px;
+        border: 1px solid var(--border-color);
+        /* Usamos la sombra aguamarina característica del rediseño */
+        box-shadow: 0 20px 40px -15px rgba(44, 124, 140, 0.15); 
+    }
+
+    .icono-404 {
+        font-size: 5rem;
+        margin-bottom: 1rem;
+        line-height: 1;
+        /* Efecto sutil de flotación espacial */
+        animation: flotar 4s ease-in-out infinite;
+    }
+
+    .titulo-404 {
+        font-size: 7rem;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1.1;
+        letter-spacing: -3px;
+        /* Un gradiente elegante usando el nuevo dracula dark y tu aguamarina */
+        background: linear-gradient(135deg, var(--bg-card) 0%, var(--color-cyan-dark) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .subtitulo-404 {
+        font-size: 1.8rem;
+        color: var(--title-color);
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+
+    .texto-404 {
+        font-size: 1.15rem;
+        color: var(--text-main);
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+    }
+
+    .acciones-404 {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Botones alineados con el sistema visual */
+    .btn-primario, .btn-secundario {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 1.05rem;
+    }
+
+    .btn-primario {
+        background-color: var(--header-bg); /* Color Drácula */
+        color: var(--text-light);
+        box-shadow: 0 4px 12px rgba(40, 42, 54, 0.2);
+    }
+
+    .btn-primario:hover {
+        background-color: var(--bg-card);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(40, 42, 54, 0.3);
+    }
+
+    .btn-secundario {
+        background-color: var(--bg-page);
+        color: var(--title-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-secundario:hover {
+        background-color: var(--border-dark);
+        transform: translateY(-2px);
+    }
+
+    .btn-icono {
+        font-size: 1.2rem;
+    }
+
+    @keyframes flotar {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    /* Responsividad para móviles */
+    @media (max-width: 600px) {
+        .titulo-404 { font-size: 5rem; }
+        .subtitulo-404 { font-size: 1.5rem; }
+        .contenido-404 { padding: 3rem 1.5rem; }
+        .acciones-404 { flex-direction: column; }
+        .btn-primario, .btn-secundario { width: 100%; justify-content: center; }
+    }
+</style>

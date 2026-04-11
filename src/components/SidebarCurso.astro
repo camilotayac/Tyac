@@ -34,7 +34,7 @@ const {
                 return (
                     <li>
                         <a 
-                            href={`/${cursoActualId}/${leccion.id}`} 
+                            href={`/apuntes/${cursoActualId}/${leccion.id}`} 
                             class={`item-leccion ${esActiva ? 'activa' : ''}`}
                         >
                             <div class="info-leccion">
@@ -55,8 +55,8 @@ const {
 <style>
     .sidebar-curso {
         width: 320px; 
-        background-color: var(--card-bg); 
-        border-right: 1px solid var(--border-color);
+        background-color: var(--bg-sidebar); 
+        border-right: 1px solid var(--border-light);
         height: 100vh; 
         overflow-y: auto; 
         display: flex;
@@ -66,16 +66,16 @@ const {
 
     .cabecera-sidebar {
         padding: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-light);
         position: sticky; 
         top: 0;
-        background-color: var(--card-bg);
+        background-color: var(--bg-sidebar);
         z-index: 10;
     }
 
     .cabecera-sidebar h3 {
         margin: 0;
-        color: var(--title-color);
+        color: var(--text-header);
         font-size: 1.1rem;
         font-weight: 700;
     }
@@ -92,14 +92,14 @@ const {
         align-items: center;
         padding: 1.2rem 1.5rem;
         text-decoration: none;
-        color: var(--text-main);
-        border-bottom: 1px solid var(--border-color);
+        color: var(--text-light); 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         transition: background-color 0.2s ease;
         border-left: 4px solid transparent; 
     }
 
     .item-leccion:hover {
-        background-color: rgba(59, 130, 246, 0.05); 
+        background-color: rgba(255, 255, 255, 0.05); 
     }
 
     .info-leccion {
@@ -121,20 +121,20 @@ const {
 
     .duracion {
         font-size: 0.8rem;
-        color: var(--text-main);
+        color: var(--text-muted);
         opacity: 0.7;
         white-space: nowrap;
     }
 
     /* --- 🌟 EL ESTILO DE LA CLASE ACTIVA 🌟 --- */
     .item-leccion.activa {
-        background-color: rgba(59, 130, 246, 0.1); 
-        border-left-color: #3b82f6; 
+        background-color: rgba(139, 233, 253, 0.1); 
+        border-left-color: var(--color-cyan); 
     }
-
+    
     .item-leccion.activa .titulo-leccion {
         font-weight: 700;
-        color: #3b82f6; 
+        color: var(--color-cyan); 
     }
 
     .item-leccion.activa .icono-estado {
