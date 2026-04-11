@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: estilos-markdown
 titulo: "Estilismo de Markdown"
@@ -40,7 +40,7 @@ En Astro, el código en Markdown se divide en dos tipos:
 
 ### Código en línea (Inline Code)
 Es el que escribes entre una sola comilla simple: `` `código` ``. 
-Para cambiarlo, edita el estilo de `.markdown-container code` en `LayoutCurso.astro`.
+Para cambiarlo, edita el estilo de `.markdown-container code` en `LayoutVertical.astro`.
 
 ### Bloques de código (Code Blocks)
 Es el que escribes entre tres comillas simples: 
@@ -74,7 +74,7 @@ Si quieres cambiar cómo se ve una tabla o una cita (`blockquote`), debes ir a l
 Por ejemplo, para cambiar el color de la barra lateral de las citas:
 
 ```css
-/* Dentro de LayoutCurso.astro */
+/* Dentro de LayoutVertical.astro */
 .markdown-container blockquote {
     border-left: 5px solid #ff5733; /* Cambia el púrpura por naranja */
     background-color: #fff5f0;      /* Un fondo más cálido */

@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: conjuntos
 id_clase: proposicion
 titulo: "Proposición y su negación"

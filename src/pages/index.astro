@@ -13,14 +13,54 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     <!-- SECCIÓN HERO (Estilo Platzi) -->
     <div class="hero-platzi">
         <!-- Elementos decorativos flotantes -->
-        <div class="decoracion" style="top: 15%; left: 8%; animation-delay: 0s;">🧬</div>
-        <div class="decoracion" style="bottom: 25%; right: 7%; animation-delay: -7s;">⚛️</div>
-        <div class="decoracion" style="top: 35%; right: 12%; animation-delay: -3s; font-size: 2rem;">🚀</div>
-        <div class="decoracion" style="bottom: 15%; left: 12%; animation-delay: -12s; font-size: 2.2rem;">🧪</div>
-        <div class="decoracion" style="top: 20%; right: 25%; animation-delay: -5s; font-size: 1.8rem;">🌿</div>
-        <div class="decoracion" style="bottom: 40%; left: 5%; animation-delay: -9s; font-size: 1.5rem;">💻</div>
-        <div class="decoracion" style="top: 10%; right: 40%; animation-delay: -15s; font-size: 1.2rem;">👾</div>
-        <div class="decoracion" style="bottom: 10%; right: 35%; animation-delay: -2s; font-size: 1.6rem;">🌍</div>
+        <div
+            class="decoracion"
+            style="top: 15%; left: 8%; animation-delay: 0s;"
+        >
+            🧬
+        </div>
+        <div
+            class="decoracion"
+            style="bottom: 25%; right: 7%; animation-delay: -7s;"
+        >
+            ⚛️
+        </div>
+        <div
+            class="decoracion"
+            style="top: 35%; right: 12%; animation-delay: -3s; font-size: 2rem;"
+        >
+            🚀
+        </div>
+        <div
+            class="decoracion"
+            style="bottom: 15%; left: 12%; animation-delay: -12s; font-size: 2.2rem;"
+        >
+            🧪
+        </div>
+        <div
+            class="decoracion"
+            style="top: 20%; right: 25%; animation-delay: -5s; font-size: 1.8rem;"
+        >
+            🌿
+        </div>
+        <div
+            class="decoracion"
+            style="bottom: 40%; left: 5%; animation-delay: -9s; font-size: 1.5rem;"
+        >
+            💻
+        </div>
+        <div
+            class="decoracion"
+            style="top: 10%; right: 40%; animation-delay: -15s; font-size: 1.2rem;"
+        >
+            👾
+        </div>
+        <div
+            class="decoracion"
+            style="bottom: 10%; right: 35%; animation-delay: -2s; font-size: 1.6rem;"
+        >
+            🌍
+        </div>
 
         <div class="hero-contenido">
             <h1 class="hero-titulo">
@@ -55,10 +95,10 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                             contenido estructurado y de alta calidad.
                         </p>
                         <div class="contenedor-pildoras">
-                            <BotonMateria 
-                                texto="General" 
-                                tipo="gris" 
-                                data-filter="all" 
+                            <BotonMateria
+                                texto="General"
+                                tipo="gris"
+                                data-filter="all"
                                 class="filtro-btn activo"
                             />
                             <BotonMateria
@@ -67,21 +107,21 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                                 data-filter="Matemáticas"
                                 class="filtro-btn"
                             />
-                            <BotonMateria 
-                                texto="Química" 
-                                tipo="rojo" 
+                            <BotonMateria
+                                texto="Química"
+                                tipo="rojo"
                                 data-filter="Química"
                                 class="filtro-btn"
                             />
-                            <BotonMateria 
-                                texto="Biología" 
-                                tipo="verde" 
+                            <BotonMateria
+                                texto="Biología"
+                                tipo="verde"
                                 data-filter="Biología"
                                 class="filtro-btn"
                             />
-                            <BotonMateria 
-                                texto="Física" 
-                                tipo="amarillo" 
+                            <BotonMateria
+                                texto="Física"
+                                tipo="amarillo"
                                 data-filter="Física"
                                 class="filtro-btn"
                             />
@@ -143,10 +183,10 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                     carrera técnica en un solo lugar.
                 </p>
                 <div class="contenedor-pildoras">
-                    <BotonMateria 
-                        texto="General" 
-                        tipo="gris" 
-                        data-filter="all" 
+                    <BotonMateria
+                        texto="General"
+                        tipo="gris"
+                        data-filter="all"
                         class="filtro-btn activo"
                     />
                     <BotonMateria
@@ -155,27 +195,27 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                         data-filter="Astro"
                         class="filtro-btn"
                     />
-                    <BotonMateria 
-                        texto="Docker" 
-                        tipo="gris" 
+                    <BotonMateria
+                        texto="Docker"
+                        tipo="gris"
                         data-filter="Docker"
                         class="filtro-btn"
                     />
-                    <BotonMateria 
-                        texto="JavaScript" 
-                        tipo="rojo" 
+                    <BotonMateria
+                        texto="JavaScript"
+                        tipo="rojo"
                         data-filter="JavaScript"
                         class="filtro-btn"
                     />
-                    <BotonMateria 
-                        texto="Node.js" 
-                        tipo="verde" 
+                    <BotonMateria
+                        texto="Node.js"
+                        tipo="verde"
                         data-filter="Node.js"
                         class="filtro-btn"
                     />
-                    <BotonMateria 
-                        texto="Git" 
-                        tipo="amarillo" 
+                    <BotonMateria
+                        texto="Git"
+                        tipo="amarillo"
                         data-filter="Git"
                         class="filtro-btn"
                     />
@@ -202,7 +242,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     /* Blobs de fondo (Mesh effect) */
     .hero-platzi::before,
     .hero-platzi::after {
-        content: '';
+        content: "";
         position: absolute;
         width: 400px;
         height: 400px;
@@ -227,8 +267,12 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     @keyframes float-slow {
-        from { transform: translate(0, 0) scale(1); }
-        to { transform: translate(50px, 50px) scale(1.1); }
+        from {
+            transform: translate(0, 0) scale(1);
+        }
+        to {
+            transform: translate(50px, 50px) scale(1.1);
+        }
     }
 
     .hero-contenido {
@@ -253,7 +297,11 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     .hero-acento {
-        background: linear-gradient(135deg, var(--acento) 0%, var(--dracula-cyan) 100%);
+        background: linear-gradient(
+            135deg,
+            var(--acento) 0%,
+            var(--dracula-cyan) 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         display: inline-block;
@@ -317,8 +365,12 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     @keyframes orbit {
-        from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
-        to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        from {
+            transform: rotate(0deg) translateX(50px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(50px) rotate(-360deg);
+        }
     }
 </style>
 
@@ -431,6 +483,14 @@ import { apuntesTecnicos } from "../data/apuntes.js";
             display: flex;
             flex-direction: column-reverse;
         }
+    }
+</style>
+
+<style is:global>
+    /* =========================================
+       ESTILOS GLOBALES DE FILTRADO (Penetran Componentes)
+       ========================================= */
+
     /* Estilo para ocultar tarjetas con transición */
     .tarjeta-link.hidden-card {
         display: none;
@@ -439,59 +499,82 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         pointer-events: none;
     }
 
+    /* Estilos para los botones de filtro (Forzamos morado para todos) */
+    .filtro-btn {
+        opacity: 0.4 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        /* Forzamos el color morado base para todos los botones en este contenedor */
+        color: var(--acento) !important;
+        background-color: rgba(189, 147, 249, 0.05) !important;
+        border-color: rgba(189, 147, 249, 0.1) !important;
+    }
+
+    .filtro-btn:hover {
+        opacity: 0.7 !important;
+    }
+
     /* Resaltado del botón activo */
     .filtro-btn.activo {
+        opacity: 1 !important;
+        color: var(--acento) !important;
         border-color: var(--acento) !important;
-        background-color: rgba(189, 147, 249, 0.2) !important;
-        box-shadow: 0 0 15px rgba(189, 147, 249, 0.3);
+        background-color: rgba(189, 147, 249, 0.15) !important;
+        box-shadow: 0 0 20px rgba(189, 147, 249, 0.3) !important;
     }
 </style>
 
 <script>
     function setupFilters() {
-        const sections = document.querySelectorAll('.seccion-grid');
+        // Seleccionamos todas las secciones de grid (Cursos y Apuntes)
+        const sections = document.querySelectorAll(".seccion-grid");
 
-        sections.forEach(section => {
-            const filterBtns = section.querySelectorAll('.filtro-btn');
-            const cards = section.querySelectorAll('.tarjeta-link');
+        sections.forEach((section) => {
+            const filterBtns = section.querySelectorAll(".filtro-btn");
+            const cards = section.querySelectorAll(".tarjeta-link");
 
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
+            filterBtns.forEach((btn) => {
+                // Evitar duplicar listeners si Astro re-dispara el script
+                if ((btn as any).dataset.initialized) return;
+                
+                btn.addEventListener("click", (e) => {
                     e.preventDefault();
+
+                    // Scroll instantáneo (sin efecto suave)
+                    section.scrollIntoView({ 
+                        behavior: "auto", 
+                        block: "start" 
+                    });
+
+                    // Lógica de filtrado inmediata
                     const filter = (btn as HTMLElement).dataset.filter;
+                    filterBtns.forEach((b) => b.classList.remove("activo"));
+                    btn.classList.add("activo");
 
-                    // Actualizar estado activo de botones en esta sección
-                    filterBtns.forEach(b => b.classList.remove('activo'));
-                    btn.classList.add('activo');
-
-                    // Filtrar tarjetas
-                    cards.forEach(card => {
-                        const cardMateria = (card as HTMLElement).dataset.materia;
-                        const cardElement = card as HTMLElement;
-                        
-                        if (filter === 'all' || cardMateria === filter) {
-                            // Mostrar: Primero el display, luego la animación
-                            cardElement.style.display = 'block';
-                            // Pequeño delay para que el navegador registre el display antes de animar
-                            requestAnimationFrame(() => {
-                                cardElement.classList.remove('hidden-card');
-                            });
+                    cards.forEach((card) => {
+                        const cardEl = card as HTMLElement;
+                        const cardMateria = cardEl.dataset.materia;
+                        if (filter === "all" || cardMateria === filter) {
+                            cardEl.style.display = "block";
+                            cardEl.classList.remove("hidden-card");
                         } else {
-                            // Ocultar: Instantáneo para evitar que ocupen espacio
-                            cardElement.classList.add('hidden-card');
-                            cardElement.style.display = 'none';
+                            cardEl.classList.add("hidden-card");
+                            cardEl.style.display = "none";
                         }
                     });
                 });
+
+                (btn as any).dataset.initialized = "true";
             });
         });
     }
 
-    // Ejecutar al cargar la página y en transiciones de Astro
-    document.addEventListener('astro:page-load', () => {
+    // Inicialización coordinada con Astro y carga normal
+    document.addEventListener("astro:page-load", setupFilters);
+    
+    // Ejecución inmediata si el DOM ya está listo
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupFilters);
+    } else {
         setupFilters();
-    });
-
-    // Carga inicial
-    setupFilters();
+    }
 </script>

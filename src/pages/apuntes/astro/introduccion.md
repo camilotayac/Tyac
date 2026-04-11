@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: introduccion
 titulo: "¿Qué es Astro y por qué usarlo?"

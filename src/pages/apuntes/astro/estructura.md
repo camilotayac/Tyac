@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: estructura
 titulo: "Estructura de Proyecto"
@@ -63,7 +63,7 @@ Los layouts son componentes especiales que envuelven el contenido de las página
 En Tyac tienes:
 
 - `Layout.astro` → el esqueleto base de todo el sitio (header + variables CSS)
-- `LayoutCurso.astro` → esqueleto para las lecciones (sidebar + área de contenido)
+- `LayoutVertical.astro` → esqueleto para las lecciones (sidebar + área de contenido)
 
 ---
 
@@ -105,7 +105,7 @@ Tyac/
 │   │   └── SidebarCurso.astro
 │   ├── layouts/
 │   │   ├── Layout.astro
-│   │   └── LayoutCurso.astro
+│   │   └── LayoutVertical.astro
 │   ├── pages/
 │   │   ├── index.astro         → /
 │   │   ├── astro/              → /astro/...

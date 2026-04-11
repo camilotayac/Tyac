@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: layouts
 titulo: "Layouts y Slots"
@@ -91,11 +91,11 @@ Puedes usar un layout dentro de otro. Así funciona Tyac:
 
 ```
 Layout.astro (base: header + estilos)
-  └── LayoutCurso.astro (sidebar + área de contenido)
+  └── LayoutVertical.astro (sidebar + área de contenido)
         └── proposicion.md (el contenido de la lección)
 ```
 
-`LayoutCurso.astro` importa y usa `Layout.astro`:
+`LayoutVertical.astro` importa y usa `Layout.astro`:
 
 ```astro
 ---
@@ -123,7 +123,7 @@ Los archivos `.md` usan el layout de forma especial: lo declaran en su frontmatt
 
 ```md
 ---
-layout: ../../layouts/LayoutCurso.astro
+layout: ../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: layouts
 ---

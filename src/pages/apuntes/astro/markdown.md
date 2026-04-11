@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: markdown
 titulo: "Markdown Nativo"
@@ -41,7 +41,7 @@ Al inicio de cada archivo `.md` puedes incluir un bloque de metadatos entre `---
 
 ```md
 ---
-layout: ../../layouts/LayoutCurso.astro
+layout: ../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: markdown
 titulo: Mi lección
@@ -51,7 +51,7 @@ autor: Camilo Tayac
 # Contenido de la lección
 ```
 
-Astro lee estos metadatos y los pasa al layout como el objeto `frontmatter`. En `LayoutCurso.astro` usas esto para saber a qué curso pertenece la lección y calcular la navegación.
+Astro lee estos metadatos y los pasa al layout como el objeto `frontmatter`. En `LayoutVertical.astro` usas esto para saber a qué curso pertenece la lección y calcular la navegación.
 
 ---
 
@@ -61,7 +61,7 @@ El campo `layout:` del frontmatter le dice a Astro qué layout usar para envolve
 
 ```md
 ---
-layout: ../../layouts/LayoutCurso.astro
+layout: ../../layouts/LayoutVertical.astro
 ---
 ```
 
@@ -126,7 +126,7 @@ Si en el futuro necesitas usar componentes Astro dentro del markdown (como un gr
 
 ```mdx
 ---
-layout: ../../layouts/LayoutCurso.astro
+layout: ../../layouts/LayoutVertical.astro
 ---
 
 import GraficoInteractivo from '../../components/Grafico.astro';

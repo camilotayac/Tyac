@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: astro
 id_clase: estilos
 titulo: "Estilos Scoped vs Global"
@@ -74,7 +74,7 @@ Para eso usas la directiva `is:global`:
 </style>
 ```
 
-> En `LayoutCurso.astro` se usa `is:global` para los estilos del contenido markdown porque ese HTML lo genera Astro, y los estilos scoped no pueden alcanzarlo.
+> En `LayoutVertical.astro` se usa `is:global` para los estilos del contenido markdown porque ese HTML lo genera Astro, y los estilos scoped no pueden alcanzarlo.
 
 ---
 

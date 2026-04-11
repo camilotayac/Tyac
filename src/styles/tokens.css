@@ -39,7 +39,7 @@
    /* ══════════════════════════════════════════════
        GLOBAL LAYOUT — Fondos y Textos base
        ══════════════════════════════════════════════ */
-   --fondo-pagina: #191a21;
+   --fondo-pagina: #111111;
    /* Fondo general ultra oscuro */
    --fondo-seccion: #2a2b3d;
    /* Un poco más claro para que el degradado se note mejor */
@@ -58,7 +58,7 @@
    /* ══════════════════════════════════════════════
        COMPONENTE: HEADER (Barra de Navegación)
        ══════════════════════════════════════════════ */
-   --header-bg: #191a21;
+   --header-bg: #111111;
    --header-texto: var(--texto-claro);
    --header-acento: var(--acento);
 
@@ -74,7 +74,7 @@
    /* ══════════════════════════════════════════════
        COMPONENTE: TARJETAS (Cards)
        ══════════════════════════════════════════════ */
-   --card-bg: #191a21;
+   --card-bg: #111111;
    /* Fondo oscuro para las tarjetas */
    --card-titulo: var(--texto-claro);
    /* Vamos con blanco para lectura rápida */
@@ -120,7 +120,7 @@
    --bg-card: var(--card-bg);
    --bg-tarjetas: var(--card-bg);
    --bg-content: var(--fondo-contenido);
-   --header-bg: #191a21;
+   --header-bg: #111111;
    /* Definición sólida para el header */
 
    --text-light: var(--texto-claro);

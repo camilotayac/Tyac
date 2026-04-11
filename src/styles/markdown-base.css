@@ -40,15 +40,30 @@
    porque H1 siempre aparece sobre el fondo blanco (--fondo-contenido).
 ────────────────────────────────────────────────────────── */
 .markdown-container h1 {
-    color: var(--markdown-titulo);
-    font-size: 2rem;
+    color: var(--texto-oscuro);
+    font-size: 2.2rem;
     font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    border-bottom: 3px solid var(--acento-oscuro);  /* Línea decorativa de acento */
-    padding-bottom: 0.5rem;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--markdown-borde);
+    padding-bottom: 1.5rem;
+    letter-spacing: -0.5px;
 }
 
+/* Fix inline code in headings (as seen in .astro feedback) */
+.markdown-container h1 code,
+.markdown-container h2 code,
+.markdown-container h3 code {
+    background: rgba(189, 147, 249, 0.05);
+    border: 1px solid rgba(189, 147, 249, 0.1);
+    color: var(--acento-oscuro);
+    padding: 0 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    letter-spacing: 0; /* Reset letter spacing for code */
+    font-weight: 600;
+    margin: 0 2px;
+}
 
 /* ── Subtítulos H2, H3, H4 ──────────────────────────────────
    Separación superior generosa para respiro visual.
@@ -56,9 +71,10 @@
 .markdown-container h2,
 .markdown-container h3,
 .markdown-container h4 {
-    color: var(--markdown-titulo);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    color: var(--texto-oscuro);
+    margin-top: 3.5rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
 }
 
 .markdown-container h2 {

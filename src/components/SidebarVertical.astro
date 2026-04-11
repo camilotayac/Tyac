@@ -1,0 +1,375 @@
+---
+// src/components/SidebarVertical.astro
+import { cursosCiencia } from "../data/cursos.js";
+
+export interface Leccion {
+    id: string;
+    titulo: string;
+    duracion: string;
+}
+
+export interface Props {
+    claseActualId?: string;
+    cursoActualId: string;
+    lecciones?: Leccion[];
+}
+
+const { claseActualId, cursoActualId, lecciones = [] } = Astro.props as Props;
+
+// Determinar el prefijo correcto (cursos vs apuntes)
+const esCursoAcadémico = cursosCiencia.some((c) => c.id === cursoActualId);
+const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
+---
+
+<aside 
+    class="sidebar-v" 
+    id="sidebar-v" 
+    transition:persist="sidebar-vertical"
+    data-clase-actual={claseActualId}
+>
+    <script is:inline>
+        // Aplicar estado inmediatamente para evitar parpadeo en la primera carga
+        if (localStorage.getItem("sidebar-collapsed") === "true") {
+            document.getElementById("sidebar-v").classList.add("collapsed");
+        }
+    </script>
+    <div class="sidebar-header">
+        <div class="logo-mini">
+            <div class="diamond-logo"></div>
+            <span class="logo-text">TEMARIO</span>
+        </div>
+        <button
+            id="toggle-sidebar"
+            class="toggle-btn"
+            aria-label="Colapsar menú"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon-arrow"
+                ><polyline points="15 18 9 12 15 6"></polyline></svg
+            >
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul class="lesson-list">
+            {
+                lecciones.map((leccion: Leccion, index) => {
+                    return (
+                        <li
+                            class="lesson-item"
+                            data-leccion-id={leccion.id}
+                        >
+                            <a
+                                href={`${urlPrefix}/${cursoActualId}/${leccion.id}`}
+                                class="lesson-link"
+                                title={leccion.titulo}
+                            >
+                                <div class="diamond-marker">
+                                    <div class="diamond-box">
+                                        <span>{index + 1}</span>
+                                    </div>
+                                </div>
+                                <div class="lesson-info">
+                                    <span class="lesson-title">
+                                        {leccion.titulo}
+                                    </span>
+                                    <span class="lesson-time">
+                                        {leccion.duracion} min
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+    </nav>
+</aside>
+
+<style>
+    .sidebar-v {
+        width: 320px;
+        background-color: var(--header-bg); /* Sincronizado para evitar recuadros extra */
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        position: relative;
+        z-index: 50;
+    }
+
+    /* Header & Toggle */
+    .sidebar-header {
+        height: 64px; /* Sincronizado con Layout.astro header */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+        background-color: transparent; /* Transparente para que no parezca un 'recuadro' separado */
+    }
+
+    .logo-mini {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: opacity 0.3s;
+    }
+
+    .diamond-logo {
+        width: 14px;
+        height: 14px;
+        background: var(--acento);
+        transform: rotate(45deg);
+        box-shadow: 0 0 10px var(--acento);
+    }
+
+    .logo-text {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: var(--texto-claro);
+        opacity: 0.8;
+    }
+
+    .toggle-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--texto-atenuado);
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--acento);
+    }
+
+    .icon-arrow {
+        transition: transform 0.4s;
+    }
+
+    /* Navigation */
+    .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.02) 0%,
+            transparent 100%
+        );
+    }
+
+    .sidebar-nav::-webkit-scrollbar {
+        width: 4px;
+    }
+    .sidebar-nav::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+
+    .lesson-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .lesson-item {
+        margin-bottom: 2px;
+        transition: all 0.3s;
+    }
+
+    .lesson-link {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        text-decoration: none;
+        position: relative;
+        transition: background-color 0.2s;
+    }
+
+    .lesson-link:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Diamond Marker */
+    .diamond-marker {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .diamond-box {
+        width: 26px;
+        height: 26px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1.5px solid rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .diamond-box span {
+        transform: rotate(-45deg);
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--texto-atenuado);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin-top: 1px;
+        margin-left: 1px;
+    }
+
+    /* Info */
+    .lesson-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .lesson-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--texto-atenuado);
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: color 0.2s;
+    }
+
+    .lesson-time {
+        font-size: 0.72rem;
+        color: var(--texto-atenuado);
+        opacity: 0.4;
+    }
+
+    /* --- ACTIVE STATE --- */
+    .lesson-item.active {
+        opacity: 1 !important;
+        background: rgba(189, 147, 249, 0.05);
+    }
+
+    .lesson-item.active .diamond-box {
+        background: var(--acento);
+        border-color: var(--acento);
+        box-shadow: 0 0 15px rgba(189, 147, 249, 0.4);
+        transform: rotate(45deg) scale(1.05);
+    }
+
+    .lesson-item.active .diamond-box span {
+        color: #191a21;
+    }
+
+    .lesson-item.active .lesson-title {
+        color: var(--texto-claro);
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    /* --- INACTIVE STATE --- */
+    .lesson-item.inactive {
+        opacity: 0.4;
+    }
+
+    .lesson-item.inactive:hover {
+        opacity: 1;
+    }
+
+    /* --- COLLAPSED STATE --- */
+    .sidebar-v.collapsed {
+        width: 80px;
+    }
+
+    .sidebar-v.collapsed .logo-mini {
+        display: none;
+    }
+
+    .sidebar-v.collapsed .icon-arrow {
+        transform: rotate(180deg);
+    }
+
+    .sidebar-v.collapsed .lesson-info {
+        opacity: 0;
+        transform: translateX(10px);
+        pointer-events: none;
+    }
+
+    .sidebar-v.collapsed .toggle-btn {
+        margin: 0 auto;
+        position: relative;
+        left: 0;
+    }
+
+    .sidebar-v.collapsed .sidebar-header {
+        padding: 0;
+        justify-content: center;
+    }
+</style>
+
+<script>
+    function setupSidebar() {
+        const toggleBtn = document.getElementById("toggle-sidebar");
+        const sidebar = document.getElementById("sidebar-v");
+
+        if (!sidebar || !toggleBtn) return;
+
+        // 1. Manejo del colapso (Persistence) - Solo añadir el listener una vez
+        if (!(window as any).sidebarInitialized) {
+            toggleBtn.addEventListener("click", () => {
+                const nowCollapsed = sidebar.classList.toggle("collapsed");
+                localStorage.setItem("sidebar-collapsed", nowCollapsed ? "true" : "false");
+            });
+            (window as any).sidebarInitialized = true;
+        }
+
+        // 2. Marcado de lección activa - Basado en la URL actual (más fiable)
+        const currentPath = window.location.pathname;
+        const items = sidebar.querySelectorAll(".lesson-item");
+        
+        items.forEach(item => {
+            const link = item.querySelector("a");
+            if (link) {
+                const href = link.getAttribute("href");
+                // Comparamos si el link coincide con la ruta actual
+                if (href && currentPath.includes(href)) {
+                    item.classList.add("active");
+                    item.classList.remove("inactive");
+                } else {
+                    item.classList.remove("active");
+                    item.classList.add("inactive");
+                }
+            }
+        });
+    }
+
+    // Inicializar en cada carga de página
+    document.addEventListener("astro:page-load", setupSidebar);
+</script>

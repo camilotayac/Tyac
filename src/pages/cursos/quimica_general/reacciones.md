@@ -1,5 +1,5 @@
 ---
-layout: ../../../layouts/LayoutCurso.astro
+layout: ../../../layouts/LayoutVertical.astro
 curso: quimica_general
 id_clase: reacciones
 titulo: "Reacciones Químicas"
