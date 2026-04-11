@@ -1,6 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import TarjetaCurso from "../components/TarjetaCurso.astro";
+import { todosCursosPlataforma } from "../data/cursos.js";
+
+// Mostramos solo los primeros cursos destacados en la home
+const cursosDestacados = todosCursosPlataforma.slice(0, 4);
 ---
 
 <Layout titulo="Tyac - Plataforma Educativa">
@@ -18,23 +22,31 @@ import TarjetaCurso from "../components/TarjetaCurso.astro";
         <div
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;"
         >
-        <TarjetaCurso 
-            titulo="Lógica Proposicional" 
-            descripcion="Tablas de verdad y conectores lógicos." 
-            icono="🔢" 
-            categoria="matematicas"
-			profesor="Camilo Tayac"
-			
-        />
-
-        <TarjetaCurso 
-			titulo="Dinámica Molecular" 
-			descripcion="Simulación del movimiento de los átomos." 
-			imagenUrl="/img/ejemplo0.png" 
-			icono="⚛️" 
-			categoria="quimica"
-			profesor="Camilo Tayac"
-		/>
+            {cursosDestacados.map((curso) => (
+                curso.href ? (
+                    <a href={curso.href} style="text-decoration: none; color: inherit;">
+                        <TarjetaCurso
+                            titulo={curso.titulo}
+                            descripcion={curso.descripcion}
+                            icono={curso.icono}
+                            categoria={curso.categoria}
+                            profesor={curso.profesor}
+                            nivel={curso.nivel}
+                            etiqueta={curso.etiqueta}
+                        />
+                    </a>
+                ) : (
+                    <TarjetaCurso
+                        titulo={curso.titulo}
+                        descripcion={curso.descripcion}
+                        icono={curso.icono}
+                        categoria={curso.categoria}
+                        profesor={curso.profesor}
+                        nivel={curso.nivel}
+                        etiqueta={curso.etiqueta}
+                    />
+                )
+            ))}
         </div>
     </div>
 </Layout>

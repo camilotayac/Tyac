@@ -186,6 +186,51 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
     .espaciador-nav {
         flex: 1;
     }
+
+    /* ----------------------- */
+    /* 📱 RESPONSIVIDAD MÓVIL  */
+    /* ----------------------- */
+    @media (max-width: 768px) {
+        /* En móvil: el layout deja de ser fixed y fluye normalmente */
+        .contenedor-curso {
+            position: static;
+            width: 100%;
+            height: auto;
+            flex-direction: column;
+            border-top: none;
+        }
+
+        /* Ocultamos el sidebar en móvil para no aplastar el contenido */
+        /* (el usuario puede navegar con los botones anterior/siguiente) */
+        :global(.sidebar-curso) {
+            display: none;
+        }
+
+        .area-principal {
+            padding: 1.5rem 1rem;
+            overflow-y: visible;
+        }
+
+        .encabezado-clase h1 {
+            font-size: 1.5rem;
+        }
+
+        .navegacion-pie-clase {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-navegacion {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .btn-navegacion.siguiente {
+            align-items: flex-start;
+            text-align: left;
+            margin-left: 0;
+        }
+    }
 </style>
 
 <style is:global>
@@ -257,6 +302,6 @@ const claseSiguiente = (indiceActual !== -1 && indiceActual < temarioSeleccionad
         border-radius: 4px;
         font-family: 'Courier New', Courier, monospace;
         font-size: 0.9em;
-        color: #ef4444; 
+        color: var(--code-text);
     }
 </style>

@@ -199,12 +199,10 @@ const {
     .fondo-fisica { background-color: #fffbeb; }      
     .fondo-general { background-color: #f8fafc; }     
 
-    /* --- Modo Oscuro Automático --- */
-    @media (prefers-color-scheme: dark) {
-        .fondo-quimica { background-color: #7f1d1d; }     
-        .fondo-matematicas { background-color: #1e3a8a; } 
-        .fondo-biologia { background-color: #14532d; }    
-        .fondo-fisica { background-color: #78350f; }      
-        .fondo-general { background-color: #334155; }   
-    }
+    /* --- Modo Oscuro (responde al toggle manual del usuario) --- */
+    :global(html.dark) .fondo-quimica { background-color: #7f1d1d; }
+    :global(html.dark) .fondo-matematicas { background-color: #1e3a8a; }
+    :global(html.dark) .fondo-biologia { background-color: #14532d; }
+    :global(html.dark) .fondo-fisica { background-color: #78350f; }
+    :global(html.dark) .fondo-general { background-color: #334155; }
 </style>
