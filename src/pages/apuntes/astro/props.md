@@ -1,139 +1,63 @@
 ---
-layout: ../../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: props
-titulo: "Props y Astro.props"
-descripcion: "Cómo pasar datos dinámicos entre componentes y layouts."
-materia: "Tecnología"
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Comunicación de datos y flujo vivo en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "props"
 ---
 
-# Props y `Astro.props`
+# Props: La comunicación en Tyac
 
-Cuando creas un componente o layout en Astro, a veces necesitas que la página que lo usa le **envíe información**. Por ejemplo, el título de la página, o el nombre del autor.
+Para que Tyac no sea una página estática y aburrida, necesitamos que nuestros componentes puedan recibir información. Aquí es donde entran las **Props**.
 
-Esa información viaja a través de los **props** (abreviatura de *properties* — propiedades).
+## Alimentando las Tarjetas
 
-`Astro.props` es el objeto que **contiene todo lo que le enviaron** a tu componente desde afuera.
+Cuando ves la cuadrícula de cursos en el inicio de Tyac, ves muchas tarjetas iguales pero con diferente información. No escribimos 10 componentes distintos; usamos uno solo y le pasamos los datos mediante props.
 
----
+### Ejemplo real: `TarjetaHorizontal.astro`
 
-## El problema que resuelve
-
-Imagina que tienes un layout que se usa en 10 páginas diferentes. Cada página necesita un título diferente en la pestaña del navegador.
-
-Sin props, tendrías que escribir el título **dentro** del layout y sería igual para todas:
-
-```html
-<title>Tyac</title>  <!-- Siempre el mismo, sin importar la página -->
-```
-
-Con props, cada página le **pasa su propio título** al layout:
-
-```astro
-<!-- En index.astro -->
-<Layout titulo="Inicio - Tyac">...</Layout>
-
-<!-- En otra página -->
-<Layout titulo="Conjuntos - Tyac">...</Layout>
-```
-
-Y el layout lo recibe y lo usa:
+En Tyac, consumimos los datos de `cursos.js` y se los pasamos al componente de esta forma:
 
 ```astro
 ---
-const { titulo } = Astro.props;
----
-<title>{titulo}</title>
-```
-
+// index.astro
+import TarjetaHorizontal from '../components/TarjetaHorizontal.astro';
+import { cursosCiencia } from '../data/cursos.js';
 ---
 
-## La sintaxis explicada
-
-```astro
-const { titulo, frontmatter } = Astro.props;
+{cursosCiencia.map((curso) => (
+  <TarjetaHorizontal 
+    titulo={curso.titulo} 
+    descripcion={curso.descripcion} 
+    cantidadTemas={curso.lecciones}
+  />
+))}
 ```
 
-Esto usa **desestructuración** de JavaScript. Es equivalente a escribir:
+## Tipado con TypeScript
 
-```js
-const titulo      = Astro.props.titulo;
-const frontmatter = Astro.props.frontmatter;
-```
-
-Solo es una forma más corta de extraer valores de un objeto.
-
----
-
-## Definir qué props acepta un componente
-
-Es buena práctica declarar explícitamente los props con su tipo. Astro usa TypeScript para esto:
+Para que Tyac sea robusto y no tenga errores, definimos qué tipo de datos acepta cada componente. Esto nos ayuda a saber, por ejemplo, que `cantidadTemas` siempre debe ser un número o un texto:
 
 ```astro
 ---
-// Declaramos la "firma" de los props
+// TarjetaHorizontal.astro
 interface Props {
-    titulo: string;
-    descripcion?: string;  // El "?" significa que es opcional
-    icono: string;
+  titulo: string;
+  descripcion: string;
+  icono?: string;
+  cantidadTemas: string;
 }
-
-// Los extraemos de Astro.props
-const { titulo, descripcion = "Sin descripción", icono } = Astro.props;
-//                          ↑ Valor por defecto si no se pasa
+const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
 ---
 ```
 
-En Tyac, `SidebarCurso.astro` hace exactamente esto:
+## Por qué es vital en Tyac
 
-```astro
-export interface Props {
-    claseActualId?: string;
-    cursoActualId: string;
-    lecciones?: Leccion[];
-}
-```
+Gracias a las Props, el temario que ves a la izquierda en esta lección se genera dinámicamente. El layout de la lección recibe los datos del curso actual y se los "pasa" al componente del sidebar.
+
+> [!IMPORTANT]
+> **Consistencia Total**: Si cambiamos el nombre de una materia en la base de datos (`src/data/`), el cambio se refleja automáticamente en el Hero, en la Tarjeta y en los Meta-tags gracias al flujo de Props.
 
 ---
 
-## ¿Qué es `frontmatter`?
-
-`frontmatter` es especial. Aparece cuando un archivo `.md` usa este layout directamente.
-
-Cuando escribes un archivo Markdown así:
-
-```md
----
-layout: ../../layouts/Layout.astro
-titulo: Mi Lección
----
-```
-
-Astro convierte ese bloque `---` en un objeto llamado `frontmatter` y se lo manda al layout automáticamente. Puedes acceder a toda esa información:
-
-```astro
----
-const { frontmatter } = Astro.props;
----
-
-<h1>{frontmatter.titulo}</h1>     <!-- "Mi Lección" -->
-<p>Curso: {frontmatter.curso}</p> <!-- el valor de "curso:" en el .md -->
-```
-
----
-
-## La línea completa de tu proyecto
-
-```astro
-const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
-```
-
-Esta línea elige el título con este orden de prioridad:
-
-| Prioridad | Origen | Cuándo ocurre |
-| :---: | --- | --- |
-| 1° | `titulo` | Cuando una página `.astro` pasa `<Layout titulo="...">` |
-| 2° | `frontmatter.titulo` | Cuando un `.md` define `titulo:` en su encabezado |
-| 3° | `"Tyac"` | Cuando no se pasa ningún título (valor por defecto) |
-
-> El símbolo `?` en `frontmatter?.titulo` es el **operador de encadenamiento opcional**. Significa: *"si `frontmatter` existe, dame `.titulo`; si no existe, no rompas la página, solo devuelve `undefined`"*.
+En la siguiente guía, veremos cómo los Layouts envuelven a estos componentes para crear la estructura final.

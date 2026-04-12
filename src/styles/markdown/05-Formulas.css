@@ -1,0 +1,62 @@
+/* ============================================================
+   src/styles/markdown-formulas.css
+   FÓRMULAS MATEMÁTICAS (KaTeX / MathJax)
+   ============================================================
+   Este archivo está PREPARADO para cuando se agregue soporte
+   de fórmulas matemáticas al proyecto.
+
+   PARA ACTIVAR KaTeX en Astro:
+   1. Instalar:  npm install rehype-katex katex
+   2. En astro.config.mjs:
+        import rehypeKatex from 'rehype-katex';
+        markdown: {
+          rehypePlugins: [rehypeKatex]
+        }
+   3. En Layout.astro, agregar el CSS de KaTeX al <head>:
+        <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+        />
+
+   CÓMO SE ESCRIBEN LAS FÓRMULAS en Markdown:
+     Inline:  $E = mc^2$
+     Bloque:  $$\int_a^b f(x)\,dx$$
+   ============================================================ */
+
+
+/* ── Fórmula inline $f(x)$ ───────────────────────────────────
+   Aparece dentro de un párrafo, en línea con el texto.
+────────────────────────────────────────────────────────── */
+.markdown-container .katex {
+    font-size: 1.05em;    /* Ligeramente más grande que el texto base */
+    color: var(--clr-black-text);
+}
+
+
+/* ── Bloque de fórmula $$...$$ ──────────────────────────────
+   Bloque centrado, con espacio vertical y fondo muy sutil
+   para destacarla del texto normal.
+────────────────────────────────────────────────────────── */
+.markdown-container .katex-display {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    background: var(--clr-alpha-accent);
+    border-left: 4px solid var(--dracula-purple-dark);
+    border-radius: 0 12px 12px 0;
+    box-shadow: var(--shd-accent); /* Accent glow / Resplandor de acento */
+    overflow-x: auto;
+    transition: transform 0.2s ease;
+}
+
+.markdown-container .katex-display:hover {
+    transform: translateX(4px);
+}
+
+/* ── Scrollbar del bloque de fórmula ────────────────────────*/
+.markdown-container .katex-display::-webkit-scrollbar {
+    height: 4px;
+}
+.markdown-container .katex-display::-webkit-scrollbar-thumb {
+    background: var(--dracula-purple-dark);
+    border-radius: 10px;
+    opacity: 0.5;
+}

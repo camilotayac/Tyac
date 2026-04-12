@@ -1,0 +1,52 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Generando el buscador.json dinámico en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "search-api"
+---
+
+# Generando el buscador.json
+
+Para que la búsqueda en Tyac sea instantánea, no podemos consultar una base de datos pesada en cada tecla del usuario. En su lugar, creamos una **API Estática**: un archivo JSON ligero que contiene todos los títulos, descripciones y URLs de la plataforma.
+
+## 1. El concepto de API Estática
+
+En Astro, podemos crear archivos que no son HTML (como JSON o XML) usando la misma lógica de componentes. Esto permite que Tyac genere un "índice de búsqueda" cada vez que se compila la web.
+
+## 2. El punto final: `buscador.json.js`
+
+En `src/pages/api/buscador.json.js`, escribimos un script que recopila los datos de todas nuestras fuentes de verdad (`cursos.js` y `apuntes.js`):
+
+```javascript
+import { cursosCiencia } from "../../data/cursos.js";
+import { apuntesTecnicos } from "../../data/apuntes.js";
+
+export async function GET() {
+  const data = [
+    ...cursosCiencia.map(c => ({...c, tipo: 'curso'})),
+    ...apuntesTecnicos.map(a => ({...a, tipo: 'apunte'}))
+  ];
+
+  return new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+```
+
+## 3. Consumo en el Cliente
+
+Cuando el usuario abre el buscador, Tyac realiza una única petición `fetch()` para descargar este pequeño archivo JSON. Una vez descargado, la búsqueda ocurre localmente en el navegador del usuario, lo que la hace **instantánea** (0ms de latencia de red tras la carga inicial).
+
+## 4. Por qué es mejor que una base de datos real?
+
+1.  **Velocidad**: No hay consultas SQL ni latencia de servidor.
+2.  **Seguridad**: No hay ataques de inyección, es solo un archivo de texto.
+3.  **Coste**: No requiere un servidor de base de datos encendido 24/7; se sirve como un archivo estático desde el CDN.
+
+> [!IMPORTANT]
+> **Eficiencia Tyac**: El archivo `buscador.json` de Tyac está comprimido y optimizado para pesar solo unos pocos kilobytes, asegurando que incluso en conexiones 3G la búsqueda se active en menos de un segundo.
+
+---
+
+¡Felicidades! Has completado la ingeniería del sistema de búsqueda. Hemos terminado el Módulo 4. En el siguiente módulo, veremos cómo funciona la "fábrica" que genera las páginas de curso a gran escala.

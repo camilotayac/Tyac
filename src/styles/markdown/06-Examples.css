@@ -1,0 +1,99 @@
+/* ============================================================
+   src/styles/markdown-examples.css
+   EJEMPLOS, CITAS Y BLOQUES DESTACADOS (BLOCKQUOTES)
+   ============================================================
+   Controla el aspecto de los bloques "> texto" en Markdown,
+   es decir, los blockquotes / citas / ejemplos.
+
+   En Markdown se escriben así:
+     > Este es un blockquote o ejemplo.
+
+   En el futuro, aquí también se agregarán los estilos de
+   alertas tipo:
+     > [!NOTE]
+     > [!TIP]
+     > [!WARNING]
+   ============================================================ */
+
+/* ── Core Blockquote (Cita o Nota Rápida) ───────────────────*/
+.markdown-container blockquote {
+    background: linear-gradient(to right, var(--clr-alpha-accent), transparent);
+    border-left: 5px solid var(--dracula-purple);
+    border-radius: 4px 12px 12px 4px;
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    color: var(--clr-black-text);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Icono sutil de comilla al fondo */
+.markdown-container blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 5rem;
+    color: var(--dracula-purple);
+    opacity: 0.1;
+    font-family: serif;
+    pointer-events: none;
+}
+
+.markdown-container blockquote p { 
+    margin: 0; 
+    line-height: 1.8;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Specialized Scientific Blocks / Bloques Científicos Especializados ── */
+
+.markdown-container .def,
+.markdown-container .theo,
+.markdown-container .obs,
+.markdown-container .ex {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    border-left: 6px solid;
+    position: relative;
+    box-shadow: var(--shd-floating);
+}
+
+.markdown-container .def p,
+.markdown-container .theo p,
+.markdown-container .obs p,
+.markdown-container .ex p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+/* 1. Definition (Cian) / Definición */
+.markdown-container .def {
+    background: rgba(139, 233, 253, 0.05);
+    border-left-color: var(--dracula-cyan);
+}
+.markdown-container .def::before { content: "📘 Definición"; font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--dracula-cyan); font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+
+/* 2. Theorem/Law (Verde) / Teorema o Ley */
+.markdown-container .theo {
+    background: rgba(80, 250, 123, 0.05);
+    border-left-color: var(--dracula-green);
+}
+.markdown-container .theo::before { content: "⚖️ Teorema / Ley"; font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--dracula-green); font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+
+/* 3. Observation/Notice (Amarillo) / Observación */
+.markdown-container .obs {
+    background: rgba(241, 250, 140, 0.05);
+    border-left-color: var(--dracula-yellow);
+}
+.markdown-container .obs::before { content: "💡 Observación"; font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--dracula-yellow); font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+
+/* 4. Example (Púrpura) / Ejemplo */
+.markdown-container .ex {
+    background: var(--clr-alpha-accent);
+    border-left-color: var(--dracula-purple);
+}
+.markdown-container .ex::before { content: "✍️ Ejemplo"; font-weight: 800; display: block; margin-bottom: 0.5rem; color: var(--dracula-purple); font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }

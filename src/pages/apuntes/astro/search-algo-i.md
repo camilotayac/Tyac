@@ -1,0 +1,44 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Algoritmo de Búsqueda I: Normalización en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "search-algo-i"
+---
+
+# Algoritmo de Búsqueda I: Normalización
+
+¿Por qué si buscas "quimica" (sin tilde) Tyac encuentra resultados de "Química"? Esto no ocurre por casualidad. Hemos implementado un proceso de **Normalización de Texto** que permite que la búsqueda sea inteligente y perdonadora con el usuario.
+
+## 1. El problema de las Tildes y Mayúsculas
+
+En español, la letra `í` es técnicamente distinta a la `i`. Para un ordenador, son caracteres diferentes. Si el usuario escribe en minúsculas y sin acentos, y nuestros datos están en mayúsculas y con acentos, la búsqueda fallaría el 90% de las veces.
+
+## 2. Nuestra solución: `normalize.js`
+
+En `src/utils/search.js`, creamos una función que "limpia" el texto tanto de la búsqueda como de la base de datos antes de compararlos.
+
+```javascript
+export function normalize(str) {
+    return str
+        .toLowerCase()
+        .normalize("NFD") // Descompone caracteres como 'í' en 'i' + tilde
+        .replace(/[\u0300-\u036f]/g, "") // Elimina la tilde
+        .trim();
+}
+```
+
+## 3. Comparación en igualdad
+
+Al realizar la búsqueda, aplicamos esta función a ambos lados de la ecuación. Así, "Astro" se convierte en "astro" y "Átomos" se convierte en "atomos". Al comparar "astro" con "astro", el resultado es un **Match**.
+
+## 4. Por qué en las Utils?
+
+Centralizamos esta lógica en una carpeta de utilidades para que tanto el **Buscador del Header** como el **Buscador del Hero** usen la misma regla de limpieza, garantizando que el usuario obtenga los mismos resultados en cualquier rincón de Tyac.
+
+> [!IMPORTANT]
+> **Dato Técnico**: La normalización NFD (Forma de Descomposición Canónica) es el estándar de oro para manejar caracteres especiales en la web moderna, asegurando compatibilidad con casi cualquier idioma.
+
+---
+
+La normalización es solo el inicio. En la siguiente guía, veremos cómo calculamos qué resultados son "más importantes" que otros usando la Puntuación de Relevancia.

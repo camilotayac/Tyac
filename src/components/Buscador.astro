@@ -70,16 +70,18 @@ const { mode = "hero" } = Astro.props;
     }
 
     .hero .buscador-inner:hover {
-        border-color: var(--acento);
-        background: #282a36;
-        transform: translateY(-2px);
+        border-color: var(--dracula-purple) !important;
+        background: #282a36 !important;
+        transform: translateY(-6px) scale(1.03) !important;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(189, 147, 249, 0.4) !important;
+        z-index: 20;
     }
 
     .buscador-input {
         width: 100%;
         padding: 1rem 3rem 0.8rem 1.2rem;
         font-size: 0.95rem;
-        color: var(--texto-claro);
+        color: var(--clr-white-soft);
         background: transparent;
         border: none;
         outline: none;
@@ -92,7 +94,7 @@ const { mode = "hero" } = Astro.props;
         right: 1.2rem;
         width: 20px;
         height: 20px;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
     }
 
     /* Ajustes específicos HEADER */
@@ -137,7 +139,7 @@ const { mode = "hero" } = Astro.props;
 
     .sin-resultados {
         padding: 20px;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         text-align: center;
         font-size: 0.85rem;
     }
@@ -150,7 +152,7 @@ const { mode = "hero" } = Astro.props;
     .item-resultado {
         padding: 10px;
         border-radius: 12px;
-        color: var(--texto-claro) !important;
+        color: var(--clr-white-soft) !important;
         text-decoration: none !important;
         display: grid;
         grid-template-columns: auto 1fr;
@@ -187,7 +189,7 @@ const { mode = "hero" } = Astro.props;
     .res-titulo {
         font-weight: 700;
         font-size: 0.95rem;
-        color: var(--texto-claro);
+        color: var(--clr-white-soft);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -212,11 +214,11 @@ const { mode = "hero" } = Astro.props;
     .materia-tecnologia { background: var(--dracula-cyan); color: #191a21 !important; }
     .materia-quimica { background: var(--dracula-red); color: #ffffff !important; }
     .materia-biologia { background: var(--dracula-green); color: #191a21 !important; }
-    .materia-general { background: var(--texto-atenuado); color: #191a21 !important; }
+    .materia-general { background: var(--clr-gray-muted); color: #191a21 !important; }
 
     .res-snippet {
         font-size: 0.8rem;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -226,6 +228,12 @@ const { mode = "hero" } = Astro.props;
 </style>
 
 <script>
+    declare global {
+        interface Window {
+            buscadorInitialized: boolean;
+        }
+    }
+
     import { normalize, calculateScore } from "../utils/search.js";
 
     interface SearchItem {
@@ -256,39 +264,50 @@ const { mode = "hero" } = Astro.props;
             const lista = container.querySelector("[data-lista]") as HTMLElement;
             const sinRes = container.querySelector("[data-sin-resultados]") as HTMLElement;
 
+            // Limpiar listeners previos (especialmente para persiste)
+            const newContainer = container.cloneNode(true);
+            container.parentNode?.replaceChild(newContainer, container);
+            
+            // Re-obtener referencias tras el clon
+            const activeContainer = newContainer as HTMLElement;
+            const activeInput = activeContainer.querySelector("[data-input]") as HTMLInputElement;
+            const activePanel = activeContainer.querySelector("[data-panel]") as HTMLElement;
+            const activeLista = activeContainer.querySelector("[data-lista]") as HTMLElement;
+            const activeSinRes = activeContainer.querySelector("[data-sin-resultados]") as HTMLElement;
+
             if (isHero) {
-                // MODO HERO: Solo trigger para el modal global
-                container.addEventListener("click", () => {
+                // MODO HERO: Disparador del modal
+                activeContainer.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     window.dispatchEvent(new CustomEvent("open-search"));
                 });
             } else {
-                // MODO HEADER: Búsqueda local con dropdown
-                input?.addEventListener("input", async (e) => {
+                // MODO HEADER: Búsqueda local
+                activeInput?.addEventListener("input", async (e) => {
                     const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
                     if (query.length < 2) {
-                        if (panel) panel.setAttribute("hidden", "");
+                        if (activePanel) activePanel.setAttribute("hidden", "");
                         return;
                     }
 
                     const data = await fetchData();
-                    
-                    // Aplicar filtrado inteligente y puntuación
                     const resultsWithScore = data.map(item => ({
                         item,
                         score: calculateScore(query, item)
                     }))
-                    .filter(res => res.score > 15) // Umbral mínimo para mostrar algo útil
+                    .filter(res => res.score > 15)
                     .sort((a, b) => b.score - a.score)
                     .slice(0, 7);
 
                     const results = resultsWithScore.map(res => res.item);
 
-                    if (panel && lista) {
-                        panel.removeAttribute("hidden");
-                        lista.innerHTML = "";
+                    if (activePanel && activeLista) {
+                        activePanel.removeAttribute("hidden");
+                        activeLista.innerHTML = "";
                         
                         if (results.length > 0) {
-                            sinRes?.setAttribute("hidden", "");
+                            activeSinRes?.setAttribute("hidden", "");
                             results.forEach(item => {
                                 const a = document.createElement("a");
                                 a.href = item.url;
@@ -303,24 +322,34 @@ const { mode = "hero" } = Astro.props;
                                         </div>
                                     </div>
                                 `;
-                                lista.appendChild(a);
+                                
+                                // Limpiar buscador al hacer clic en un resultado
+                                a.addEventListener("click", () => {
+                                    activeInput.value = "";
+                                    activePanel?.setAttribute("hidden", "");
+                                });
+                                
+                                activeLista.appendChild(a);
                             });
                         } else {
-                            sinRes?.removeAttribute("hidden");
+                            activeSinRes?.removeAttribute("hidden");
                         }
                     }
                 });
 
-                // Cerrar al hacer clic fuera
                 document.addEventListener("click", (e) => {
-                    if (!container.contains(e.target as Node)) {
-                        panel?.setAttribute("hidden", "");
+                    if (!activeContainer.contains(e.target as Node)) {
+                        activePanel?.setAttribute("hidden", "");
                     }
                 });
             }
         });
     }
 
-    initHybridBuscador();
+    // Inicialización coordinada
+    if (!window.buscadorInitialized) {
+        initHybridBuscador();
+        window.buscadorInitialized = true;
+    }
     document.addEventListener("astro:page-load", initHybridBuscador);
 </script>

@@ -1,160 +1,54 @@
 ---
-layout: ../../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: layouts
-titulo: "Layouts y Slots"
-descripcion: "Reutiliza esqueletos HTML para envolver tus páginas."
-materia: "Tecnología"
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Orquestación de vistas con Layouts en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "layouts"
 ---
 
-# Layouts y `<slot />`
+# Layouts: Orquestación de vistas
 
-Un **layout** es un componente especial que actúa como el "esqueleto" de una página. Define las partes que se repiten en todas las páginas (header, footer, estilos globales) y deja un hueco para el contenido único de cada página.
+En Tyac, no queremos repetir el Navbar y el Footer en cada una de las cientos de lecciones. Para eso usamos los **Layouts**, que actúan como "marcos" o "moldes" que envuelven nuestro contenido.
 
-Ese hueco se llama `<slot />`.
+## El Layout Maestro (`00-Layout.astro`)
 
----
-
-## ¿Por qué existen los layouts?
-
-Sin layouts, cada página tendría que copiar el mismo HTML estructural:
+Todos los archivos de Tyac terminan envueltos por este layout. Es el encargado de:
+- Cargar la paleta de colores (`palette.css`).
+- Incluir la etiqueta `<head>` con los metadatos.
+- Mostrar el **Navbar** y el **Footer**.
+- Activar las **View Transitions**.
 
 ```astro
-<!-- Sin layouts: repites esto en CADA página -->
-<!DOCTYPE html>
+---
+// 00-Layout.astro
+import Navbar from './02-Navbar.astro';
+import SearchModal from '../../components/SearchModal.astro';
+---
 <html>
-    <head>
-        <title>Página 1</title>
-        <link rel="stylesheet" ... />
-    </head>
-    <body>
-        <header>...</header>
-        <main>
-            <!-- contenido único -->
-        </main>
-    </body>
+  <body>
+    <Navbar />
+    <main>
+      <slot /> <!-- Aquí es donde se "inyecta" el contenido de cada página -->
+    </main>
+    <SearchModal />
+  </body>
 </html>
 ```
 
-Con un layout, escribes esa estructura **una sola vez** y las páginas solo pasan su contenido:
+## Nesting: Layouts dentro de Layouts
 
-```astro
-<!-- Página 1 -->
-<Layout titulo="Página 1">
-    <p>Contenido único de esta página.</p>
-</Layout>
-```
+Tyac utiliza una técnica avanzada llamada **Layout Nesting**. Esta misma página que estás leyendo es un ejemplo:
+1.  **Contenido Markdown**: Este texto.
+2.  **Layout de Lección (`00-LayoutLessons.astro`)**: Envuelve el texto, añade el Sidebar, los Breadcrumbs y la Paginación.
+3.  **Layout Base (`00-Layout.astro`)**: Envuelve todo lo anterior con la navegación global y el SEO.
 
----
+## El Slot: La pieza clave
 
-## Cómo funciona `<slot />`
+El elemento `<slot />` es un marcador de posición. Cuando definimos `layout: ...` en el frontmatter de este Markdown, Astro toma todo este texto y lo coloca exactamente donde pusimos el `<slot />` en el layout de destino.
 
-El `<slot />` es el marcador de posición donde el layout inserta el contenido que le pasan.
-
-**El layout define dónde va el contenido:**
-```astro
-<!-- Layout.astro -->
-<body>
-    <header>Logo Tyac</header>
-
-    <main>
-        <slot />  <!-- ← aquí se inyecta el contenido de la página -->
-    </main>
-</body>
-```
-
-**La página envía su contenido:**
-```astro
-<!-- index.astro -->
-<Layout>
-    <h1>Bienvenido</h1>    <!-- esto va al <slot /> -->
-    <p>Hola mundo</p>      <!-- esto también -->
-</Layout>
-```
-
-**El resultado HTML final:**
-```html
-<body>
-    <header>Logo Tyac</header>
-    <main>
-        <h1>Bienvenido</h1>
-        <p>Hola mundo</p>
-    </main>
-</body>
-```
+> [!IMPORTANT]
+> **Ventaja Tyac**: Gracias a este sistema, si mañana queremos cambiar de lugar el Sidebar en todas las lecciones, solo tenemos que mover una línea de código en un solo archivo.
 
 ---
 
-## Layouts anidados
-
-Puedes usar un layout dentro de otro. Así funciona Tyac:
-
-```
-Layout.astro (base: header + estilos)
-  └── LayoutVertical.astro (sidebar + área de contenido)
-        └── proposicion.md (el contenido de la lección)
-```
-
-`LayoutVertical.astro` importa y usa `Layout.astro`:
-
-```astro
----
-import Layout from './Layout.astro';
----
-
-<Layout titulo="Mi Lección - Tyac">
-    <div class="contenedor-curso">
-        <!-- sidebar -->
-        <aside>...</aside>
-
-        <!-- contenido de la lección -->
-        <main>
-            <slot />  ← aquí va el contenido del .md
-        </main>
-    </div>
-</Layout>
-```
-
----
-
-## Layouts en archivos Markdown
-
-Los archivos `.md` usan el layout de forma especial: lo declaran en su frontmatter.
-
-```md
----
-layout: ../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: layouts
----
-
-# Contenido de la lección...
-```
-
-Astro detecta el `layout:` y automáticamente envuelve el contenido del markdown con ese layout, pasando todo el frontmatter como props.
-
----
-
-## Named slots (slots con nombre)
-
-Si necesitas inyectar contenido en más de un lugar, puedes usar slots con nombre:
-
-```astro
-<!-- Layout con dos slots -->
-<header>
-    <slot name="navegacion" />  ← slot específico para nav
-</header>
-<main>
-    <slot />                    ← slot principal (sin nombre)
-</main>
-```
-
-```astro
-<!-- Página usando ambos slots -->
-<Layout>
-    <nav slot="navegacion">...</nav>  ← va al slot "navegacion"
-    <p>Contenido principal</p>        ← va al slot principal
-</Layout>
-```
-
-> En Tyac no usamos named slots por ahora, pero es útil saberlos para cuando el proyecto crezca.
+En la siguiente guía, aprenderemos cómo Astro genera automáticamente las páginas para cada curso.

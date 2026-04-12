@@ -90,7 +90,7 @@
     }
 
     .search-modal-icon {
-        color: var(--acento);
+        color: var(--dracula-purple);
         width: 24px;
         height: 24px;
         display: flex;
@@ -108,7 +108,7 @@
 
     .search-modal-esc {
         background: rgba(255, 255, 255, 0.05);
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         font-size: 0.65rem;
         font-weight: 800;
         padding: 4px 8px;
@@ -133,7 +133,7 @@
     }
 
     .no-results-content span { font-size: 3rem; display: block; margin-bottom: 1rem; }
-    .no-results-content p { color: var(--texto-atenuado); font-size: 1rem; }
+    .no-results-content p { color: var(--clr-gray-muted); font-size: 1rem; }
 
     /* =========================================
        ESTILOS DE RESULTADOS (Dentro del Modal)
@@ -141,7 +141,7 @@
     :global(.item-resultado) {
         padding: 14px;
         border-radius: 16px;
-        color: var(--texto-claro) !important;
+        color: var(--clr-white-soft) !important;
         text-decoration: none !important;
         display: grid;
         grid-template-columns: 52px 1fr;
@@ -179,7 +179,7 @@
     :global(.res-titulo) {
         font-weight: 700;
         font-size: 1.1rem;
-        color: var(--texto-claro);
+        color: var(--clr-white-soft);
         line-height: 1.2;
     }
 
@@ -201,7 +201,7 @@
 
     :global(.res-subtipo) {
         font-size: 0.7rem;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         background: rgba(255, 255, 255, 0.05);
         padding: 2px 8px;
         border-radius: 6px;
@@ -212,11 +212,11 @@
     :global(.materia-tecnologia) { background: var(--dracula-cyan); color: #191a21 !important; }
     :global(.materia-quimica) { background: var(--dracula-red); color: #ffffff !important; }
     :global(.materia-biologia) { background: var(--dracula-green); color: #191a21 !important; }
-    :global(.materia-general) { background: var(--texto-atenuado); color: #191a21 !important; }
+    :global(.materia-general) { background: var(--clr-gray-muted); color: #191a21 !important; }
 
     :global(.res-snippet) {
         font-size: 0.9rem;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -238,90 +238,102 @@
     }
 
     let searchData: SearchItem[] = [];
-    const modal = document.getElementById("search-modal");
-    const backdrop = document.getElementById("search-backdrop");
-    const input = document.getElementById("search-modal-input") as HTMLInputElement;
-    const list = document.getElementById("search-results-list");
-    const noResults = document.getElementById("search-no-results");
+    
+    // Función central de inicialización para View Transitions
+    function initSearchModal() {
+        const modal = document.getElementById("search-modal");
+        const backdrop = document.getElementById("search-backdrop");
+        const input = document.getElementById("search-modal-input") as HTMLInputElement;
+        const list = document.getElementById("search-results-list");
+        const noResults = document.getElementById("search-no-results");
 
-    async function fetchData() {
-        if (searchData.length > 0) return searchData;
-        const res = await fetch("/api/buscador.json");
-        searchData = await res.json();
-        return searchData;
-    }
+        if (!modal || !input) return;
 
-    function openModal() {
-        modal?.removeAttribute("hidden");
-        document.body.style.overflow = "hidden";
-        setTimeout(() => input?.focus(), 50);
-        fetchData(); // Carga proactiva
-    }
-
-    function closeModal() {
-        modal?.setAttribute("hidden", "");
-        document.body.style.overflow = "";
-        input.value = "";
-        if (list) list.innerHTML = "";
-    }
-
-    // Registrar eventos globales para los disparadores
-    window.addEventListener("open-search", openModal);
-
-    backdrop?.addEventListener("click", closeModal);
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-            e.preventDefault();
-            openModal();
+        async function fetchData() {
+            if (searchData.length > 0) return searchData;
+            const res = await fetch("/api/buscador.json");
+            searchData = await res.json();
+            return searchData;
         }
-    });
 
-    // Lógica de búsqueda interna
-    input?.addEventListener("input", async (e) => {
-        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        if (query.length < 2) {
+        function openModal() {
+            modal?.removeAttribute("hidden");
+            document.body.style.overflow = "hidden";
+            setTimeout(() => input?.focus(), 50);
+            fetchData(); 
+        }
+
+        function closeModal() {
+            modal?.setAttribute("hidden", "");
+            document.body.style.overflow = "";
+            input.value = "";
             if (list) list.innerHTML = "";
-            return;
         }
 
-        const data = await fetchData();
-        
-        // Aplicar filtrado inteligente y puntuación
-        const resultsWithScore = data.map(item => ({
-            item,
-            score: calculateScore(query, item)
-        }))
-        .filter(res => res.score > 15) // Umbral mínimo para relevancia
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 10);
+        // Registrar o actualizar eventos
+        window.removeEventListener("open-search", openModal);
+        window.addEventListener("open-search", openModal);
 
-        const results = resultsWithScore.map(res => res.item);
+        backdrop?.addEventListener("click", closeModal);
 
-        if (list) {
-            list.innerHTML = "";
-            if (results.length > 0) {
-                noResults?.setAttribute("hidden", "");
-                results.forEach(item => {
-                    const itemEl = document.createElement("a");
-                    itemEl.href = item.url;
-                    itemEl.className = "item-resultado"; // Reutiliza estilos globales
-                    itemEl.innerHTML = `
-                        <div class="res-icono-box">${item.icono || "📄"}</div>
-                        <div class="res-info">
-                            <div class="res-meta">
-                                <span class="res-tipo materia-${item.materia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}">${item.materia}</span>
-                                <span class="res-subtipo">${item.tipo === "curso" ? "Curso" : "Clase"}</span>
-                            </div>
-                            <div class="res-titulo">${item.titulo}</div>
-                            <div class="res-snippet">${item.descripcion}</div>
-                        </div>
-                    `;
-                    list.appendChild(itemEl);
-                });
-            } else {
-                noResults?.removeAttribute("hidden");
+        const handleKeys = (e: KeyboardEvent) => {
+            if (e.key === "Escape") closeModal();
+            if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+                e.preventDefault();
+                openModal();
             }
-        }
-    });
+        };
+        document.removeEventListener("keydown", handleKeys);
+        document.addEventListener("keydown", handleKeys);
+
+        // Lógica de búsqueda
+        input.addEventListener("input", async (e) => {
+            const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+            if (query.length < 2) {
+                if (list) list.innerHTML = "";
+                return;
+            }
+
+            const data = await fetchData();
+            const resultsWithScore = data.map(item => ({
+                item,
+                score: calculateScore(query, item)
+            }))
+            .filter(res => res.score > 15)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10);
+
+            const results = resultsWithScore.map(res => res.item);
+
+            if (list) {
+                list.innerHTML = "";
+                if (results.length > 0) {
+                    noResults?.setAttribute("hidden", "");
+                    results.forEach(item => {
+                        const itemEl = document.createElement("a");
+                        itemEl.href = item.url;
+                        itemEl.className = "item-resultado";
+                        itemEl.innerHTML = `
+                            <div class="res-icono-box">${item.icono || "📄"}</div>
+                            <div class="res-info">
+                                <div class="res-meta">
+                                    <span class="res-tipo materia-${item.materia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}">${item.materia}</span>
+                                    <span class="res-subtipo">${item.tipo === "curso" ? "Curso" : "Clase"}</span>
+                                </div>
+                                <div class="res-titulo">${item.titulo}</div>
+                                <div class="res-snippet">${item.descripcion}</div>
+                            </div>
+                        `;
+                        list.appendChild(itemEl);
+                    });
+                } else {
+                    noResults?.removeAttribute("hidden");
+                }
+            }
+        });
+    }
+
+    // Ejecución inicial y en cada navegación
+    initSearchModal();
+    document.addEventListener("astro:page-load", initSearchModal);
 </script>

@@ -1,0 +1,142 @@
+/* ============================================================
+   src/styles/markdown-base.css
+   BASE DEL CONTENIDO MARKDOWN
+   ============================================================
+   Estilos fundamentales que aplican a TODO el contenido
+   generado desde archivos .md: contenedor, fuente, párrafos
+   y encabezados h1–h4.
+
+   Para editar estilos específicos de un elemento, ve a:
+     💻 Código    → markdown-code.css
+     📊 Tablas    → markdown-tables.css
+     📝 Ejemplos  → markdown-examples.css
+     🔗 Enlaces   → markdown-links.css
+     ➗ Fórmulas  → markdown-formulas.css
+   ============================================================ */
+
+/* ── Contenedor principal ───────────────────────────────────
+   Envuelve todo el contenido de la lección.
+   Clase aplicada en LayoutCurso.astro: <div class="markdown-container">
+────────────────────────────────────────────────────────── */
+.markdown-container {
+    max-width: 850px;
+    /* Ancho óptimo para lectura (65-75 caracteres por línea) */
+    margin: 0 auto;
+    font-size: 1.15rem;
+    /* Tamaño equilibrado para lectura prolongada */
+    line-height: 1.8;
+    /* Interlineado generoso para reducir fatiga visual */
+    color: var(--clr-black-text);
+    
+    /* Automatic numbering system / Sistema de numeración automática */
+    counter-reset: section;
+}
+
+
+/* ── Párrafos ───────────────────────────────────────────────
+   Espacio inferior para separar cada bloque de texto.
+────────────────────────────────────────────────────────── */
+.markdown-container p {
+    margin-bottom: 1.5rem;
+}
+
+
+/* ── Encabezado H1 (Título de la lección) ───────────────────
+   Tiene una línea de acento abajo. El color usa --acento-oscuro
+   porque H1 siempre aparece sobre el fondo blanco (--fondo-contenido).
+────────────────────────────────────────────────────────── */
+.markdown-container h1 {
+    color: var(--clr-black-text);
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid var(--clr-gray-border);
+    padding-bottom: 1.5rem;
+    letter-spacing: -1px;
+    text-align: center;
+}
+
+/* Fix inline code in headings (as seen in .astro feedback) */
+.markdown-container h1 code,
+.markdown-container h2 code,
+.markdown-container h3 code {
+    background: rgba(189, 147, 249, 0.05);
+    border: 1px solid rgba(189, 147, 249, 0.1);
+    color: var(--dracula-purple-dark);
+    padding: 0 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    letter-spacing: 0;
+    /* Reset letter spacing for code */
+    font-weight: 600;
+    margin: 0 2px;
+}
+
+/* ── Subtítulos H2, H3, H4 ──────────────────────────────────
+   Separación superior generosa para respiro visual.
+────────────────────────────────────────────────────────── */
+.markdown-container h2,
+.markdown-container h3,
+.markdown-container h4 {
+    color: var(--clr-black-text);
+    margin-top: 3.5rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
+}
+
+.markdown-container h2 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    counter-increment: section;
+    counter-reset: subsection;
+}
+
+.markdown-container h2::before {
+    content: counter(section) ". ";
+    color: var(--dracula-purple);
+    margin-right: 0.5rem;
+    opacity: 0.8;
+}
+
+.markdown-container h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    counter-increment: subsection;
+}
+
+.markdown-container h3::before {
+    content: counter(section) "." counter(subsection) " ";
+    color: var(--dracula-purple);
+    margin-right: 0.5rem;
+    opacity: 0.7;
+    font-size: 0.9em;
+}
+
+.markdown-container h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+/* ── Texto en negrita ───────────────────────────────────────
+   Hereda el color de los títulos para coherencia.
+────────────────────────────────────────────────────────── */
+.markdown-container strong {
+    color: var(--dracula-purple-dark);
+    font-weight: 700;
+}
+
+
+/* ── Listas (ul / ol) ───────────────────────────────────────
+   Espacio y sangría estándar.
+────────────────────────────────────────────────────────── */
+.markdown-container ul,
+.markdown-container ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-container li {
+    margin-bottom: 0.4rem;
+}

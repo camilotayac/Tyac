@@ -1,0 +1,54 @@
+---
+/**
+ * 01-METADATA.ASTRO
+ * Centralized <head> content: Meta tags, Fonts, and SEO
+ * Contenido centralizado del <head>: Etiquetas Meta, Fuentes y SEO
+ */
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!-- Character encoding / Codificación de caracteres -->
+<meta charset="utf-8" />
+
+<!-- Viewport for responsive design / Viewport para diseño responsivo -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- SEO Description / Descripción para buscadores -->
+<meta
+    name="description"
+    content="Tyac - Plataforma educativa para dominar ciencias a tu propio ritmo."
+/>
+
+<!-- Dynamic Browser Tab Title / Título dinámico de la pestaña -->
+<title>{title}</title>
+
+<!-- Performance: Preconnect to Google Fonts / Conexión anticipada a Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Main Typography: SUSE / Tipografía principal: SUSE -->
+<link
+    href="https://fonts.googleapis.com/css2?family=SUSE:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+/>
+
+<!-- Global layout style overrides / Sobrescritura de estilos globales de layout -->
+<style is:global>
+    /* Prevent white flashes during scroll bounce on macOS / Evita destellos blancos al rebotar el scroll */
+    html {
+        background-color: var(--clr-black-01);
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: 'SUSE', system-ui, sans-serif;
+        background-color: var(--clr-black-01);
+        color: var(--clr-black-text);
+        margin: 0;
+    }
+</style>

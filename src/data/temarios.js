@@ -3,40 +3,72 @@
 // del archivo .md/mdx. La URL se construye como /{curso}/{id_clase}.
 
 export const todosLosTemarios = {
-    // 🧮 Curso de Conjuntos
-    conjuntos: [
-        { id: "proposicion", titulo: "1. Proposición y su negación", duracion: "05:00" },
-        { id: "operaciones", titulo: "2. Operaciones con Conjuntos", duracion: "12:15" },
-        { id: "diferencia", titulo: "3. Diferencia y Complemento", duracion: "09:40" }
-    ],
-
-    // 🧪 Curso de Dinámica Molecular (Ejemplo para el futuro)
-    dinamica_molecular: [
-        { id: "intro", titulo: "1. ¿Qué es la Dinámica Molecular?", duracion: "10:00" },
-        { id: "fuerzas", titulo: "2. Campos de Fuerza", duracion: "15:30" }
-    ],
-
-    // 🧬 Agrega más cursos aquí a medida que los vayas creando...
-
     // 🚀 Apuntes de Astro (lecciones que surgen de preguntas reales)
     astro: [
-        { id: "introduccion", titulo: "1. ¿Qué es Astro y por qué usarlo?", duracion: "08:00" },
-        { id: "estructura", titulo: "2. Estructura de un proyecto Astro", duracion: "10:00" },
-        { id: "componentes", titulo: "3. Componentes .astro: la sintaxis base", duracion: "12:00" },
-        { id: "props", titulo: "4. Props y Astro.props", duracion: "07:00" },
-        { id: "layouts", titulo: "5. Layouts y <slot />", duracion: "09:00" },
-        { id: "rutas", titulo: "6. Sistema de rutas en Astro", duracion: "08:00" },
-        { id: "markdown", titulo: "7. Markdown en Astro", duracion: "10:00" },
-        { id: "estilos", titulo: "8. Estilos en Astro: Scoped vs Global", duracion: "11:00" },
-        { id: "estilos-markdown", titulo: "9. Personalizar Estilos de Markdown", duracion: "12:00" }
+        { id: "introduccion", titulo: "1. El origen de Tyac y la arquitectura Astro", dificultad: "Fácil" },
+        { id: "setup", titulo: "2. Setup Profesional y dependencias", dificultad: "Fácil" },
+        { id: "metadata", titulo: "3. HTML & Metadata: Anatomía de Metadata.astro", dificultad: "Fácil" },
+        { id: "layout-base", titulo: "4. Estructura Base: El Layout Maestro (00-Layout)", dificultad: "Fácil" },
+        { id: "data-brain", titulo: "5. La Carpeta Data: El cerebro de Tyac", dificultad: "Fácil" },
+        { id: "hero-design", titulo: "6. The Hero Section: Diseño de impacto (Spotlight)", dificultad: "Intermedio" },
+        { id: "animaciones", titulo: "7. Animaciones reveal-up y decoraciones", dificultad: "Intermedio" },
+        { id: "ingenieria-index", titulo: "8. Ingeniería del Index: Grids y Sticky Columns", dificultad: "Intermedio" },
+        { id: "filtrado-i", titulo: "9. Filtrado Dinámico I: Lógica de categorías (JS)", dificultad: "Avanzado" },
+        { id: "filtrado-ii", titulo: "10. Filtrado Dinámico II: Transiciones de filtrado", dificultad: "Avanzado" },
+        { id: "componentes-i", titulo: "11. Componentes Atómicos I: TarjetaHorizontal.astro", dificultad: "Intermedio" },
+        { id: "componentes-ii", titulo: "12. Componentes Atómicos II: BotonMateria.astro", dificultad: "Intermedio" },
+        { id: "navbar", titulo: "13. Navigation Flow: La barra superior persistente", dificultad: "Fácil" },
+        { id: "navbar-responsive", titulo: "14. Mobile First: Navbar responsiva", dificultad: "Intermedio" },
+        { id: "branding", titulo: "15. Branding: Identidad visual y Logo vectorial", dificultad: "Fácil" },
+        { id: "footer", titulo: "16. Footer: Diseño de cierre y navegación final", dificultad: "Fácil" },
+        { id: "search-ux", titulo: "17. Búsqueda Híbrida: Concepto Hero vs Header", dificultad: "Intermedio" },
+        { id: "buscador-ui", titulo: "18. Search Interface: Construyendo el Buscador.astro", dificultad: "Intermedio" },
+        { id: "search-modal", titulo: "19. El Modal Global: Anatomía del SearchModal", dificultad: "Intermedio" },
+        { id: "search-algo-i", titulo: "20. Algoritmo de Búsqueda I: Normalización", dificultad: "Avanzado" },
+        { id: "search-algo-ii", titulo: "21. Algoritmo de Búsqueda II: Fuzzy Search y Pesos", dificultad: "Avanzado" },
+        { id: "search-events", titulo: "22. Comunicación via CustomEvents de búsqueda", dificultad: "Avanzado" },
+        { id: "search-api", titulo: "23. Generando el buscador.json dinámico", dificultad: "Avanzado" },
+        { id: "rutas-i", titulo: "24. Rutas Dinámicas I: Catálogo de cursos ([id])", dificultad: "Intermedio" },
+        { id: "rutas-ii", titulo: "25. Rutas Dinámicas II: Acceso a las lecciones", dificultad: "Intermedio" },
+        { id: "landing-layout", titulo: "26. Course Landing: Diseño de 00-LandingLayout", dificultad: "Intermedio" },
+        { id: "lesson-layout", titulo: "27. Lesson Orchestrator: Cómo funciona 00-LayoutLessons", dificultad: "Intermedio" },
+        { id: "markdown-engine", titulo: "28. El Motor Markdown: Contenidos técnicos premium", dificultad: "Intermedio" },
+        { id: "frontmatter", titulo: "29. Frontmatter: Configuración de lecciones", dificultad: "Fácil" },
+        { id: "shiki", titulo: "30. Resaltado de Código: Shiki y temas custom", dificultad: "Intermedio" },
+        { id: "code-copy", titulo: "31. Code Utility: Botón copiar y headers dinámicos", dificultad: "Intermedio" },
+        { id: "alertas", titulo: "32. Alertas Visuales: Bloques [!TIP] y [!NOTE]", dificultad: "Fácil" },
+        { id: "tipografia", titulo: "33. Tipografía: Curando fuentes para legibilidad", dificultad: "Fácil" },
+        { id: "media-manager", titulo: "34. Media Manager: Imágenes y recursos responsivos", dificultad: "Intermedio" },
+        { id: "design-tokens", titulo: "35. Design Tokens: Centralizando con palette.css", dificultad: "Fácil" },
+        { id: "variables-css", titulo: "36. Variables Semánticas vs Colores Sueltos", dificultad: "Fácil" },
+        { id: "glassmorphism", titulo: "37. Glassmorphism: Transparencias y desenfoques", dificultad: "Intermedio" },
+        { id: "micro-interactions", titulo: "38. Micro-interacciones: Hover, focus y activos", dificultad: "Intermedio" },
+        { id: "transitions-i", titulo: "39. Transiciones de Vista I: ClientRouter", dificultad: "Avanzado" },
+        { id: "transitions-ii", titulo: "40. Transiciones de Vista II: Persistencia de estado", dificultad: "Avanzado" },
+        { id: "video-stage", titulo: "41. Video Stage: El escenario del reproductor", dificultad: "Intermedio" },
+        { id: "youtube-mastery", titulo: "42. YouTube Mastery: API oficial y optimización", dificultad: "Avanzado" },
+        { id: "sidebar-nav", titulo: "43. Sidebar de Temario: Navegación vertical", dificultad: "Intermedio" },
+        { id: "breadcrumbs-nav", titulo: "44. Breadcrumbs: Guía de navegación dinámica", dificultad: "Intermedio" },
+        { id: "pagination", titulo: "45. Paginación: Lógica de secuencia (Sig/Ant)", dificultad: "Intermedio" },
+        { id: "responsive-audit", titulo: "46. Auditoría Responsiva: Tyac en Móviles", dificultad: "Intermedio" },
+        { id: "performance", titulo: "47. Performance Tuning: Optimización de carga", dificultad: "Avanzado" },
+        { id: "seo", titulo: "48. SEO Engine: Metadatos dinámicos por lección", dificultad: "Intermedio" },
+        { id: "debugging", titulo: "49. Debugging: Resolviendo el ciclo de vida de Astro", dificultad: "Avanzado" },
+        { id: "conclusion-simple", titulo: "50. Repaso del Camino recorrido", dificultad: "Fácil" },
+        { id: "ux-psychology", titulo: "51. Psicología del diseño: El porqué del Sidebar", dificultad: "Intermedio" },
+        { id: "a11y-audit", titulo: "52. Auditoría A11y: Navegación por teclado", dificultad: "Avanzado" },
+        { id: "color-theory", titulo: "53. Teoría del Color: Dark Mode y acentos neón", dificultad: "Fácil" },
+        { id: "svg-engineering", titulo: "54. Iconografía Pro: Ingeniería de SVGs", dificultad: "Intermedio" },
+        { id: "easing-timing", titulo: "55. Micro-animaciones: Curvas de Easing y Timing", dificultad: "Avanzado" },
+        { id: "lighthouse-100", titulo: "56. Auditoría Lighthouse: Objetivo 100/100", dificultad: "Avanzado" },
+        { id: "lazy-loading", titulo: "57. Optimización de imágenes y Lazy Loading", dificultad: "Intermedio" },
+        { id: "scaling-materia", titulo: "58. Escalamiento: Soportando 10+ materias", dificultad: "Intermedio" },
+        { id: "deployment", titulo: "59. Deployment: Del entorno local a producción", dificultad: "Intermedio" },
+        { id: "open-source", titulo: "60. Visión Final: Tyac como plataforma Open Source", dificultad: "Fácil" }
     ],
 
     // 🧪 Curso de Química General
     quimica_general: [
-        { id: "materia", titulo: "1. ¿Qué es la Materia?", duracion: "08:00" },
-        { id: "atomos", titulo: "2. Estructura Atómica", duracion: "12:00" },
-        { id: "tabla_periodica", titulo: "3. La Tabla Periódica Moderna", duracion: "10:00" },
-        { id: "enlaces", titulo: "4. Enlace Iónico y Covalente", duracion: "15:00" },
-        { id: "reacciones", titulo: "5. Reacciones Químicas", duracion: "20:00" },
+        { id: "atomos", titulo: "1. Estructura Atómica", duracion: "12:00" },
     ],
 };

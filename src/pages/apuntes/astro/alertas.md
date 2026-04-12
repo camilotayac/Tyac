@@ -1,0 +1,53 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Alertas Visuales: Bloques [!TIP] y [!NOTE] en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "alertas"
+---
+
+# Alertas Visuales: Bloques de soporte
+
+A veces, el texto plano no es suficiente para enfatizar un punto crítico o para dar un consejo "fuera de pista". En Tyac, hemos implementado un sistema de **Alertas Visuales** inspirado en los estándares de GitHub (Callouts) que permiten resaltar información clave con elegancia y jerarquía clara.
+
+## 1. Los 4 tipos de Alertas en Tyac
+
+Hemos definido cuatro niveles de importancia, cada uno con su propio color y significado:
+
+- **[!NOTE] (Cian)**: Información de trasfondo o detalles interesantes.
+- **[!TIP] (Púrpura)**: Consejos para mejorar el flujo de trabajo o trucos técnicos.
+- **[!IMPORTANT] (Amarillo)**: Requisitos esenciales para que el código funcione.
+- **[!WARNING] (Rojo)**: Advertencias sobre errores comunes o prácticas peligrosas.
+
+## 2. Sintaxis en el Markdown
+
+Para usarlas, simplemente usamos la sintaxis de bloque de cita (`>`) seguida de un identificador especial:
+
+```markdown
+> [!TIP]
+> Este es un consejo secreto de Tyac para ahorrar tiempo.
+```
+
+## 3. Ingeniería del Estilo
+
+En el archivo `src/styles/markdown/04-Alerts.css`, definimos cómo se ven estos bloques. Usamos un borde grueso a la izquierda del color correspondiente y un fondo muy suave (opacidad `0.05`) para que el bloque "flote" sobre el texto sin abrumar.
+
+```css
+.alert-tip {
+    border-left: 4px solid var(--dracula-purple);
+    background: rgba(189, 147, 249, 0.05);
+    padding: 1.5rem;
+    border-radius: 0 12px 12px 0;
+}
+```
+
+## 4. Por qué las usamos?
+
+Las alertas rompen la monotonía del texto largo, guiando el ojo del usuario hacia los puntos que realmente importan. En una plataforma educativa, estas señales visuales son críticas para asegurar que los conceptos fundamentales no se pasen por alto.
+
+> [!IMPORTANT]
+> **Toque Senior**: No abuses de las alertas. Si cada párrafo es una alerta, ninguna lo es. Úsalas solo cuando la información aporte un valor extra o preventivo.
+
+---
+
+El contenido es el rey, pero la fuente es su voz. En la siguiente guía, hablaremos sobre la tipografía y la legibilidad en Tyac.

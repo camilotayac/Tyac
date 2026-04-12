@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/head/00-Layout.astro";
 import TarjetaHorizontal from "../components/TarjetaHorizontal.astro";
 import BotonMateria from "../components/BotonMateria.astro";
 import Buscador from "../components/Buscador.astro";
@@ -102,27 +102,9 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                                 class="filtro-btn activo"
                             />
                             <BotonMateria
-                                texto="Matemáticas"
-                                tipo="purpura"
-                                data-filter="Matemáticas"
-                                class="filtro-btn"
-                            />
-                            <BotonMateria
                                 texto="Química"
                                 tipo="rojo"
                                 data-filter="Química"
-                                class="filtro-btn"
-                            />
-                            <BotonMateria
-                                texto="Biología"
-                                tipo="verde"
-                                data-filter="Biología"
-                                class="filtro-btn"
-                            />
-                            <BotonMateria
-                                texto="Física"
-                                tipo="amarillo"
-                                data-filter="Física"
                                 class="filtro-btn"
                             />
                         </div>
@@ -196,27 +178,9 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                         class="filtro-btn"
                     />
                     <BotonMateria
-                        texto="Docker"
-                        tipo="gris"
-                        data-filter="Docker"
-                        class="filtro-btn"
-                    />
-                    <BotonMateria
-                        texto="JavaScript"
-                        tipo="rojo"
-                        data-filter="JavaScript"
-                        class="filtro-btn"
-                    />
-                    <BotonMateria
-                        texto="Node.js"
-                        tipo="verde"
-                        data-filter="Node.js"
-                        class="filtro-btn"
-                    />
-                    <BotonMateria
-                        texto="Git"
+                        texto="Matemáticas"
                         tipo="amarillo"
-                        data-filter="Git"
+                        data-filter="Matemáticas"
                         class="filtro-btn"
                     />
                 </div>
@@ -232,9 +196,9 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     .hero-platzi {
         position: relative;
         overflow: hidden;
-        background-color: var(--fondo-pagina);
-        background-image: var(--fondo-hero-glow);
-        color: var(--texto-claro);
+        background-color: var(--clr-black-01);
+        background-image: var(--clr-alpha-accent);
+        color: var(--clr-white-soft);
         padding: 3rem 2rem 6rem 2rem; /* Más espacio abajo sin mover el texto */
         text-align: center;
     }
@@ -254,7 +218,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     .hero-platzi::before {
-        background: var(--acento);
+        background: var(--dracula-purple);
         top: -100px;
         left: -100px;
     }
@@ -299,7 +263,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     .hero-acento {
         background: linear-gradient(
             135deg,
-            var(--acento) 0%,
+            var(--dracula-purple) 0%,
             var(--dracula-cyan) 100%
         );
         -webkit-background-clip: text;
@@ -309,7 +273,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
 
     .hero-subtitulo {
         font-size: 1.15rem;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         margin-bottom: 1rem; /* Mínimo */
         max-width: 600px;
         line-height: 1.6;
@@ -324,7 +288,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 2px;
-        color: var(--acento);
+        color: var(--dracula-purple);
         margin-bottom: 0.8rem; /* Mínimo */
         opacity: 0;
         text-align: center; /* Forzado */
@@ -387,10 +351,10 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         gap: 6rem; /* Ajustado a 10rem */
         background: linear-gradient(
             to bottom,
-            var(--fondo-pagina) 0%,
-            var(--fondo-seccion) 30%,
-            var(--fondo-seccion) 70%,
-            var(--fondo-pagina) 100%
+            var(--clr-black-01) 0%,
+            var(--clr-black-02) 30%,
+            var(--clr-black-02) 70%,
+            var(--clr-black-01) 100%
         );
     }
 
@@ -412,7 +376,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     .titulo-seccion {
-        color: var(--seccion-titulo);
+        color: var(--dracula-purple);
         font-size: 2.2rem;
         margin: 0 0 1rem 0;
         display: flex;
@@ -423,7 +387,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     .desc-seccion {
-        color: var(--seccion-desc);
+        color: var(--clr-gray-muted);
         font-size: 1.1rem;
         line-height: 1.6;
         margin: 0 0 1.5rem 0;
@@ -436,7 +400,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     }
 
     .icono-seccion {
-        background: var(--borde-oscuro);
+        background: var(--clr-alpha-border);
         padding: 10px;
         border-radius: 14px;
         font-size: 1.4rem;
@@ -504,7 +468,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         opacity: 0.4 !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         /* Forzamos el color morado base para todos los botones en este contenedor */
-        color: var(--acento) !important;
+        color: var(--dracula-purple) !important;
         background-color: rgba(189, 147, 249, 0.05) !important;
         border-color: rgba(189, 147, 249, 0.1) !important;
     }
@@ -516,8 +480,8 @@ import { apuntesTecnicos } from "../data/apuntes.js";
     /* Resaltado del botón activo */
     .filtro-btn.activo {
         opacity: 1 !important;
-        color: var(--acento) !important;
-        border-color: var(--acento) !important;
+        color: var(--dracula-purple) !important;
+        border-color: var(--dracula-purple) !important;
         background-color: rgba(189, 147, 249, 0.15) !important;
         box-shadow: 0 0 20px rgba(189, 147, 249, 0.3) !important;
     }

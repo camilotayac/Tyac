@@ -1,6 +1,6 @@
 ---
 // src/pages/apuntes/[id].astro
-import LandingPageTemplate from "../../components/LandingPageTemplate.astro";
+import LandingLayout from "../../layouts/landing/00-LandingLayout.astro";
 import { apuntesTecnicos } from "../../data/apuntes.js";
 
 export async function getStaticPaths() {
@@ -13,4 +13,4 @@ export async function getStaticPaths() {
 const { apunte } = Astro.props;
 ---
 
-<LandingPageTemplate curso={apunte} tipo="apunte" />
+<LandingLayout curso={apunte} tipo="apunte" />

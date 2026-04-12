@@ -1,0 +1,86 @@
+---
+/**
+ * 01-BREADCRUMBS.ASTRO
+ * Navigation path for lesson views: "Back to Course"
+ * Ruta de navegación para vistas de lecciones: "Volver al Temario"
+ */
+
+interface Props {
+    urlPrefix: string;
+    courseId: string;
+}
+
+const { urlPrefix, courseId } = Astro.props;
+---
+
+<nav class="breadcrumb-nav">
+    <a href={`${urlPrefix}/${courseId}`} class="back-link">
+        <span class="back-icon">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </span>
+        Volver al temario
+    </a>
+</nav>
+
+<style>
+    .breadcrumb-nav {
+        /* Margen removido para dejar el control al layout padre */
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--c-muted);
+        text-decoration: none;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+        padding: 8px 16px 8px 8px;
+        background: transparent;
+        border: 1px solid var(--c-border);
+        border-radius: 100px; /* Technical rounded edge */
+    }
+
+    .back-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px solid var(--c-border);
+        border-radius: 50%;
+        color: var(--c-text);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .back-link:hover {
+        color: var(--c-text);
+        border-color: var(--c-text);
+        background: #fff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .back-link:hover .back-icon {
+        background: var(--c-text);
+        color: #fff;
+        transform: rotate(-10deg) scale(1.1);
+    }
+</style>

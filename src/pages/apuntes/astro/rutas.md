@@ -1,132 +1,51 @@
 ---
-layout: ../../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: rutas
-titulo: "Sistema de Rutas"
-descripcion: "Enrutamiento basado en el sistema de archivos de Astro."
-materia: "Tecnología"
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Rutas dinámicas: Escalabilidad en la práctica"
+materia: "Astro"
+curso: "astro"
+id_clase: "rutas"
 ---
 
-# Sistema de rutas en Astro
+# Rutas dinámicas en Tyac
 
-Astro usa un sistema de rutas **basado en archivos**. Esto significa que no tienes que configurar rutas manualmente: la URL de una página la determina directamente la ubicación del archivo dentro de `src/pages/`.
+¿Cómo es posible que Tyac pueda mostrar decenas de cursos y lecciones sin que tengamos que crear físicamente cientos de archivos `.astro`? La respuesta es el **Enrutamiento Dinámico**.
 
----
+## El poder de los Corchetes `[...]`
 
-## La regla básica
+En Astro, un nombre de archivo encerrado entre corchetes, como `[id].astro`, le dice al framework: "Esta es una página comodín. Úsala para renderizar cualquier URL que coincida con este patrón".
 
-```
-src/pages/[archivo]  →  URL en el navegador
-```
+En Tyac, usamos esto en dos niveles clave:
+1.  **Cursos**: `src/pages/cursos/[id].astro`
+2.  **Apuntes**: `src/pages/apuntes/[id].astro`
 
-| Archivo | URL |
-| --- | --- |
-| `src/pages/index.astro` | `/` |
-| `src/pages/cursos.astro` | `/cursos` |
-| `src/pages/sobre-nosotros.astro` | `/sobre-nosotros` |
-| `src/pages/astro/introduccion.md` | `/astro/introduccion` |
-| `src/pages/conjuntos/proposicion.md` | `/conjuntos/proposicion` |
+## Cómo funciona en Tyac
 
-> Las subcarpetas crean segmentos en la URL. No necesitas configurar nada.
-
----
-
-## Tipos de páginas soportadas
-
-Astro acepta varios formatos de archivo como páginas:
-
-| Extensión | Descripción |
-| --- | --- |
-| `.astro` | Componente Astro completo (lógica + template) |
-| `.md` | Markdown — ideal para contenido como lecciones |
-| `.mdx` | Markdown con componentes — markdown + JSX |
-| `.html` | HTML puro |
-
-En Tyac usamos `.astro` para páginas con lógica (index) y `.md` para el contenido de las lecciones.
-
----
-
-## `index.astro` es especial
-
-El archivo `index.astro` dentro de cualquier carpeta representa la raíz de esa carpeta:
-
-```
-pages/index.astro           →  /
-pages/astro/index.astro     →  /astro
-pages/conjuntos/index.astro →  /conjuntos
-```
-
----
-
-## Rutas dinámicas
-
-Hasta ahora vimos rutas **estáticas** (URLs fijas). Astro también soporta rutas **dinámicas**: páginas que se generan a partir de datos.
-
-Se crean usando corchetes en el nombre del archivo:
-
-```
-src/pages/curso/[id].astro  →  /curso/cualquier-cosa
-```
-
-Dentro del archivo puedes obtener ese valor dinámico:
+Dentro de estos archivos, usamos una función especial de Astro llamada `getStaticPaths()`. Esta función lee nuestros datos maestros (`cursos.js` o `apuntes.js`) y genera una lista de todas las páginas que deben existir.
 
 ```astro
 ---
-// La URL es /curso/conjuntos
-const { id } = Astro.params;
-// id === "conjuntos"
----
+// src/pages/cursos/[id].astro
+import { cursosCiencia } from '../../data/cursos.js';
 
-<h1>Mostrando el curso: {id}</h1>
-```
-
-Para que funcionen en modo estático, debes decirle a Astro qué páginas generar usando `getStaticPaths()`:
-
-```astro
----
 export function getStaticPaths() {
-    return [
-        { params: { id: "conjuntos" } },
-        { params: { id: "astro" } },
-        { params: { id: "quimica" } },
-    ];
+  return cursosCiencia.map(curso => ({
+    params: { id: curso.id }, // La URL será /cursos/quimica_general, etc.
+    props: { curso }         // Pasamos los datos del curso directamente
+  }));
 }
 
-const { id } = Astro.params;
+const { curso } = Astro.props;
 ---
-
-<h1>Curso: {id}</h1>
+<LandingLayout curso={curso} tipo="curso" />
 ```
 
-> En Tyac usamos rutas estáticas por ahora (un archivo `.md` por lección), lo cual es más simple y directo.
+## Por qué es escalable
+
+Si mañana decides añadir 50 nuevos cursos de programación, **solo tienes que añadirlos al archivo de datos**. Astro detectará los nuevos registros, creará las 50 rutas nuevas y aplicará el diseño correcto sin que tengas que tocar una sola línea de código en las páginas.
+
+> [!TIP]
+> **Rendimiento**: Astro genera todas estas páginas en tiempo de construcción (build), por lo que siempre se sirven como HTML estático ultrarrápido, sin importar cuántas sean.
 
 ---
 
-## El archivo `404.astro`
-
-Si creas `src/pages/404.astro`, Astro lo usa automáticamente cuando alguien visita una URL que no existe:
-
-```astro
----
-// src/pages/404.astro
----
-<h1>Página no encontrada</h1>
-<a href="/">Volver al inicio</a>
-```
-
----
-
-## Resumen del sistema de rutas
-
-```
-¿Quieres una página en /cursos?
-  → Crea src/pages/cursos.astro
-
-¿Quieres una lección en /astro/introduccion?
-  → Crea src/pages/astro/introduccion.md
-
-¿Quieres algo dinámico como /usuario/camilo?
-  → Crea src/pages/usuario/[nombre].astro
-```
-
-El sistema de archivos **es** el sistema de rutas. Sin configuración, sin confusión.
+En la siguiente guía, profundizaremos en cómo manejamos el contenido textual de estas guías usando Markdown.

@@ -1,0 +1,42 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Deployment: Del entorno local a producción en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "deployment"
+---
+
+# Deployment: Al mundo real
+
+Todo el código que hemos escrito en estas 58 lecciones no sirve de nada si se queda guardado en tu ordenador. El **Despliegue (Deployment)** es el proceso de subir Tyac a un servidor para que cualquier persona en el mundo pueda acceder a la plataforma.
+
+## 1. El comando de construcción
+
+En local usamos `npm run dev` para ver los cambios al instante. Pero para el mundo real, necesitamos ejecutar:
+`npm run build`
+
+Astro tomará todos nuestros archivos `.astro`, `.js` y `.md` y los convertirá en una carpeta llamada `dist/` llena de HTML, CSS y JS optimizado y estático.
+
+## 2. Dónde vive Tyac? (Hosting)
+
+Al ser una web estática, Tyac puede vivir casi en cualquier sitio. Recomendamos plataformas como:
+- **Netlify / Vercel**: Se conectan a tu GitHub y despliegan la web automáticamente cada vez que subes un cambio (CI/CD).
+- **GitHub Pages**: Ideal para proyectos Open Source.
+
+## 3. CI/CD: Automatización
+
+En Tyac, no subimos archivos por FTP. Usamos **Integración Continua**. Cuando terminamos un apunte técnico y hacemos un "Push" a la rama principal de Git, el servidor detecta el cambio, construye la web de nuevo y la publica en menos de 2 minutos sin intervención humana.
+
+## 4. Verificación Post-Despliegue
+
+Una vez en vivo, realizamos una pasada final de pruebas en un entorno real:
+- ¿Funcionan los breadcrumbs en el servidor?
+- ¿La API `buscador.json` responde correctamente?
+- ¿Las View Transitions se sienten igual de fluidas?
+
+> [!TIP]
+> **Dominio Tyac**: Un punto final es configurar un dominio personalizado (como `tyac.edu`). Esto le da el toque final de profesionalismo y facilita que los estudiantes recuerden la dirección de la plataforma.
+
+---
+
+Has llegado a la penúltima lección. En la siguiente guía cerraremos este Masterpiece Blueprint con una visión del futuro.

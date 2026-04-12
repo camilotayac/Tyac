@@ -1,0 +1,49 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Resaltado de Código: Shiki y temas custom en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "shiki"
+---
+
+# Resaltado de Código: Shiki
+
+Como plataforma técnica, en Tyac mostramos mucho código. No podíamos conformarnos con un resaltado básico y genérico. Por eso integramos **Shiki**, el motor de resaltado de sintaxis que usa los mismos temas que Visual Studio Code.
+
+## 1. Por qué Shiki en Tyac?
+
+A diferencia de otras librerías que resaltan el código en el navegador (gastando batería y memoria del usuario), Shiki genera el resaltado en el **servidor**. El usuario recibe HTML ya coloreado y con estilo, lo que hace que la página sea mucho más rápida.
+
+## 2. Configuración en Astro
+
+En el archivo de configuración de Tyac, habilitamos Shiki y elegimos nuestro tema favorito para el Dark Mode:
+
+```javascript
+// astro.config.mjs
+markdown: {
+  syntaxHighlight: 'shiki',
+  shikiConfig: {
+    theme: 'dracula', // El tema oficial de la marca Tyac
+    wrap: true,       // Para que el código no se desborde en móviles
+  },
+}
+```
+
+## 3. Soporte de Lenguajes
+
+Gracias a Shiki, Tyac reconoce automáticamente la sintaxis de casi cualquier lenguaje:
+- **Astro**: Para nuestras guías propias.
+- **JavaScript/TypeScript**: Lógica de componentes.
+- **HTML/CSS**: Estructura y diseño.
+- **Markdown**: Para explicar estas mismas guías.
+
+## 4. Legibilidad Extrema
+
+Hemos ajustado las fuentes (`JetBrains Mono`) y los contrastes de color para que el código sea legible incluso tras horas de estudio intenso. Cada palabra reservada, variable y comentario tiene su color específico, reduciendo la carga cognitiva al leer.
+
+> [!TIP]
+> **Dato Pro**: En Tyac, el resaltado de sintaxis es tan preciso que soporta incluso los "Diffs" (como los de Git) para mostrar qué líneas de código han cambiado.
+
+---
+
+El código coloreado es genial, pero el código *copiable* es mejor. En la siguiente guía, veremos cómo añadimos la utilidad de "Copiado Rápido".

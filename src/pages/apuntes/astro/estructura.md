@@ -1,118 +1,49 @@
 ---
-layout: ../../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: estructura
-titulo: "Estructura de Proyecto"
-descripcion: "Guía sobre la organización de carpetas y archivos en el framework."
-materia: "Tecnología"
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Organización de archivos en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "estructura"
 ---
 
-# Estructura de un proyecto Astro
+# Organización de archivos en Tyac
 
-Cuando creas un proyecto Astro, obtienes una carpeta con una estructura muy específica. Cada carpeta tiene un propósito claro y Astro la trata de forma especial.
+Un proyecto grande como Tyac requiere una estructura profesional para no volverse un caos. Astro nos permite organizar los archivos de una manera lógica que separa los datos del diseño.
 
----
+## La anatomía de `src/` en Tyac
 
-## Vista general
+En este proyecto, hemos seguido un esquema de **Diseño Atómico** adaptado a Astro:
 
-```
-mi-proyecto/
-├── public/             ← Archivos estáticos (imágenes, favicon)
-├── src/
-│   ├── components/     ← Componentes reutilizables (.astro)
-│   ├── layouts/        ← Esqueletos HTML que envuelven páginas
-│   ├── pages/          ← Páginas del sitio (generan rutas automáticamente)
-│   └── data/           ← Datos del proyecto (JS, JSON)
-├── astro.config.mjs    ← Configuración de Astro
-├── package.json        ← Dependencias del proyecto
-└── tsconfig.json       ← Configuración de TypeScript
-```
+### 1. `src/data/` (El cerebro)
+Aquí es donde viven archivos como `temarios.js` y `cursos.js`. En lugar de escribir el temario a mano en cada página, lo centralizamos aquí para que la UI se genere automáticamente.
 
----
+### 2. `src/components/` (Los ladrillos)
+Aquí guardamos los trozos reutilizables de la web:
+- `Buscador.astro`: La lógica de búsqueda.
+- `TarjetaHorizontal.astro`: Cómo se ve cada curso en el index.
+- `SidebarVertical.astro`: El menú de lecciones.
 
-## `src/pages/` — El corazón del sitio
+### 3. `src/layouts/` (Los moldes)
+Astro brilla aquí. Hemos creado una jerarquía de layouts:
+- `head/00-Layout.astro`: El marco global (HTML, Head, Navbar, Footer).
+- `landing/00-LandingLayout.astro`: El diseño específico para la presentación de cursos.
+- `lessons/00-LayoutLessons.astro`: El entorno optimizado para lectura de apuntes.
 
-Esta es la carpeta más importante. **Cada archivo aquí se convierte en una página web.**
+### 4. `src/pages/` (La cara pública)
+Aquí es donde se definen las URLs. Usamos rutas dinámicas como `[id].astro` para que una sola página pueda renderizar cualquier curso basado en su identificador.
 
-| Archivo | URL generada |
-| --- | --- |
-| `pages/index.astro` | `/` |
-| `pages/cursos.astro` | `/cursos` |
-| `pages/astro/introduccion.md` | `/astro/introduccion` |
-| `pages/conjuntos/proposicion.md` | `/conjuntos/proposicion` |
+## El flujo de trabajo en Tyac
 
-> No necesitas configurar nada. El nombre del archivo **es** la ruta.
-
----
-
-## `src/components/` — Piezas reutilizables
-
-Aquí viven los componentes: bloques de HTML + CSS que puedes usar en múltiples páginas. En Tyac tienes:
-
-- `TarjetaCurso.astro` → la tarjeta visual de cada curso
-- `SidebarCurso.astro` → la barra lateral de navegación dentro de un curso
-
-Si necesitas algo que se repite en más de un lugar, va aquí.
-
----
-
-## `src/layouts/` — Esqueletos de página
-
-Los layouts son componentes especiales que envuelven el contenido de las páginas. Definen la estructura compartida: el `<head>`, el header, el footer.
-
-En Tyac tienes:
-
-- `Layout.astro` → el esqueleto base de todo el sitio (header + variables CSS)
-- `LayoutVertical.astro` → esqueleto para las lecciones (sidebar + área de contenido)
-
----
-
-## `src/data/` — Datos del proyecto
-
-Archivos JavaScript o JSON que guardan datos estructurados. En Tyac:
-
-- `temarios.js` → la lista de todos los cursos y sus lecciones
-
-Al no usar una base de datos todavía, este archivo actúa como la "fuente de verdad" del contenido.
-
----
-
-## `public/` — Archivos que van directo al servidor
-
-Todo lo que pongas en `public/` se sirve tal cual, sin que Astro lo procese. Úsalo para:
-
-- Imágenes (`public/img/ejemplo.png` → accesible desde `/img/ejemplo.png`)
-- Favicon (`public/favicon.ico`)
-- Archivos PDF o fuentes locales
-
----
-
-## `astro.config.mjs` — Configuración
-
-Archivo donde configuras Astro: integraciones, modo de output, adaptadores de deploy, etc. Por ahora en Tyac está casi vacío porque el proyecto es simple.
-
----
-
-## Resumen visual de Tyac
-
-```
-Tyac/
-├── public/
-│   └── img/            ← Imágenes de los cursos
-├── src/
-│   ├── components/
-│   │   ├── TarjetaCurso.astro
-│   │   └── SidebarCurso.astro
-│   ├── layouts/
-│   │   ├── Layout.astro
-│   │   └── LayoutVertical.astro
-│   ├── pages/
-│   │   ├── index.astro         → /
-│   │   ├── astro/              → /astro/...
-│   │   └── conjuntos/          → /conjuntos/...
-│   └── data/
-│       └── temarios.js
-└── astro.config.mjs
+```mermaid
+graph TD
+    Data[src/data/temarios.js] --> Layout[src/layouts/lessons/00-LayoutLessons.astro]
+    Layout --> Page[src/pages/apuntes/astro/introduccion.md]
+    Component[src/components/SidebarVertical.astro] --> Layout
 ```
 
-Ahora que conoces la estructura, en la siguiente lección veremos cómo funciona la sintaxis de los archivos `.astro`.
+> [!IMPORTANT]
+> Esta estructura nos permite cambiar el diseño de *todas* las lecciones simplemente editando un solo archivo en `layouts/`, sin tocar el contenido Markdown.
+
+---
+
+En la siguiente guía, analizaremos cómo creamos componentes de UI premium para Tyac.

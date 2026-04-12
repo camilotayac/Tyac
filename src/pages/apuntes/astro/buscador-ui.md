@@ -1,0 +1,57 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Search Interface: Construyendo el Buscador.astro en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "buscador-ui"
+---
+
+# Search Interface: Buscador.astro
+
+El componente `Buscador.astro` es una de las piezas más versátiles de Tyac. Es un componente **camaleón**: cambia su forma y su lógica dependiendo de su propiedad `mode`.
+
+## 1. El poder de las Props de Modo
+
+Usamos una prop simple para decidir qué "personalidad" adopta el buscador:
+
+```astro
+---
+// Buscador.astro
+interface Props {
+    mode?: "hero" | "header";
+}
+const { mode = "hero" } = Astro.props;
+---
+```
+
+## 2. Diferencias en el Esqueleto HTML
+
+Dependiendo del modo, el componente renderiza elementos distintos:
+- **Modo Hero**: El input es `readonly`. No queremos que escribas ahí, sino que al hacer clic se abra el Modal Global.
+- **Modo Header**: Incluye un "Panel de Resultados" oculto que se despliega al escribir.
+
+## 3. Estilos Contextuales
+
+Usamos clases condicionales para aplicar diseños diferentes usando CSS Scoped:
+
+```astro
+<div class={`buscador-global-container ${mode}`} data-buscador>
+    ...
+</div>
+```
+
+En el CSS, definimos que si el modo es `.hero`, el buscador sea más grande, tenga sombras pesadas y efectos de escala. Si es `.header`, es compacto, con bordes finos y fondo semi-transparente.
+
+## 4. Lógica Híbrida en el Script
+
+Aquí es donde Tyac brilla. El script del componente identifica su modo y asigna listeners diferentes:
+
+- **Si es Hero**: Escucha el clic y dispara el evento global `open-search`.
+- **Si es Header**: Escucha el teclado, consulta la API de búsqueda y llena el panel de resultados.
+
+> [!IMPORTANT]
+> **Toque Senior**: Al usar `readonly` en el modo Hero, evitamos que aparezca el teclado en móviles antes de que el modal esté listo, asegurando una transición visual limpia.
+
+---
+
+La interfaz es solo la mitad de la historia. En la siguiente guía, desarmaremos el "Modal Global" donde ocurre la magia de la búsqueda inmersiva.

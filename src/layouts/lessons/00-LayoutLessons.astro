@@ -1,0 +1,285 @@
+---
+/**
+ * 00-LAYOUTLESSONS.ASTRO
+ * Master orchestrator for lesson views
+ * Orquestador maestro para vistas de lecciones
+ */
+
+// Lesson-specific logic / Lógica específica de lecciones
+
+// Core Layout & Components / Layout Base y Componentes
+import Footer from "../../components/Footer.astro";
+import Layout from "../head/00-Layout.astro";
+import SidebarVertical from "../../components/SidebarVertical.astro";
+import Breadcrumbs from "../courses/03-Breadcrumbs.astro";
+import Pagination from "../courses/04-Pagination.astro";
+
+// Data & Assets / Datos y Recursos
+import { todosLosTemarios } from "../../data/temarios.js";
+import { cursosCiencia } from "../../data/cursos.js";
+
+// Global Markdown Styles / Estilos globales de Markdown
+import "../../styles/markdown/01-Base.css";
+import "../../styles/markdown/02-Code.css";
+import "../../styles/markdown/03-Tables.css";
+import "../../styles/markdown/04-Links.css";
+import "../../styles/markdown/05-Formulas.css";
+import "../../styles/markdown/06-Examples.css";
+
+// Props & Navigation Logic / Props y Lógica de Navegación
+const { frontmatter } = Astro.props;
+const lessonId = frontmatter.id_clase;
+
+type CourseValidKey = keyof typeof todosLosTemarios;
+const currentCourse = frontmatter.curso as CourseValidKey;
+
+const selectedSyllabus =
+    currentCourse && todosLosTemarios[currentCourse]
+        ? todosLosTemarios[currentCourse]
+        : [];
+
+const isAcademicCourse = cursosCiencia.some((c) => c.id === currentCourse);
+const urlPrefix = isAcademicCourse ? "/cursos" : "/apuntes";
+
+const lessonData = selectedSyllabus.find(
+    (lesson: any) => lesson.id === lessonId,
+);
+const pageTitle = lessonData
+    ? lessonData.titulo
+    : frontmatter.titulo || "Clase Tyac";
+
+const currentIndex = selectedSyllabus.findIndex(
+    (lesson: any) => lesson.id === lessonId,
+);
+const prevLesson = currentIndex > 0 ? selectedSyllabus[currentIndex - 1] : null;
+const nextLesson =
+    currentIndex !== -1 && currentIndex < selectedSyllabus.length - 1
+        ? selectedSyllabus[currentIndex + 1]
+        : null;
+---
+
+<Layout titulo={`${pageTitle} - Tyac`}>
+    <div class="lessons-layout">
+        <!-- Sidebar Navigation / Navegación lateral -->
+        {
+            selectedSyllabus.length > 0 && currentCourse && (
+                <SidebarVertical
+                    lecciones={selectedSyllabus}
+                    claseActualId={lessonId}
+                    cursoActualId={currentCourse}
+                />
+            )
+        }
+
+        <main class="lessons-viewport" transition:animate="fade">
+            <div class="lessons-scroller">
+                <div class="lessons-max-width">
+                    <Breadcrumbs
+                        urlPrefix={urlPrefix}
+                        courseId={currentCourse}
+                    />
+
+                    <div class="lesson-meta-bar">
+                        {isAcademicCourse ? (
+                            <div class="meta-item time">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span>{(lessonData as any)?.duracion} min de lectura</span>
+                            </div>
+                        ) : (
+                            <div class="meta-item difficulty">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                <span>Dificultad: {(lessonData as any)?.dificultad}</span>
+                            </div>
+                        )}
+                        <div class="meta-separator"></div>
+                        <div class="meta-item topic">
+                            <span>{frontmatter.materia || "General"}</span>
+                        </div>
+                    </div>
+
+                    <article class="markdown-container">
+                        <slot />
+                    </article>
+
+                    <Pagination
+                        prevLesson={prevLesson}
+                        nextLesson={nextLesson}
+                        urlPrefix={urlPrefix}
+                        courseId={currentCourse}
+                    />
+                </div>
+
+                <Footer />
+            </div>
+        </main>
+    </div>
+</Layout>
+
+<style>
+    /* Lessons Structural Layout / Maquetación estructural de lecciones */
+    .lessons-layout {
+        display: flex;
+        height: calc(100vh - 64px);
+        background-color: var(--clr-black-01);
+        overflow: hidden;
+    }
+
+    .lessons-viewport {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+        background-color: var(--clr-white-pure);
+    }
+
+    .lessons-scroller {
+        height: 100%;
+        overflow-y: auto;
+        padding: 0;
+        scroll-behavior: smooth;
+    }
+
+    .lessons-max-width {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 2rem 1rem 8rem 1rem;
+    }
+
+    /* Meta Bar Design (Consistency with Landing) */
+    .lesson-meta-bar {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.5rem 0 2.5rem 0;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--clr-gray-muted);
+    }
+
+    .meta-item svg {
+        color: var(--dracula-cyan);
+    }
+
+    .meta-separator {
+        width: 4px;
+        height: 4px;
+        background: var(--clr-gray-border);
+        border-radius: 50%;
+        opacity: 0.5;
+    }
+
+    .meta-item.topic span {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.75rem;
+        color: var(--dracula-purple);
+    }
+
+    @media (max-width: 1024px) {
+        .lessons-max-width {
+            padding: 2rem 0.5rem 6rem 0.5rem;
+        }
+    }
+</style>
+
+<style is:global>
+    body {
+        overflow: hidden !important;
+    }
+</style>
+
+<script>
+    // @ts-nocheck
+    /** @param {any} el */
+    function getLanguageFromElement(el) {
+        if (!el) return null;
+        const classList = Array.from(el.classList);
+        const forbidden = [
+            "shiki",
+            "dracula",
+            "markdown-container",
+            "astro-",
+            "codigo-wrapper",
+            "has-focused",
+        ];
+
+        // 1. Buscar lenguaje explícito (formato loop para evitar 'implicit any' en arrow functions)
+        for (const cls of classList) {
+            if (typeof cls === "string") {
+                if (cls.startsWith("language-"))
+                    return cls.replace("language-", "");
+                if (cls.startsWith("lang-")) return cls.replace("lang-", "");
+            }
+        }
+
+        // 2. Buscar clase aislada (filtrando temas/librerías)
+        for (const cls of classList) {
+            if (typeof cls === "string") {
+                let isForbidden = false;
+                for (const f of forbidden) {
+                    if (cls.startsWith(f)) {
+                        isForbidden = true;
+                        break;
+                    }
+                }
+                if (!isForbidden) return cls;
+            }
+        }
+
+        return null;
+    }
+
+    function setupCodeBlocks() {
+        const preBlocks = document.querySelectorAll(".markdown-container pre");
+
+        for (const pre of Array.from(preBlocks)) {
+            const preElement = pre; // Cast implícito
+            if (preElement.parentElement?.classList.contains("codigo-wrapper"))
+                continue;
+
+            // Prioridad: Atributo data-language
+            let lang = preElement.getAttribute("data-language");
+
+            // Si no hay atributo, buscamos en las clases
+            if (!lang || lang === "text") {
+                lang =
+                    getLanguageFromElement(preElement) ||
+                    getLanguageFromElement(preElement.querySelector("code")) ||
+                    "text";
+            }
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "codigo-wrapper";
+            const header = document.createElement("div");
+            header.className = "codigo-header";
+            header.innerHTML = `<span>Code: ${lang}</span><span class="copy-btn">⧉</span>`;
+
+            if (preElement.parentNode) {
+                preElement.parentNode.insertBefore(wrapper, preElement);
+                wrapper.appendChild(header);
+                wrapper.appendChild(preElement);
+
+                const copyBtn = header.querySelector(".copy-btn");
+                if (copyBtn) {
+                    copyBtn.addEventListener("click", () => {
+                        const text = preElement.textContent || "";
+                        navigator.clipboard.writeText(text).then(() => {
+                            copyBtn.textContent = "✔";
+                            setTimeout(() => (copyBtn.textContent = "⧉"), 2000);
+                        });
+                    });
+                }
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", setupCodeBlocks);
+    document.addEventListener("astro:page-load", setupCodeBlocks);
+</script>

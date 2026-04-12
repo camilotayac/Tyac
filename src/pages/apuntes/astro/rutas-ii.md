@@ -1,0 +1,45 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Rutas Dinámicas II: Acceso a las lecciones en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "rutas-ii"
+---
+
+# Rutas Dinámicas II: Lecciones Individuales
+
+Si el catálogo de cursos es el primer nivel, las lecciones son el corazón de Tyac. Para manejar las cientos de lecciones (ya sean de video o de apuntes), usamos una estructura de carpetas que combina rutas físicas con parámetros dinámicos.
+
+## 1. La estructura de rutas de lecciones
+
+En Tyac, las lecciones se organizan de dos formas:
+- **Cursos Académicos (Video)**: Se definen en `src/pages/cursos/[materia]/[leccion].astro`.
+- **Apuntes Técnicos (Markdown)**: Se definen directamente en carpetas como `src/pages/apuntes/astro/`.
+
+## 2. Parámetros Anidados
+
+Astro permite que las rutas tengan múltiples parámetros. Por ejemplo, en `/cursos/quimica_general/atomos`, el primer parámetro es la materia y el segundo es el ID de la lección específica. Esto nos permite usar un solo archivo de lógica para renderizar cualquier clase de cualquier curso.
+
+```astro
+---
+// [materia]/[leccion].astro
+export async function getStaticPaths() {
+  // Lógica para mapear materias y sus lecciones
+}
+---
+```
+
+## 3. Redirecciones Inteligentes
+
+En Tyac, nos aseguramos de que si un usuario intenta entrar a una materia que no existe, sea redirigido o vea una página de error limpia. Esto mantiene la navegación segura y profesional.
+
+## 4. El concepto de "Slug"
+
+Cada lección en Tyac tiene un **slug** (un nombre amigable para la URL, como `estructura-de-astro`). Este slug es el que usamos para buscar en nuestro cerebro de datos (`temarios.js`) y recuperar toda la información necesaria: el video, el título, y quién es el profesor.
+
+> [!TIP]
+> **SEO**: Al usar slugs descriptivos en las rutas dinámicas, ayudamos a que los buscadores como Google entiendan de qué trata cada lección antes de que el usuario haga clic.
+
+---
+
+Ahora que sabemos cómo llegamos a las páginas, veamos cómo se ven. En la siguiente guía, desarmaremos el 00-LandingLayout.

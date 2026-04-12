@@ -1,0 +1,49 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Setup Profesional y dependencias en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "setup"
+---
+
+# Setup Profesional y dependencias
+
+Para construir una plataforma como Tyac, no basta con ejecutar un comando básico. Necesitamos un entorno preparado para el diseño premium y el rendimiento.
+
+## 1. El comando de inicio
+
+Todo comenzó con `npm create astro@latest`. Durante la instalación, elegimos:
+- **TypeScript**: Para evitar errores de tipado en nuestros datos.
+- **Strict Mode**: Para asegurar la calidad del código.
+- **Sample Files**: Para limpiar y empezar desde cero.
+
+## 2. DependenciasClave en Tyac
+
+Tyac utiliza pocas pero potentes herramientas externas para mantener la ligereza:
+
+- **Lucide / Tabler Icons**: Para la iconografía vectorial (SVG) que ves en el Sidebar y botones.
+- **Glassmorphism Utils**: CSS personalizado para los efectos de transparencia.
+- **View Transitions**: Integrado nativamente en Astro para la fluidez de "App".
+
+## 3. Configuración de `astro.config.mjs`
+
+Este es el archivo de configuración central. Aquí habilitamos las características avanzadas que usamos en Tyac:
+
+```javascript
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  // Habilitamos transiciones de vista globales
+  experimental: {
+    viewTransitions: true 
+  },
+  // Prefijamos la salida para mejor SEO
+  build: {
+    format: 'directory'
+  }
+});
+```
+
+---
+
+¡Ya tenemos el motor encendido! En la siguiente guía, veremos cómo configuramos el "rostro invisible" de Tyac: los metadatos.

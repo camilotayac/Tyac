@@ -1,0 +1,38 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Repaso del camino recorrido: De 0 a Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "conclusion-simple"
+---
+
+# Repaso del camino recorrido
+
+Si has llegado hasta aquí, has sido testigo de la construcción de una plataforma de e-learning completa, desde el primer archivo de configuración hasta los algoritmos más complejos de búsqueda. Tyac ya no es un misterio para ti.
+
+## 1. Lo que hemos construido juntos
+
+A lo largo de estas 50 lecciones, hemos desarmado cada pieza del rompecabezas:
+- **La Base**: Entendimos cómo los Layouts y el HTML5 semántico crean el marco del sitio.
+- **La Inteligencia**: Vimos cómo el buscador normaliza el texto y calcula qué resultados son más útiles.
+- **La Estética**: Descubrimos los secretos del Glassmorphism y los Design Tokens.
+- **El Contenido**: Analizamos cómo el motor de Markdown y Shiki transforman texto plano en lecciones interactivas.
+
+## 2. El espíritu de Tyac
+
+Tyac no es solo código; es una filosofía de desarrollo. El minimalismo, la velocidad y la concentración del estudiante son los ejes sobre los que gira cada decisión técnica que hemos tomado. Hemos demostrado que con Astro se puede crear una experiencia de "App" fluida sin sacrificar la sencillez del HTML estático.
+
+## 3. Un hito en tu aprendizaje
+
+Dominar estos conceptos te sitúa a la vanguardia del desarrollo web moderno. Has aprendido a manejar rutas dinámicas, persistencia de componentes, optimización de medios y SEO técnico. 
+
+## 4. ¿Qué sigue?
+
+Llegar a la lección 50 es un logro increíble, pero en Tyac siempre aspiramos a la maestría. Nos quedan 10 lecciones finales donde profundizaremos en la **Psicología de la UI**, el escalamiento masivo y el futuro de la plataforma como software de código abierto.
+
+> [!TIP]
+> **Reflexión**: Tómate un momento para volver al inicio (`index.astro`) y mira la web con ojos nuevos. Ahora no solo ves una interfaz hermosa; ves la ingeniería, los eventos y la pasión que hay detrás de cada píxel. ¡Felicidades, desarrollador!
+
+---
+
+¿Listo para el nivel final? Entremos en el Módulo de Maestría y Escalabilidad.

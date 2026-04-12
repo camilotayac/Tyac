@@ -1,143 +1,45 @@
 ---
-layout: ../../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: markdown
-titulo: "Markdown Nativo"
-descripcion: "Cómo gestionar contenido educativo usando archivos .md."
-materia: "Tecnología"
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Markdown: El motor de los apuntes técnicos"
+materia: "Astro"
+curso: "astro"
+id_clase: "markdown"
 ---
 
-# Markdown en Astro
+# Markdown: El motor de los apuntes
 
-Astro tiene soporte nativo para Markdown. Puedes crear archivos `.md` dentro de `src/pages/` y automáticamente se convierten en páginas HTML, sin necesidad de configuración adicional.
+En Tyac, los apuntes técnicos se escriben en **Markdown** (`.md`). Es el lenguaje perfecto porque permite a los autores concentrarse en el contenido sin preocuparse por el HTML complejo, pero manteniendo total flexibilidad.
 
+## Integración en Tyac
+
+Cada archivo de apuntes en Tyac empieza con un bloque de **Frontmatter**. Este bloque le dice a Astro qué layout usar y qué metadatos mostrar en la barra superior.
+
+```markdown
 ---
-
-## ¿Qué es Markdown?
-
-Markdown es un lenguaje de marcado ligero que te permite escribir texto con formato usando símbolos simples. Astro lo convierte en HTML al hacer el build.
-
-```md
-# Esto se convierte en <h1>
-## Esto en <h2>
-
-**Negrita**  →  <strong>
-*Cursiva*    →  <em>
-`código`     →  <code>
-
-- Lista
-- de items
-
-[Enlace](https://tyac.com)  →  <a href="...">
-```
-
-> Todas las lecciones de Tyac están escritas en Markdown y Astro las convierte en HTML automáticamente.
-
----
-
-## El Frontmatter del Markdown
-
-Al inicio de cada archivo `.md` puedes incluir un bloque de metadatos entre `---`. Se llama **frontmatter** y usa la sintaxis YAML.
-
-```md
----
-layout: ../../layouts/LayoutVertical.astro
-curso: astro
-id_clase: markdown
-titulo: Mi lección
-autor: Camilo Tayac
----
-
-# Contenido de la lección
-```
-
-Astro lee estos metadatos y los pasa al layout como el objeto `frontmatter`. En `LayoutVertical.astro` usas esto para saber a qué curso pertenece la lección y calcular la navegación.
-
----
-
-## Conectar un layout desde un `.md`
-
-El campo `layout:` del frontmatter le dice a Astro qué layout usar para envolver el contenido:
-
-```md
----
-layout: ../../layouts/LayoutVertical.astro
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Markdown en Tyac"
+materia: "Astro"
+dificultad: "Intermedio"
 ---
 ```
 
-La ruta es **relativa** al archivo `.md`. Desde `src/pages/astro/markdown.md`, hay que subir dos niveles (`../../`) para llegar a `src/layouts/`.
+## Por qué Markdown es ideal para Tyac
+
+1.  **Legibilidad**: El código fuente de los apuntes es casi tan legible como el texto final.
+2.  **Soporte de Código**: Como plataforma técnica, necesitamos mostrar mucho código. Markdown lo hace fácil con los bloques de "Triple Backtick".
+3.  **Componentes de Alerta**: En Tyac hemos personalizado Markdown para soportar alertas visuales (Note, Tip, Important) que ayudan a resaltar conceptos clave.
+
+## El proceso de renderizado
+
+Cuando guardas un archivo `.md` en Tyac:
+1.  Astro lee el archivo.
+2.  Procesa el Frontmatter para configurar la página.
+3.  Transforma el Markdown en HTML.
+4.  Inyecta ese HTML en el `<slot />` del layout `00-LayoutLessons`.
+
+> [!NOTE]
+> **Dato Técnico**: En Tyac, no solo renderizamos texto; también procesamos fórmulas matemáticas complejas y diagramas de Mermaid directamente desde el Markdown.
 
 ---
 
-## Markdown enriquecido: tablas, citas y código
-
-Astro soporta el Markdown extendido (GFM — GitHub Flavored Markdown):
-
-**Tablas:**
-```md
-| Columna 1 | Columna 2 |
-| --- | --- |
-| Valor A   | Valor B   |
-```
-
-**Citas (blockquote):**
-```md
-> Esto es una cita o nota importante.
-```
-
-**Bloques de código con resaltado de sintaxis:**
-````md
-```javascript
-const saludo = "Hola Tyac";
-console.log(saludo);
-```
-````
-
-**Código inline:**
-```md
-Usa el método `Array.map()` para iterar.
-```
-
----
-
-## Importar archivos Markdown como datos
-
-También puedes importar archivos `.md` en un componente `.astro` para leer su frontmatter o contenido, sin renderizarlos directamente:
-
-```astro
----
-// Importamos el markdown como un módulo
-import * as leccion from './introduccion.md';
-
-// Accedemos a su frontmatter
-const { titulo, curso } = leccion.frontmatter;
----
-
-<p>Título de la lección: {titulo}</p>
-```
-
-Esto es útil para crear índices o listados de contenido dinámicamente.
-
----
-
-## MDX: Markdown + Componentes
-
-Si en el futuro necesitas usar componentes Astro dentro del markdown (como un gráfico interactivo o una animación), existe `.mdx`:
-
-```mdx
----
-layout: ../../layouts/LayoutVertical.astro
----
-
-import GraficoInteractivo from '../../components/Grafico.astro';
-
-# Mi Lección
-
-Aquí el texto normal...
-
-<GraficoInteractivo datos={[1, 2, 3]} />
-
-Y aquí más texto.
-```
-
-> Para usar MDX en Astro se necesita instalar la integración `@astrojs/mdx`. Por ahora en Tyac usamos `.md` estándar, que es suficiente para contenido educativo.
+En la siguiente guía, veremos cómo le damos el toque visual premium a todo este contenido.

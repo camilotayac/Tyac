@@ -1,0 +1,64 @@
+/* ============================================================
+   PALETTE.CSS - TOTAL DESIGN SYSTEM
+   Absolute source of truth for all Tyac colors and mappings
+   Fuente de verdad absoluta para todos los colores y mapeos de Tyac
+   ============================================================ */
+
+:root {
+    /* ------------------------------------------------------------
+       1. PRIMITIVES (Raw Values / Primitivos Puros)
+       ------------------------------------------------------------ */
+    
+    /* Dracula Theme Colors */
+    --dracula-purple: #bd93f9; 
+    --dracula-cyan:   #8be9fd; 
+    --dracula-green:  #50fa7b; 
+    --dracula-yellow: #f1fa8c; 
+    --dracula-red:    #ff5555; 
+    --dracula-bg:     #282a36; 
+    --dracula-purple-dark: #7c4dff; 
+
+    /* Neutrals / Neutros */
+    --clr-black-01: #111111;      /* Base Dark / Oscuro Base */
+    --clr-black-02: #2a2b3d;      /* Section Dark / Sección Oscura */
+    --clr-black-code: #1e1f29;    /* Code Background / Fondo de Código */
+    --clr-black-text: #212121;    /* Dark Text / Texto Oscuro */
+    
+    --clr-white-pure: #ffffff;    /* Pure White / Blanco Puro */
+    --clr-white-soft: #f8f8f2;    /* Soft White / Blanco Suave */
+    --clr-gray-muted: #a1a1aa;    /* Muted Gray / Gris Atenuado */
+    --clr-gray-border: #e2e8f0;   /* Light Border / Borde Claro */
+
+    /* Alpha / Canal Alfa */
+    --clr-alpha-accent: rgba(189, 147, 249, 0.12);
+    --clr-alpha-border: rgba(255, 255, 255, 0.1);
+    --clr-alpha-hover:  rgba(255, 255, 255, 0.05);
+
+    /* Shadows / Sombras */
+    --shd-card:    0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shd-hover:   0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --shd-code:    0 10px 30px -10px rgba(0, 0, 0, 0.35);
+    --shd-floating: 0 4px 6px rgba(0, 0, 0, 0.15);
+    --shd-label:    0 2px 4px rgba(0, 0, 0, 0.2);
+    --shd-accent:   0 4px 12px rgba(189, 147, 249, 0.3);
+
+    /* ------------------------------------------------------------
+       2. MASTERCLASS STUDIO (Light Theme)
+       ------------------------------------------------------------ */
+    --c-stage: #fdfdfd;
+    --c-pane: #f8f9fa;
+    --c-accent: #7c4dff;
+    --c-text: #1a1a1a;
+    --c-muted: #6b7280;
+    --c-border: rgba(0,0,0,0.06);
+    --shd-flat: 0 4px 20px rgba(0,0,0,0.04);
+    --shd-deep: 0 30px 60px rgba(0,0,0,0.12);
+    /* ------------------------------------------------------------
+       3. SEMANTIC MAPPINGS (Component Specific / Específicos de Componente)
+       ------------------------------------------------------------ */
+    --bg-tarjetas:      #1e1f29;          /* Dracula Darker for Cards */
+    --bg-sidebar:       #1a1a24;          /* Deepest Dark for Card Footers */
+    --color-cyan:       var(--dracula-cyan);
+    --clr-gray-border:  var(--clr-alpha-border);
+    --shd-buscador:     0 20px 40px rgba(0, 0, 0, 0.4);
+}

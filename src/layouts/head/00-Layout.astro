@@ -1,0 +1,57 @@
+---
+/**
+ * 00-LAYOUT.ASTRO
+ * Master orchestrator for the platform's base structure
+ * Orquestador maestro de la estructura base de la plataforma
+ */
+
+// Design tokens — absolute source of truth / fuente de verdad absoluta
+import "../../styles/colors/palette.css";
+
+import Metadata from "./01-Metadata.astro";
+import Navbar from "./02-Navbar.astro";
+
+// Components (Up two levels) / Componentes (Dos niveles arriba)
+import SearchModal from "../../components/SearchModal.astro";
+import Footer from "../../components/Footer.astro";
+import { ClientRouter } from "astro:transitions";
+
+// Props passing / Pasos de props
+const { titulo, frontmatter } = Astro.props;
+const tituloFinal = titulo || frontmatter?.titulo || "Tyac";
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <Metadata title={tituloFinal} />
+        <ClientRouter />
+    </head>
+
+    <body>
+        <!-- 02-NAVBAR: Main Site Navigation / Navegación principal del sitio -->
+        <Navbar />
+
+        <!-- MAIN VIEWPORT: Page content injection / Inyección de contenido de página -->
+        <main>
+            <slot />
+        </main>
+
+        <!-- Modals & Global Components / Modales y Componentes Globales -->
+        <SearchModal />
+        <Footer />
+    </body>
+</html>
+
+<style is:global>
+    /* Structural Layout Styling / Estilos estructurales del Layout */
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1; /* Pushes footer to bottom / Empuja el footer al fondo */
+    }
+</style>

@@ -1,11 +1,13 @@
 ---
 // src/components/SidebarVertical.astro
 import { cursosCiencia } from "../data/cursos.js";
+import { apuntesTecnicos } from "../data/apuntes.js";
 
 export interface Leccion {
     id: string;
     titulo: string;
-    duracion: string;
+    duracion?: string;
+    dificultad?: string;
 }
 
 export interface Props {
@@ -19,6 +21,13 @@ const { claseActualId, cursoActualId, lecciones = [] } = Astro.props as Props;
 // Determinar el prefijo correcto (cursos vs apuntes)
 const esCursoAcadémico = cursosCiencia.some((c) => c.id === cursoActualId);
 const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
+
+// Obtener la metadata del curso/apunte actual
+const infoGrupo = esCursoAcadémico 
+    ? cursosCiencia.find(c => c.id === cursoActualId)
+    : apuntesTecnicos.find(a => a.id === cursoActualId);
+
+const dificultad = infoGrupo?.nivel || "Básico";
 ---
 
 <aside 
@@ -82,9 +91,15 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
                                     <span class="lesson-title">
                                         {leccion.titulo}
                                     </span>
-                                    <span class="lesson-time">
-                                        {leccion.duracion} min
-                                    </span>
+                                    {esCursoAcadémico ? (
+                                        <span class="lesson-time">
+                                            {leccion.duracion} min
+                                        </span>
+                                    ) : (
+                                        <span class="lesson-difficulty">
+                                            {leccion.dificultad || dificultad}
+                                        </span>
+                                    )}
                                 </div>
                             </a>
                         </li>
@@ -98,9 +113,9 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
 <style>
     .sidebar-v {
         width: 320px;
-        background-color: var(--header-bg); /* Sincronizado para evitar recuadros extra */
+        background-color: var(--clr-black-01); /* Sincronizado para evitar recuadros extra */
         border-right: 1px solid rgba(255, 255, 255, 0.05);
-        height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
         transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -129,23 +144,23 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
     .diamond-logo {
         width: 14px;
         height: 14px;
-        background: var(--acento);
+        background: var(--dracula-purple);
         transform: rotate(45deg);
-        box-shadow: 0 0 10px var(--acento);
+        box-shadow: 0 0 10px var(--dracula-purple);
     }
 
     .logo-text {
         font-size: 0.7rem;
         font-weight: 800;
         letter-spacing: 2px;
-        color: var(--texto-claro);
+        color: var(--clr-white-soft);
         opacity: 0.8;
     }
 
     .toggle-btn {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         width: 32px;
         height: 32px;
         border-radius: 8px;
@@ -158,7 +173,7 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
 
     .toggle-btn:hover {
         background: rgba(255, 255, 255, 0.08);
-        color: var(--acento);
+        color: var(--dracula-purple);
     }
 
     .icon-arrow {
@@ -237,7 +252,7 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
         transform: rotate(-45deg);
         font-size: 0.8rem;
         font-weight: 800;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -259,17 +274,25 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
     .lesson-title {
         font-size: 0.88rem;
         font-weight: 600;
-        color: var(--texto-atenuado);
+        color: var(--clr-gray-muted);
         max-width: 190px;
         overflow: hidden;
         text-overflow: ellipsis;
         transition: color 0.2s;
     }
 
-    .lesson-time {
+    .lesson-time, .lesson-difficulty {
         font-size: 0.72rem;
-        color: var(--texto-atenuado);
-        opacity: 0.4;
+        color: var(--clr-gray-muted);
+        opacity: 0.5;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .lesson-difficulty {
+        color: var(--dracula-cyan);
+        opacity: 0.8;
     }
 
     /* --- ACTIVE STATE --- */
@@ -279,8 +302,8 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
     }
 
     .lesson-item.active .diamond-box {
-        background: var(--acento);
-        border-color: var(--acento);
+        background: var(--dracula-purple);
+        border-color: var(--dracula-purple);
         box-shadow: 0 0 15px rgba(189, 147, 249, 0.4);
         transform: rotate(45deg) scale(1.05);
     }
@@ -290,7 +313,7 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
     }
 
     .lesson-item.active .lesson-title {
-        color: var(--texto-claro);
+        color: var(--clr-white-soft);
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     }
 
@@ -358,8 +381,8 @@ const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
             const link = item.querySelector("a");
             if (link) {
                 const href = link.getAttribute("href");
-                // Comparamos si el link coincide con la ruta actual
-                if (href && currentPath.includes(href)) {
+                // Comparación exacta para evitar que 'estilos' se active con 'estilos-markdown'
+                if (href && (currentPath === href || currentPath === href + "/")) {
                     item.classList.add("active");
                     item.classList.remove("inactive");
                 } else {

@@ -1,0 +1,109 @@
+---
+/**
+ * 02-TRANSCRIPTPANE.ASTRO
+ * Interactive Transcript Area
+ * El panel dinámico donde viven los apuntes y la sincronización.
+ */
+
+import Pagination from "./04-Pagination.astro";
+
+const { frontmatter, prevLesson, nextLesson, urlPrefix, currentCourse } = Astro.props;
+---
+
+<section class="transcript-pane">
+    <div class="transcript-scroller">
+        <div class="transcript-inner">
+            <header class="transcript-header">
+                <p class="lesson-synopsis">{frontmatter.description || frontmatter.descripcion}</p>
+            </header>
+
+            <div class="sync-segments-container">
+                <slot />
+            </div>
+
+            <footer class="transcript-footer">
+                <Pagination
+                    prevLesson={prevLesson}
+                    nextLesson={nextLesson}
+                    urlPrefix={urlPrefix}
+                    courseId={currentCourse}
+                />
+            </footer>
+        </div>
+    </div>
+</section>
+
+<style>
+    .transcript-pane {
+        width: 480px;
+        background-color: var(--c-pane);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.02);
+    }
+
+    .transcript-scroller {
+        flex: 1;
+        overflow-y: auto;
+        padding: 4rem 3.5rem;
+        scroll-behavior: smooth;
+    }
+
+    /* Elegant Custom Scrollbar */
+    .transcript-scroller::-webkit-scrollbar { width: 4px; }
+    .transcript-scroller::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+    .lesson-synopsis {
+        font-size: 1rem;
+        color: var(--c-muted);
+        line-height: 1.6;
+        margin-bottom: 4rem;
+        border-left: 3px solid var(--c-accent);
+        padding-left: 1.5rem;
+    }
+
+    /* MASTERCLASS CARDS */
+    :global(.sync-card) {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    :global(.sync-card:hover) {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    :global(.sync-card.active) {
+        border-color: var(--c-accent);
+        background: #fff;
+        box-shadow: 0 20px 40px rgba(124, 77, 255, 0.08);
+    }
+
+    :global(.sync-card.active::after) {
+        content: '';
+        position: absolute; left: 0; top: 2rem; bottom: 2rem;
+        width: 4px; background: var(--c-accent);
+        border-radius: 0 4px 4px 0;
+    }
+
+    :global(.sync-card h2) {
+        font-size: 1.4rem; font-weight: 800; color: var(--c-text);
+        margin-bottom: 1rem; letter-spacing: -0.5px;
+    }
+
+    :global(.sync-card p) {
+        font-size: 1rem; color: #4b5563; line-height: 1.7;
+    }
+
+    @media (max-width: 1300px) {
+        .transcript-pane { width: 100%; height: auto; border-left: none; }
+        .transcript-scroller { padding: 3rem 1.5rem; overflow: visible; }
+    }
+</style>

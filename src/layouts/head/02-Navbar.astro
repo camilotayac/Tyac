@@ -1,0 +1,215 @@
+---
+/**
+ * 02-NAVBAR.ASTRO
+ * Main Navigation Header: Logo, Search, and Links
+ * Barra de navegación principal: Logo, Buscador y Enlaces
+ */
+import Buscador from "../../components/Buscador.astro";
+---
+
+<header class="main-navigation" transition:persist="main-header">
+    <!-- Branding / Name of the site -->
+    <div class="logo-container">
+        <a href="/" class="header-logo"> Tyac </a>
+        <Buscador mode="header" />
+    </div>
+
+    <!-- Toggle Button for Mobile / Botón de menú para celulares -->
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    </button>
+
+    <!-- Main Navigation Links / Enlaces principales de navegación -->
+    <nav class="nav-links" id="nav-menu">
+        <a href="/#cursos" class="nav-link">Cursos</a>
+        <a href="/#apuntes" class="nav-link">Apuntes</a>
+    </nav>
+</header>
+
+<style>
+    .main-navigation {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--clr-black-01);
+        color: var(--clr-white-soft);
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 64px;
+        box-sizing: border-box;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex: 1;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    /* Mobile Toggle Button Styles - HIDE BY DEFAULT ON DESKTOP */
+    .menu-toggle {
+        display: none !important;
+        background: rgba(189, 147, 249, 0.1);
+        border: 1px solid rgba(189, 147, 249, 0.2);
+        color: var(--dracula-purple);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        z-index: 1001;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(189, 147, 249, 0.2);
+        transform: scale(1.05);
+    }
+
+    /* Styles for navigation links - VISIBLE ON DESKTOP */
+    .nav-link {
+        color: var(--clr-white-soft);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        opacity: 0.8;
+        transition: all 0.2s ease;
+        padding: 8px 16px;
+        border-radius: 8px;
+    }
+
+    .nav-link:hover {
+        color: var(--dracula-purple);
+        background: rgba(189, 147, 249, 0.05);
+        opacity: 1;
+    }
+
+    .header-logo {
+        color: var(--clr-white-soft);
+        text-decoration: none;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        transition: color 0.2s ease;
+    }
+
+    .header-logo:hover {
+        color: var(--dracula-purple);
+    }
+
+    /* Responsividad / Mobile Styles */
+    @media (max-width: 768px) {
+        .main-navigation {
+            padding: 0 16px;
+            justify-content: space-between;
+            gap: 12px; /* Espaciado uniforme entre los 3 elementos */
+        }
+
+        .logo-container {
+            display: contents; /* Permite que Logo y Buscador sean hermanos del botón de menú */
+        }
+
+        .menu-toggle {
+            display: flex !important;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            position: absolute;
+            top: 70px;
+            right: 16px;
+            flex-direction: column;
+            background: rgba(15, 16, 22, 0.98);
+            backdrop-filter: blur(25px);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(189, 147, 249, 0.4);
+            gap: 8px;
+            min-width: 180px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            
+            /* Enhanced visibility logic */
+            visibility: hidden;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-15px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; /* Override global flex */
+        }
+
+        .nav-links.is-open {
+            visibility: visible;
+            pointer-events: all;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .nav-link {
+            width: 100%;
+            text-align: left;
+            font-size: 17px;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0.9;
+        }
+        
+        .nav-link:last-child {
+            border-bottom: none;
+        }
+    }
+</style>
+
+<script>
+    function setupMobileMenu() {
+        const toggleBtn = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (!toggleBtn || !navMenu) return;
+
+        // Limpiar event listeners previos si existen
+        const newToggleBtn = toggleBtn.cloneNode(true);
+        toggleBtn.parentNode?.replaceChild(newToggleBtn, toggleBtn);
+
+        newToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = navMenu.classList.toggle('is-open');
+            (newToggleBtn as HTMLElement).style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0)';
+            console.log('Menu toggled:', isOpen);
+        });
+
+        // Cerrar al hacer clic en cualquier parte del documento
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('is-open')) {
+                const isClickInsideMenu = navMenu.contains(e.target as Node);
+                const isClickOnButton = (newToggleBtn as Node).contains(e.target as Node);
+
+                if (!isClickInsideMenu && !isClickOnButton) {
+                    navMenu.classList.remove('is-open');
+                    (newToggleBtn as HTMLElement).style.transform = 'rotate(0)';
+                }
+            }
+        });
+
+        // Cerrar al presionar un enlace
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('is-open');
+                (newToggleBtn as HTMLElement).style.transform = 'rotate(0)';
+            });
+        });
+    }
+
+    // Inicialización para cargas normales y transiciones de Astro
+    setupMobileMenu();
+    document.addEventListener('astro:page-load', setupMobileMenu);
+</script>
+
+

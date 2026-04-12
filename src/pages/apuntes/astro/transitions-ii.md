@@ -1,0 +1,47 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Transiciones de Vista II: Persistencia de estado en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "transitions-ii"
+---
+
+# Transiciones de Vista II: Persistencia
+
+Uno de los problemas clásicos de la web es que, al cambiar de página, todo se reinicia. El video que estabas viendo vuelve al principio, el buscador se borra y el menú se colapsa. En Tyac, hemos hackeado este comportamiento usando la directiva `transition:persist`.
+
+## 1. El secreto de la Persistencia
+
+Cuando marcamos un elemento con `transition:persist`, le estamos diciendo a Astro: "Oye, este componente es el mismo en la página A y en la página B. No lo destruyas, simplemente muévelo de lugar si es necesario".
+
+## 2. Aplicación en el Navbar (Buscador)
+
+¿Has notado que si escribes algo en el buscador y cambias de lección, el texto sigue ahí? Esto es vital para que el usuario pueda navegar entre resultados sin tener que reescribir su búsqueda 50 veces.
+
+```astro
+<header transition:persist="main-header">
+    <Buscador />
+</header>
+```
+
+## 3. Persistencia en el Video Studio
+
+En los cursos de video de Tyac, usamos esta técnica para que el reproductor de YouTube mantenga el foco y la carga. Si navegas entre recursos de una misma clase, el video no parpadea ni se detiene, permitiendo una experiencia de aprendizaje sin fricciones.
+
+## 4. El desafío del Ciclo de Vida
+
+La persistencia tiene un truco: como el componente no se destruye, los scripts normales de JavaScript (como `window.onload`) no vuelven a ejecutarse. En Tyac, solucionamos esto escuchando el evento `astro:page-load`:
+
+```javascript
+document.addEventListener('astro:page-load', () => {
+    // Aquí reinicializamos solo lo que sea necesario
+    // mientras mantenemos el estado persistente intacto.
+});
+```
+
+> [!IMPORTANT]
+> **Toque Maestro**: Gracias a la persistencia, Tyac se siente como una aplicación de escritorio nativa, donde la navegación es solo una capa que cambia sobre una estructura sólida y duradera.
+
+---
+
+Hemos terminado el Módulo 7. El diseño es perfecto y fluido. Ahora, vamos a entrar al corazón de los cursos: El Módulo de Masterclass Studio.

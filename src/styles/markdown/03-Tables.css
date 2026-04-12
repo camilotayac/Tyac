@@ -1,0 +1,53 @@
+/* ============================================================
+   src/styles/markdown-tables.css
+   TABLAS EN EL CONTENIDO MARKDOWN
+   ============================================================
+   Controla el aspecto de las tablas escritas en Markdown:
+
+     | Columna A | Columna B |
+     | --------- | --------- |
+     | Dato 1    | Dato 2    |
+
+   Para cambiar colores de encabezado de tabla, fondo de filas
+   o el estilo de borde, edita ESTE archivo.
+   ============================================================ */
+
+/* ── Contenedor de la tabla ─────────────────────────────────
+   Ancho completo, bordes limpios y encabezado destacado.
+────────────────────────────────────────────────────────── */
+.markdown-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.5rem 0;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--clr-gray-border);
+    box-shadow: var(--shd-card);
+}
+
+/* ── Encabezado (Fila 1) ──────────────────────────────────── */
+.markdown-container th {
+    background-color: var(--dracula-bg);
+    color: var(--dracula-purple);
+    padding: 16px;
+    text-align: left;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* ── Celdas y Filas de Datos ─────────────────────────────── */
+.markdown-container td {
+    padding: 14px 16px;
+    background-color: var(--clr-white-pure);
+    color: var(--clr-black-text);
+    border: none;
+    /* Sin separaciones entre celdas */
+    font-size: 0.95rem;
+}
+
+/* Efecto de fila al pasar el ratón */
+.markdown-container tr:hover td {
+    background-color: #fcfcfc;
+}

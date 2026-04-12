@@ -1,9 +1,9 @@
 ---
 // src/pages/cursos/quimica_general.astro
-import LandingPageTemplate from "../../components/LandingPageTemplate.astro";
+import LandingLayout from "../../layouts/landing/00-LandingLayout.astro";
 import { cursosCiencia } from "../../data/cursos.js";
 
 const curso = cursosCiencia.find(c => c.id === "quimica_general");
 ---
 
-{curso ? <LandingPageTemplate curso={curso} tipo="curso" /> : <h1>Curso no encontrado</h1>}
+{curso ? <LandingLayout curso={curso} tipo="curso" /> : <h1>Curso no encontrado</h1>}

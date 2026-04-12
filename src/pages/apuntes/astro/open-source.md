@@ -1,0 +1,41 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "Visión Final: Tyac como plataforma Open Source"
+materia: "Astro"
+curso: "astro"
+id_clase: "open-source"
+---
+
+# Visión Final: El futuro de Tyac
+
+¡Enhorabuena! Has llegado al final de este **Masterpiece Blueprint**. Si has leído estas 60 lecciones, ahora posees un conocimiento profundo no solo de Astro, sino de cómo construir productos digitales de alta calidad, escalables y con un diseño de nivel mundial.
+
+## 1. Tyac como Comunidad
+
+Tyac nació con la idea de democratizar el conocimiento técnico y científico. Nuestra visión es que la plataforma sea un proyecto **Open Source**, donde otros desarrolladores y educadores puedan añadir sus propios apuntes y materias simplemente enviando una propuesta de cambio (Pull Request).
+
+## 2. El Camino por recorrer
+
+Aunque hemos construido una base maestra, el desarrollo nunca termina. El futuro de Tyac incluye:
+- **Interacción en tiempo real**: Comentarios en lecciones y foros de discusión.
+- **Sistema de Logros**: Gamificación para motivar al estudiante según su progreso.
+- **Modo Offline**: PWA (Progressive Web App) para estudiar sin internet en apps móviles.
+
+## 3. Tu papel como Desarrollador
+
+Ahora que conoces las entrañas de Tyac, eres capaz de crear tus propios proyectos con el mismo nivel de excelencia. Recuerda siempre los pilares que hemos aprendido:
+- Prioriza al usuario (UX).
+- No comprometas el rendimiento.
+- Escribe código limpio y modular.
+- Haz que la web se sienta viva.
+
+## 4. Un agradecimiento final
+
+Gracias por acompañar a Tyac en este viaje de 60 lecciones. La educación es la herramienta más poderosa que tenemos para cambiar el mundo, y la tecnología es el vehículo que nos permite llevarla a cada rincón del planeta.
+
+> [!TIP]
+> **Reto Final**: No te quedes solo con la lectura. Ve al código, rompe cosas, arregla otras y crea algo nuevo. El conocimiento real solo llega cuando tus dedos tocan el teclado. ¡Nos vemos en el próximo despliegue! 🚀💎⚛️
+
+---
+
+**¡CURSO COMPLETADO!** Esperamos que estas guías te hayan servido de inspiración para tu carrera como desarrollador Tyac.

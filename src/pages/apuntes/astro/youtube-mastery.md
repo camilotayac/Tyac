@@ -1,0 +1,53 @@
+---
+layout: ../../../layouts/lessons/00-LayoutLessons.astro
+titulo: "YouTube Mastery: API oficial y optimización en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "youtube-mastery"
+---
+
+# YouTube Mastery en Tyac
+
+Incrustar un video es fácil. Hacer que un reproductor de YouTube se sienta como parte integral de una plataforma educativa premium es harina de otro costal. En Tyac, no usamos el "Embed" básico; usamos técnicas de optimización para que la experiencia sea fluida y profesional.
+
+## 1. El problema del iframe pesado
+
+Cada vez que cargas un video de YouTube, el navegador descarga megabytes de scripts y estilos externos. Si un curso tiene 10 videos, la página se volvería lentísima. En Tyac, solucionamos esto con **Lazy Iframe Loading**.
+
+## 2. Parámetros de Control Pro
+
+Usamos los parámetros de la URL de YouTube para eliminar distracciones y mejorar la marca de Tyac dentro del video:
+
+```astro
+const videoUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=0&hl=es`;
+```
+
+- **`rel=0`**: Evita que YouTube muestre "videos relacionados" de otros canales al final.
+- **`modestbranding=1`**: Oculta el logo grande de YouTube para que el enfoque esté en el contenido de Tyac.
+- **`modestbranding=1`**: Mejora la estética visual del reproductor.
+
+## 3. Contenedor de Proporción (Aspect Ratio)
+
+Para evitar el famoso "parpadeo de diseño" (CLS), definimos el espacio del video en el CSS antes de que cargue el contenido:
+
+```css
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Relación 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: #000;
+}
+```
+
+## 4. YouTube API (En cola)
+
+Tyac está preparado para dar el siguiente paso técnico: usar la **YouTube IFrame Player API**. Esto nos permitirá en el futuro saber cuándo un estudiante ha terminado de ver un video para marcar la lección como "completada" automáticamente en su perfil.
+
+> [!IMPORTANT]
+> **Privacidad**: Al configurar correctamente los parámetros del embed, Tyac protege mejor la privacidad del estudiante, evitando que YouTube rastree más datos de los estrictamente necesarios para la reproducción.
+
+---
+
+El contenido de video es el alma, pero el menú es el mapa. En la siguiente guía: Sidebar de Temario y estados activos.

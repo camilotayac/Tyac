@@ -53,14 +53,14 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
         border: 1px solid transparent;
         cursor: pointer;
         /* Sombra flotante base */
-        box-shadow: var(--sombra-tarjeta);
+        box-shadow: var(--shd-card);
     }
 
     /* Efecto al hacer hover (pasar el mouse) */
     .tarjeta-platzi:hover {
         transform: translateY(-4px);
-        box-shadow: var(--sombra-hover);
-        border-color: var(--acento); /* Acento púrpura */
+        box-shadow: var(--shd-hover);
+        border-color: var(--dracula-purple); /* Acento púrpura */
     }
 
     .cuerpo-superior {
@@ -83,7 +83,7 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
     .info-contenedor h3 {
         margin: 0;
         font-size: 1.5rem;
-        color: var(--card-titulo); /* Semántico para tarjetas */
+        color: var(--clr-white-soft); /* Semántico para tarjetas */
         font-weight: 700;
         letter-spacing: -0.5px;
     }
@@ -91,7 +91,7 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
     .info-contenedor p {
         margin: 0.5rem 0 0 0;
         font-size: 0.95rem;
-        color: var(--card-texto); /* Semántico para tarjetas */
+        color: var(--clr-gray-muted); /* Semántico para tarjetas */
         line-height: 1.4;
     }
 
@@ -103,7 +103,7 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        border-top: 1px solid var(--border-light);
+        border-top: 1px solid var(--clr-gray-border);
     }
 
     .pie-inferior span {
@@ -117,7 +117,7 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
     .chevron {
         width: 18px;
         height: 18px;
-        color: var(--color-cyan);
+        color: var(--dracula-cyan);
         margin-top: 2px;
     }
 </style>

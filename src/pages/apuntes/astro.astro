@@ -1,9 +1,9 @@
 ---
 // src/pages/apuntes/astro.astro
-import LandingPageTemplate from "../../components/LandingPageTemplate.astro";
+import LandingLayout from "../../layouts/landing/00-LandingLayout.astro";
 import { apuntesTecnicos } from "../../data/apuntes.js";
 
 const apunte = apuntesTecnicos.find(a => a.id === "astro");
 ---
 
-{apunte ? <LandingPageTemplate curso={apunte} tipo="apunte" /> : <h1>Guía no encontrada</h1>}
+{apunte ? <LandingLayout curso={apunte} tipo="apunte" /> : <h1>Guía no encontrada</h1>}
