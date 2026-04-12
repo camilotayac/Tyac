@@ -1,0 +1,55 @@
+---
+titulo: "El Modal Global: Anatomía del SearchModal en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "search-modal"
+---
+
+# El Modal Global: SearchModal.astro
+
+El **SearchModal** es el componente de búsqueda más avanzado de Tyac. Es una interfaz de pantalla completa que se activa mediante eventos globales o atajos de teclado, proporcionando un entorno de búsqueda inmersivo y potente.
+
+## 1. Posicionamiento fuera del flujo
+
+Este componente vive al final del `body` en el Layout Maestro. Usamos `position: fixed` para que cubra toda la pantalla, independientemente de dónde se encuentre el usuario.
+
+```css
+.search-modal-root {
+    position: fixed;
+    inset: 0;
+    z-index: 10000; /* Aseguramos que esté sobre todo */
+    display: flex;
+    justify-content: center;
+    background: rgba(10, 11, 16, 0.7);
+    backdrop-filter: blur(8px); /* El toque Glassmorphism */
+}
+```
+
+## 2. Los Componentes del Modal
+
+- **Backdrop**: Un fondo oscuro desenfocado que separa la búsqueda del contenido. Al hacer clic aquí, el modal se cierra.
+- **Input Box**: Una caja de texto grande con enfoque automático inmediato.
+- **Results Panel**: Una lista dinámica que muestra las coincidencias encontradas.
+- **Shortcut Legend**: El indicador visual de "ESC" para cerrar el modal.
+
+## 3. Estado "Hidden" vs Visible
+
+Usamos el atributo `hidden` de HTML en lugar de `display: none`. Esto es mejor para la accesibilidad y nos permite manejar la transición de opacidad mediante CSS:
+
+```css
+.search-modal-root[hidden] {
+    opacity: 0;
+    pointer-events: none;
+}
+```
+
+## 4. El Ciclo de Vida del Modal
+
+En Tyac, el modal se reinicia cada vez que se abre. Limpia las búsquedas anteriores y vuelve a poner el foco en el input. Además, carga la base de datos de búsqueda de forma proactiva (`fetchData`) en cuanto se activa, para que no haya esperas.
+
+> [!IMPORTANT]
+> **Compatibilidad**: Hemos diseñado el Modal para que funcione perfectamente con las **View Transitions**. Esto significa que si navegas a un resultado, el modal se cierra limpiamente y la nueva página se carga sin residuos visuales.
+
+---
+
+¿Cómo sabe el modal qué resultados mostrar? En la siguiente guía, entraremos en la lógica matemática: La Normalización y el Algoritmo de Búsqueda.

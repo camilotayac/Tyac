@@ -5,9 +5,12 @@
 import { cursosCiencia } from "../../data/cursos.js";
 import { apuntesTecnicos } from "../../data/apuntes.js";
 
+import { getCollection } from 'astro:content';
+
 export async function GET() {
-    // 1. Recoger todas las lecciones de ambos directorios: apuntes y cursos
-    const archivos = import.meta.glob(['../apuntes/**/*.md', '../cursos/**/*.md'], { eager: true });
+    // 1. Recoger todas las lecciones de ambos directorios mediante Content Collections
+    const apuntes = await getCollection('apuntes');
+    const cursos = await getCollection('cursos');
     
     // Mapeo de iconos dinámico desde cursos.js
     const cursoIcons = {};
@@ -15,25 +18,32 @@ export async function GET() {
         cursoIcons[c.id] = c.icono;
     });
     
-    const leccionesIndices = Object.values(archivos).map((archivo) => {
-        const content = archivo.rawContent ? archivo.rawContent() : "";
-        const contentWithoutCode = content.replace(/```[\s\S]*?```/g, '');
-        const cleanContent = contentWithoutCode
+    // Función auxiliar para extraer el cuerpo de MDX
+    const extractContent = (rawContent) => {
+        if (!rawContent) return "";
+        const contentWithoutCode = rawContent.replace(/```[\s\S]*?```/g, '');
+        return contentWithoutCode
             .replace(/[#*`>]/g, '')
             .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
             .replace(/\n+/g, ' ')
             .trim();
+    };
 
-        const idCurso = archivo.frontmatter.curso || "";
+    const leccionesAgrupadas = [...apuntes, ...cursos];
+
+    const leccionesIndices = leccionesAgrupadas.map((entry) => {
+        const idCurso = entry.data.curso || "";
+        const idClase = entry.id.split('/')[1].replace(/\.(md|mdx)$/, '');
+        const collectionPath = apuntes.includes(entry) ? 'apuntes' : 'cursos';
 
         return {
-            titulo: archivo.frontmatter.titulo || idCurso,
-            descripcion: archivo.frontmatter.descripcion || "",
-            cuerpo: cleanContent,
-            url: archivo.url,
+            titulo: entry.data.titulo || idCurso,
+            descripcion: entry.data.descripcion || "",
+            cuerpo: extractContent(entry.body),
+            url: `/${collectionPath}/${idCurso}/${idClase}`,
             tipo: "leccion",
             curso: idCurso,
-            materia: archivo.frontmatter.materia || "General",
+            materia: entry.data.materia || "General",
             icono: cursoIcons[idCurso] || "📄"
         };
     });

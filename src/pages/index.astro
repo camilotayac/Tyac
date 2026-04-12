@@ -133,59 +133,57 @@ import { apuntesTecnicos } from "../data/apuntes.js";
         }
 
         {/* SECCIÓN APUNTES */}
-        <section class="seccion-grid invertida" id="apuntes">
-            <div class="contenido-scroll">
-                <div class="grid-tarjetas">
-                    {
-                        apuntesTecnicos.map((apunte) => (
-                            <a
-                                href={apunte.href}
-                                style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
-                                data-materia={apunte.materia}
-                                class="tarjeta-link"
-                            >
-                                <TarjetaHorizontal
-                                    titulo={apunte.titulo}
-                                    descripcion={apunte.descripcion}
-                                    icono={apunte.icono}
-                                    cantidadTemas={String(apunte.lecciones)}
-                                />
-                            </a>
-                        ))
-                    }
-                </div>
-            </div>
-            <div class="info-sticky">
-                <h2 class="titulo-seccion">
-                    <span class="icono-seccion">📝</span> Apuntes
-                </h2>
-                <p class="desc-seccion">
-                    Guías de desarrollo, documentación tecnológica y resúmenes
-                    sobre herramientas modernas. Todo lo que necesitas para tu
-                    carrera técnica en un solo lugar.
-                </p>
-                <div class="contenedor-pildoras">
-                    <BotonMateria
-                        texto="General"
-                        tipo="gris"
-                        data-filter="all"
-                        class="filtro-btn activo"
-                    />
-                    <BotonMateria
-                        texto="Astro"
-                        tipo="purpura"
-                        data-filter="Astro"
-                        class="filtro-btn"
-                    />
-                    <BotonMateria
-                        texto="Matemáticas"
-                        tipo="amarillo"
-                        data-filter="Matemáticas"
-                        class="filtro-btn"
-                    />
-                </div>
-            </div>
-        </section>
+        {
+            apuntesTecnicos.length > 0 && (
+                <section class="seccion-grid invertida" id="apuntes">
+                    <div class="contenido-scroll">
+                        <div class="grid-tarjetas">
+                            {
+                                apuntesTecnicos.map((apunte) => (
+                                    <a
+                                        href={apunte.href}
+                                        style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
+                                        data-materia={apunte.materia}
+                                        class="tarjeta-link"
+                                    >
+                                        <TarjetaHorizontal
+                                            titulo={apunte.titulo}
+                                            descripcion={apunte.descripcion}
+                                            icono={apunte.icono}
+                                            cantidadTemas={String(apunte.lecciones)}
+                                        />
+                                    </a>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div class="info-sticky">
+                        <h2 class="titulo-seccion">
+                            <span class="icono-seccion">📝</span> Apuntes
+                        </h2>
+                        <p class="desc-seccion">
+                            Guías de desarrollo, documentación tecnológica y resúmenes
+                            sobre herramientas modernas. Todo lo que necesitas para tu
+                            carrera técnica en un solo lugar.
+                        </p>
+                        <div class="contenedor-pildoras">
+                            <BotonMateria
+                                texto="General"
+                                tipo="gris"
+                                data-filter="all"
+                                class="filtro-btn activo"
+                            />
+                            <BotonMateria
+                                texto="Astro"
+                                tipo="purpura"
+                                data-filter="Astro"
+                                class="filtro-btn"
+                            />
+                        </div>
+                    </div>
+                </section>
+            )
+        }
     </div>
 </Layout>
 
@@ -499,14 +497,14 @@ import { apuntesTecnicos } from "../data/apuntes.js";
             filterBtns.forEach((btn) => {
                 // Evitar duplicar listeners si Astro re-dispara el script
                 if ((btn as any).dataset.initialized) return;
-                
+
                 btn.addEventListener("click", (e) => {
                     e.preventDefault();
 
                     // Scroll instantáneo (sin efecto suave)
-                    section.scrollIntoView({ 
-                        behavior: "auto", 
-                        block: "start" 
+                    section.scrollIntoView({
+                        behavior: "auto",
+                        block: "start",
                     });
 
                     // Lógica de filtrado inmediata
@@ -534,7 +532,7 @@ import { apuntesTecnicos } from "../data/apuntes.js";
 
     // Inicialización coordinada con Astro y carga normal
     document.addEventListener("astro:page-load", setupFilters);
-    
+
     // Ejecución inmediata si el DOM ya está listo
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", setupFilters);

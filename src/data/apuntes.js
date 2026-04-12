@@ -1,8 +1,8 @@
 // src/data/apuntes.js
 import { todosLosTemarios } from "./temarios.js";
 
-// Lista de Apuntes (Tecnología y herramientas)
-export const apuntesTecnicos = [
+// Lista base de todos los apuntes
+const allApuntes = [
     {
         id: "astro",
         titulo: "Guía de Astro",
@@ -12,6 +12,10 @@ export const apuntesTecnicos = [
         href: "/apuntes/astro",
         lecciones: todosLosTemarios.astro.length,
         nivel: "Básico",
-        profesor: "Tyac Team"
+        profesor: "Tyac Team",
+        draft: false //<-- Puedes descomentar esta línea para ocultar temporalmente la guía
     },
 ];
+
+// Solo exportamos los que NO están en draft
+export const apuntesTecnicos = allApuntes.filter(apunte => !apunte.draft);

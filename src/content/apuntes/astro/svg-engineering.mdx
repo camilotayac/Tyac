@@ -1,0 +1,38 @@
+---
+titulo: "Iconografía Pro: Ingeniería de SVGs en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "svg-engineering"
+---
+
+# Iconografía Pro: SVGs
+
+En Tyac, no usamos imágenes de mapa de bits (PNG/JPG) para los iconos. Usamos **SVG (Scalable Vector Graphics)**. Un SVG no es una imagen; es código. Es una serie de instrucciones matemáticas que le dicen al navegador cómo dibujar formas.
+
+## 1. Las ventajas del SVG en Tyac
+
+- **Nitidez Infinita**: Un icono de Tyac se ve igual de perfecto en un Apple Watch que en una televisión 8K. No se pixela al hacer zoom.
+- **Peso Pluma**: Un icono complejo en SVG pesa menos de 1KB, mientras que un PNG equivalente podría pesar 20 veces más.
+- **Manipulación con CSS**: Como es código, podemos cambiar el color del icono mediante CSS (`currentColor`) sin tener que crear 10 archivos distintos.
+
+## 2. Inyección de Iconos
+
+En Tyac, preferimos inyectar el código SVG directamente en el HTML o usar componentes de Iconos. Esto nos permite:
+- Eliminar peticiones HTTP extra al servidor.
+- Controlar el grosor del trazo (`stroke-width`) dinámicamente.
+- Animar partes individuales del icono (como hacer que el núcleo de un átomo gire).
+
+## 3. Optimización con SVGO
+
+Antes de subir un icono a Tyac, lo pasamos por una herramienta de optimización que elimina metadatos innecesarios del editor de diseño (como Adobe Illustrator). Esto nos ahorra hasta un 50% de peso extra en cada icono.
+
+## 4. Accesibilidad Icónica
+
+Incluso un icono necesita ser accesible. En Tyac, siempre añadimos la etiqueta `<title>` dentro del SVG o un `aria-hidden="true"` si el icono es puramente decorativo y ya hay texto al lado que lo explique.
+
+> [!TIP]
+> **Performance**: Al usar SVGs integrados en el código de Astro, Tyac no tiene que esperar a que se descarguen imágenes externas para mostrar la interfaz completa. Todo aparece de golpe, creando esa sensación de velocidad instantánea.
+
+---
+
+Las formas están fijas. Ahora, démosles vida con matemáticas. En la siguiente guía: Curvas de Easing y Timing en micro-animaciones.

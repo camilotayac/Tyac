@@ -1,0 +1,37 @@
+---
+titulo: "SEO Engine: Metadatos dinámicos por lección en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "seo"
+---
+
+# SEO Engine: Si no te ven, no existes
+
+En Tyac, el SEO (Search Engine Optimization) no es un añadido; es parte del ADN de cada componente. Astro nos permite generar metadatos hiper-específicos para cada lección, asegurando que Google entienda exactamente de qué trata cada párrafo de la plataforma.
+
+## 1. Títulos y Descripciones Únicas
+
+Cada página de Tyac genera su propia etiqueta `<title>` y `<meta name="description">`. 
+- **En cursos**: El título es "[Materia] | Tyac".
+- **En lecciones**: El título es "[Título de la clase] - [Materia] | Tyac".
+
+Esta especificidad evita que Google piense que tenemos páginas duplicadas y ayuda a que los estudiantes encuentren temas muy concretos en los buscadores.
+
+## 2. Open Graph: Compartiendo en Redes
+
+Hemos configurado las etiquetas de Open Graph (`og:title`, `og:image`, etc.). Si alguien comparte un enlace de Tyac en Twitter, Facebook o WhatsApp, aparecerá una tarjeta visual premium con la imagen del curso y un resumen atractivo, invitando al clic.
+
+## 3. Robots e Indexación
+
+Tyac utiliza un archivo `sitemap.xml` autogenerado que le entrega a los buscadores un mapa completo de todas las lecciones. Además, usamos etiquetas **Canonical** para asegurar que el contenido original de Tyac siempre sea el que reciba el mérito del ranking.
+
+## 4. Semántica HTML5
+
+Usamos etiquetas semánticas (`<header>`, `<main>`, `<article>`, `<nav>`) en lugar de simples `<div>`. Google usa estas pistas para saber qué parte de la página es el contenido de la lección y qué parte es solo navegación, dándole más peso a lo que el estudiante está leyendo.
+
+> [!IMPORTANT]
+> **SEO Técnico**: Al ser una web estática, Tyac tiene una puntuación de "Cargabilidad" perfecta para Google (Core Web Vitals), lo que nos da una ventaja competitiva enorme frente a sitios de e-learning más pesados y lentos.
+
+---
+
+El SEO nos trae usuarios. Pero, ¿qué pasa cuando algo falla durante el desarrollo? En la siguiente guía: Debugging y el ciclo de vida de Astro.

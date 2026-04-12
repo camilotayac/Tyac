@@ -1,0 +1,51 @@
+---
+titulo: "Lesson Orchestrator: Cómo funciona 00-LayoutLessons en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "lesson-layout"
+---
+
+# Lesson Orchestrator: 00-LayoutLessons
+
+El archivo `00-LayoutLessons.astro` es, posiblemente, el componente más complejo y vital de Tyac. Es el encargado de crear el entorno de lectura perfecto para los apuntes técnicos. Su misión es orquestar múltiples sub-componentes para que el estudiante nunca se sienta perdido.
+
+## 1. La Triple Responsabilidad
+
+Este layout no solo muestra el texto; coordina tres áreas fundamentales:
+- **Área de Navegación**: Breadcrumbs superiores y Sidebar de temario fijo a la izquierda.
+- **Área de Metadatos**: La barra superior con el título, materia y nivel de dificultad.
+- **Área de Flujo**: Los botones de "Anterior" y "Siguiente" clase en la parte inferior.
+
+## 2. Inyección de Contenido Estático
+
+Aprovechamos el sistema de **Slots** de Astro para que este layout envuelva cualquier archivo Markdown. Pero antes de inyectar el texto, el layout realiza cálculos: busca en el temario general para saber qué lección sigue a la actual.
+
+## 3. Deslinde de Responsabilidades
+
+Para mantener el código mantenible, el `00-LayoutLessons` no tiene todo el código del sidebar o los breadcrumbs; los importa como componentes independientes:
+
+```astro
+---
+import SidebarVertical from "../../components/SidebarVertical.astro";
+import Breadcrumbs from "../01-Breadcrumbs.astro";
+import { getLeccionInfo } from "../../utils/helpers.js";
+---
+<div class="lesson-view">
+    <SidebarVertical ... />
+    <article>
+        <Breadcrumbs ... />
+        <slot /> <!-- Inyección del Markdown -->
+    </article>
+</div>
+```
+
+## 4. Estilos de Lectura
+
+Este layout aplica una tipografía especializada en legibilidad (`Inter` o `Roboto`), con un ancho de línea óptimo y un contraste suave que permite estudiar durante horas sin fatiga visual.
+
+> [!TIP]
+> **Dato Maestro**: El `00-LayoutLessons` también se encarga de inyectar los estilos específicos para las fórmulas matemáticas y los diagramas, asegurando que el Markdown se vea siempre perfecto.
+
+---
+
+Hemos terminado el Módulo 5. Ahora que el "escenario" está listo, entremos en el motor que mueve los textos: El Motor de Markdown.

@@ -2,7 +2,7 @@
 import Layout from "../head/00-Layout.astro";
 
 const { frontmatter = {} } = Astro.props;
-const videoId = Astro.props.videoId || frontmatter.videoId || "M7lc1UVf-VE";
+const videoId = Astro.props.videoId || frontmatter.videoId || "MXsnMPK7kjE";
 const titulo = Astro.props.titulo || frontmatter.titulo || "Clase Tyac";
 const portada = Astro.props.portada || frontmatter.portada;
 ---
@@ -12,13 +12,29 @@ const portada = Astro.props.portada || frontmatter.portada;
         <!-- Reproductor NATIVO (Ahora a la IZQUIERDA) -->
         <div class="player-wrapper">
             <!-- Portada de Inicio -->
-            <div id="start-cover" class="start-cover" style={portada ? `background-image: url(${portada});` : ''}>
+            <div
+                id="start-cover"
+                class="start-cover"
+                style={portada ? `background-image: url(${portada});` : ""}
+            >
                 <div class="cover-content">
-                    <span class="materia-tag">{frontmatter.materia || "Curso"}</span>
+                    <span class="materia-tag"
+                        >{frontmatter.materia || "Curso"}</span
+                    >
                     <h1>{titulo}</h1>
-                    <p>{frontmatter.descripcion || "Haz clic para comenzar la lección interactiva."}</p>
+                    <p>
+                        {
+                            frontmatter.descripcion ||
+                                "Haz clic para comenzar la lección interactiva."
+                        }
+                    </p>
                     <button id="start-btn" class="start-btn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            width="24"
+                            height="24"><path d="M8 5v14l11-7z"></path></svg
+                        >
                         Empezar Clase
                     </button>
                 </div>
@@ -27,23 +43,42 @@ const portada = Astro.props.portada || frontmatter.portada;
             <!-- Overlay de Pausa Mejorado (Estilo Portada) -->
             <div id="video-overlay" class="video-overlay">
                 <div class="cover-content">
-                    <span class="materia-tag">{frontmatter.materia || "Curso"}</span>
+                    <span class="materia-tag"
+                        >{frontmatter.materia || "Curso"}</span
+                    >
                     <h1>{titulo}</h1>
                     <p>Clase Pausada</p>
                     <button id="resume-btn" class="start-btn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            width="24"
+                            height="24"><path d="M8 5v14l11-7z"></path></svg
+                        >
                         Continuar Clase
                     </button>
                 </div>
             </div>
-            
+
             <div id="ytplayer" data-video-id={videoId}></div>
         </div>
 
         <!-- Panel lateral para el texto (Ahora a la DERECHA) -->
         <div class="transcript-pane" id="transcript-pane">
             <button id="recenter-btn" class="recenter-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"
+                    ></path></svg
+                >
                 Sincronizar con Video
             </button>
             <div class="scroll-content">
@@ -109,13 +144,17 @@ const portada = Astro.props.portada || frontmatter.portada;
         }
 
         .video-overlay::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(
+                circle at center,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0.8) 100%
+            );
         }
 
         .video-overlay.visible {
@@ -139,9 +178,18 @@ const portada = Astro.props.portada || frontmatter.portada;
         }
 
         @keyframes pulsePause {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.9; }
+            0% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
         }
 
         /* Portada de Inicio */
@@ -158,13 +206,17 @@ const portada = Astro.props.portada || frontmatter.portada;
         }
 
         .start-cover::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(
+                circle at center,
+                rgba(0, 0, 0, 0.1) 0%,
+                rgba(0, 0, 0, 0.8) 100%
+            );
         }
 
         .start-cover.hidden {
@@ -186,8 +238,14 @@ const portada = Astro.props.portada || frontmatter.portada;
         }
 
         @keyframes fadeInCover {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .materia-tag {
@@ -208,7 +266,7 @@ const portada = Astro.props.portada || frontmatter.portada;
             margin-bottom: 15px;
             font-weight: 800;
             line-height: 1.1;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .cover-content p {
@@ -235,7 +293,7 @@ const portada = Astro.props.portada || frontmatter.portada;
             gap: 12px;
             margin: 0 auto;
             transition: all 0.3s ease;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .start-btn:hover {
@@ -417,10 +475,11 @@ const portada = Astro.props.portada || frontmatter.portada;
             left: 50px;
             right: 50px;
             height: 2px;
-            background: linear-gradient(90deg, 
-                rgba(124, 77, 255, 0) 0%, 
-                rgba(124, 77, 255, 0.3) 20%, 
-                rgba(124, 77, 255, 0.3) 80%, 
+            background: linear-gradient(
+                90deg,
+                rgba(124, 77, 255, 0) 0%,
+                rgba(124, 77, 255, 0.3) 20%,
+                rgba(124, 77, 255, 0.3) 80%,
                 rgba(124, 77, 255, 0) 100%
             );
             transform: translateY(-50%);
@@ -485,13 +544,15 @@ const portada = Astro.props.portada || frontmatter.portada;
         :global(.roadmap-item.active .roadmap-diamond) {
             background: #7c4dff;
             border-color: #9d7aff;
-            box-shadow: 0 0 30px rgba(124, 77, 255, 0.5), inset 0 0 10px rgba(255,255,255,0.3);
+            box-shadow:
+                0 0 30px rgba(124, 77, 255, 0.5),
+                inset 0 0 10px rgba(255, 255, 255, 0.3);
             transform: rotate(45deg) scale(1.15);
         }
 
         :global(.roadmap-item.active .roadmap-diamond span) {
             color: white;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         :global(.roadmap-info) {
@@ -584,11 +645,12 @@ const portada = Astro.props.portada || frontmatter.portada;
         function initPlayer() {
             var ytDiv = document.getElementById("ytplayer");
             if (!ytDiv) return;
-            
-            var dynVideoId = ytDiv.getAttribute("data-video-id") || "M7lc1UVf-VE";
+
+            var dynVideoId =
+                ytDiv.getAttribute("data-video-id") || "M7lc1UVf-VE";
 
             // Limpiar si ya existe un player (para navegaciones de Astro)
-            if (player && typeof player.destroy === 'function') {
+            if (player && typeof player.destroy === "function") {
                 player.destroy();
             }
             if (syncInterval) clearInterval(syncInterval);
@@ -599,20 +661,20 @@ const portada = Astro.props.portada || frontmatter.portada;
                 videoId: dynVideoId,
                 playerVars: {
                     autoplay: 0,
-                    controls: 0, 
+                    controls: 0,
                     rel: 0,
                     modestbranding: 1,
                     enablejsapi: 1,
                 },
                 events: {
-                    'onReady': startTranscriptSync,
-                    'onStateChange': onPlayerStateChange,
+                    onReady: startTranscriptSync,
+                    onStateChange: onPlayerStateChange,
                 },
             });
         }
 
         // Callback global de YouTube
-        window.onYouTubePlayerAPIReady = function() {
+        window.onYouTubePlayerAPIReady = function () {
             initPlayer();
         };
 
@@ -632,20 +694,24 @@ const portada = Astro.props.portada || frontmatter.portada;
             if (!pane || !content) return;
 
             var recenterBtn = document.getElementById("recenter-btn");
-            var originalCards = Array.from(content.querySelectorAll(".sync-card"));
+            var originalCards = Array.from(
+                content.querySelectorAll(".sync-card"),
+            );
             var startBtn = document.getElementById("start-btn");
             var startCover = document.getElementById("start-cover");
             var resumeBtn = document.getElementById("resume-btn");
             var videoOverlay = document.getElementById("video-overlay");
-            
+
             if (originalCards.length === 0) return;
 
             // Medir altura del pane y padding dinámico
             var paneHalf = pane.offsetHeight / 2;
-            var originalHeight = content.scrollHeight - (paneHalf * 2);
+            var originalHeight = content.scrollHeight - paneHalf * 2;
 
             // Manejo de Portada y Overlay
-            var coursePortada = startCover ? startCover.style.backgroundImage : null;
+            var coursePortada = startCover
+                ? startCover.style.backgroundImage
+                : null;
             if (coursePortada && videoOverlay) {
                 videoOverlay.style.backgroundImage = coursePortada;
             }
@@ -665,13 +731,13 @@ const portada = Astro.props.portada || frontmatter.portada;
 
             // Clonar cards solo si no están ya clonadas
             if (!content.querySelector(".clone-end")) {
-                originalCards.forEach(card => {
+                originalCards.forEach((card) => {
                     var clone = card.cloneNode(true);
                     clone.classList.add("clone-end");
                     content.appendChild(clone);
                 });
 
-                [...originalCards].reverse().forEach(card => {
+                [...originalCards].reverse().forEach((card) => {
                     var clone = card.cloneNode(true);
                     clone.classList.add("clone-start");
                     content.prepend(clone);
@@ -679,11 +745,15 @@ const portada = Astro.props.portada || frontmatter.portada;
             }
 
             var allCards = document.querySelectorAll(".sync-card");
-            pane.scrollTop = originalHeight + paneHalf; 
+            pane.scrollTop = originalHeight + paneHalf;
 
             // Manejo de Interacción
-            pane.onmouseenter = () => { isUserInteracting = true; };
-            pane.onmouseleave = () => { isUserInteracting = false; };
+            pane.onmouseenter = () => {
+                isUserInteracting = true;
+            };
+            pane.onmouseleave = () => {
+                isUserInteracting = false;
+            };
             pane.onwheel = () => {
                 isUserInteracting = true;
                 if (recenterBtn) recenterBtn.classList.add("visible");
@@ -699,12 +769,16 @@ const portada = Astro.props.portada || frontmatter.portada;
             // Evento Click en cartas
             allCards.forEach(function (card) {
                 card.onclick = function () {
-                    var targetTime = parseInt(card.getAttribute("data-time"), 10);
+                    var targetTime = parseInt(
+                        card.getAttribute("data-time"),
+                        10,
+                    );
                     if (!isNaN(targetTime) && player && player.seekTo) {
                         player.seekTo(targetTime, true);
                         player.playVideo();
                         isUserInteracting = false;
-                        if (recenterBtn) recenterBtn.classList.remove("visible");
+                        if (recenterBtn)
+                            recenterBtn.classList.remove("visible");
                     }
                 };
             });
@@ -716,33 +790,60 @@ const portada = Astro.props.portada || frontmatter.portada;
                     var activeIndex = -1;
 
                     for (var i = 0; i < originalCards.length; i++) {
-                        var cardTime = parseInt(originalCards[i].getAttribute("data-time"), 10);
+                        var cardTime = parseInt(
+                            originalCards[i].getAttribute("data-time"),
+                            10,
+                        );
                         if (cardTime <= currentTime) activeIndex = i;
                         else break;
                     }
 
                     if (activeIndex !== -1) {
-                        var targetTimeValue = parseInt(originalCards[activeIndex].getAttribute("data-time"), 10);
+                        var targetTimeValue = parseInt(
+                            originalCards[activeIndex].getAttribute(
+                                "data-time",
+                            ),
+                            10,
+                        );
                         allCards.forEach(function (card) {
-                            if (parseInt(card.getAttribute("data-time"), 10) === targetTimeValue) card.classList.add("active");
+                            if (
+                                parseInt(card.getAttribute("data-time"), 10) ===
+                                targetTimeValue
+                            )
+                                card.classList.add("active");
                             else card.classList.remove("active");
                         });
 
                         if (!isUserInteracting) {
-                            var activeCards = Array.from(document.querySelectorAll(".sync-card.active"));
+                            var activeCards = Array.from(
+                                document.querySelectorAll(".sync-card.active"),
+                            );
                             var closestCard = activeCards[0];
                             var minDiff = Infinity;
-                            
-                            activeCards.forEach(card => {
-                                var diff = Math.abs(card.offsetTop - (pane.scrollTop + paneHalf));
-                                if (diff < minDiff) { minDiff = diff; closestCard = card; }
+
+                            activeCards.forEach((card) => {
+                                var diff = Math.abs(
+                                    card.offsetTop -
+                                        (pane.scrollTop + paneHalf),
+                                );
+                                if (diff < minDiff) {
+                                    minDiff = diff;
+                                    closestCard = card;
+                                }
                             });
 
                             if (closestCard) {
                                 isScrolling = true;
-                                var targetScrollTop = closestCard.offsetTop - (pane.offsetHeight / 2) + (closestCard.offsetHeight / 2);
-                                pane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
-                                if (recenterBtn) recenterBtn.classList.remove("visible");
+                                var targetScrollTop =
+                                    closestCard.offsetTop -
+                                    pane.offsetHeight / 2 +
+                                    closestCard.offsetHeight / 2;
+                                pane.scrollTo({
+                                    top: targetScrollTop,
+                                    behavior: "smooth",
+                                });
+                                if (recenterBtn)
+                                    recenterBtn.classList.remove("visible");
                             }
                         }
                     }
@@ -750,17 +851,17 @@ const portada = Astro.props.portada || frontmatter.portada;
             }, 500);
 
             // DETECTOR DE BUCLE INFINITO
-            pane.onscroll = function() {
+            pane.onscroll = function () {
                 var scrollPos = pane.scrollTop;
                 if (scrollPos < 100) {
-                    pane.style.scrollBehavior = 'auto';
+                    pane.style.scrollBehavior = "auto";
                     pane.scrollTop = scrollPos + originalHeight;
-                    pane.style.scrollBehavior = 'smooth';
+                    pane.style.scrollBehavior = "smooth";
                 }
                 if (scrollPos > originalHeight + 400) {
-                    pane.style.scrollBehavior = 'auto';
+                    pane.style.scrollBehavior = "auto";
                     pane.scrollTop = scrollPos - originalHeight;
-                    pane.style.scrollBehavior = 'smooth';
+                    pane.style.scrollBehavior = "smooth";
                 }
             };
         }

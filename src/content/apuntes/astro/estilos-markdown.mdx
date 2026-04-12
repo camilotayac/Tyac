@@ -1,0 +1,47 @@
+---
+titulo: "Refinando el motor de Markdown en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "estilos-markdown"
+---
+
+# Refinando el motor de Markdown
+
+Para que Tyac sea una plataforma educativa de élite, no bastaba con renderizar texto plano. Hemos personalizado el motor de Markdown para ofrecer herramientas avanzadas de lectura y aprendizaje.
+
+## Bloques de Código Inteligentes
+
+¿Te has fijado en el botón para copiar código arriba de los snippets? Eso no viene por defecto en Markdown. Lo implementamos en Tyac usando una combinación de JavaScript en el servidor y el cliente dentro de `00-LayoutLessons.astro`.
+
+### Características de nuestro editor:
+- **Resaltado de sintaxis**: Usamos los temas de VS Code para que el código sea legible.
+- **Header dinámico**: El bloque indica automáticamente qué lenguaje es (Astro, CSS, JS).
+- **Copiado rápido**: Un clic para llevarte el código a tu editor.
+
+## Elementos de Soporte Visual
+
+En Tyac, los apuntes pueden incluir elementos enriquecidos que facilitan la comprensión:
+
+1.  **Alertas Semánticas**: Usamos bloques `> [!TIP]` o `> [!IMPORTANT]` para destacar consejos o advertencias críticas.
+2.  **Soporte LaTeX**: Para los cursos de física y química, nuestro Markdown entiende fórmulas matemáticas complejas.
+3.  **Diagramas Mermaid**: Podemos dibujar flujos y arquitecturas directamente con código.
+
+## ¿Cómo ajustamos el diseño?
+
+Todos estos elementos tienen estilos a medida en `src/styles/markdown/`. Por ejemplo, en `02-Code.css` definimos la estética de los bloques de código para que coincidan con la paleta de colores de Tyac.
+
+```css
+/* Ejemplo de personalización en Tyac */
+.codigo-header {
+    background: rgba(189, 147, 249, 0.1);
+    color: var(--dracula-purple);
+    font-family: 'JetBrains Mono', monospace;
+}
+```
+
+---
+
+¡Felicidades! Has completado las guías técnicas de Astro en Tyac. Con estos conocimientos, ahora entiendes no solo cómo usar Astro, sino cómo hemos orquestado esta plataforma para que sea rápida, escalable y hermosa.
+
+> [!TIP]
+> **Explora el código**: La mejor forma de aprender es ir a los archivos mencionados en estas guías y experimentar con ellos. ¡El conocimiento es tuyo!

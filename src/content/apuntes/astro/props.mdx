@@ -1,0 +1,62 @@
+---
+titulo: "Comunicación de datos y flujo vivo en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "props"
+---
+
+# Props: La comunicación en Tyac
+
+Para que Tyac no sea una página estática y aburrida, necesitamos que nuestros componentes puedan recibir información. Aquí es donde entran las **Props**.
+
+## Alimentando las Tarjetas
+
+Cuando ves la cuadrícula de cursos en el inicio de Tyac, ves muchas tarjetas iguales pero con diferente información. No escribimos 10 componentes distintos; usamos uno solo y le pasamos los datos mediante props.
+
+### Ejemplo real: `TarjetaHorizontal.astro`
+
+En Tyac, consumimos los datos de `cursos.js` y se los pasamos al componente de esta forma:
+
+```astro
+---
+// index.astro
+import TarjetaHorizontal from '../components/TarjetaHorizontal.astro';
+import { cursosCiencia } from '../data/cursos.js';
+---
+
+{cursosCiencia.map((curso) => (
+  <TarjetaHorizontal 
+    titulo={curso.titulo} 
+    descripcion={curso.descripcion} 
+    cantidadTemas={curso.lecciones}
+  />
+))}
+```
+
+## Tipado con TypeScript
+
+Para que Tyac sea robusto y no tenga errores, definimos qué tipo de datos acepta cada componente. Esto nos ayuda a saber, por ejemplo, que `cantidadTemas` siempre debe ser un número o un texto:
+
+```astro
+---
+// TarjetaHorizontal.astro
+interface Props {
+  titulo: string;
+  descripcion: string;
+  icono?: string;
+  cantidadTemas: string;
+}
+const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
+---
+```
+
+## Por qué es vital en Tyac
+
+Gracias a las Props, el temario que ves a la izquierda en esta lección se genera dinámicamente. El layout de la lección recibe los datos del curso actual y se los "pasa" al componente del sidebar.
+
+> [!IMPORTANT]
+> **Consistencia Total**: Si cambiamos el nombre de una materia en la base de datos (`src/data/`), el cambio se refleja automáticamente en el Hero, en la Tarjeta y en los Meta-tags gracias al flujo de Props.
+
+---
+
+En la siguiente guía, veremos cómo los Layouts envuelven a estos componentes para crear la estructura final.

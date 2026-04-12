@@ -1,0 +1,30 @@
+---
+// src/pages/apuntes/[curso]/[id].astro
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import LayoutLessons from '../../../layouts/lessons/00-LayoutLessons.astro';
+
+export async function getStaticPaths() {
+    const apuntesEntries = await getCollection('apuntes');
+    return apuntesEntries.map((entry: CollectionEntry<'apuntes'>) => {
+        const [curso, id_clase_con_ext] = entry.id.split('/');
+        const id_clase = id_clase_con_ext.replace(/\.(md|mdx)$/, '');
+        return {
+            params: { curso, id: id_clase },
+            props: { entry },
+        };
+    });
+}
+
+interface Props {
+    entry: CollectionEntry<'apuntes'>;
+}
+
+const { entry } = Astro.props;
+// Astro 5 API: render() de astro:content
+const { Content } = await render(entry);
+---
+
+<LayoutLessons frontmatter={entry.data}>
+    <Content />
+</LayoutLessons>

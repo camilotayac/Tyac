@@ -1,0 +1,47 @@
+---
+titulo: "Micro-animaciones: Curvas de Easing y Timing en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "easing-timing"
+---
+
+# Curvas de Easing y Timing
+
+En el mundo físico, nada se mueve a una velocidad constante y se detiene en seco. Todo tiene inercia, aceleración y fricción. En Tyac, imitamos la realidad usando **Curvas de Easing (Suavizado)** en nuestras transiciones CSS para que la interfaz se sienta orgánica y fluida.
+
+## 1. El error de `linear`
+
+Usar `transition: all 0.3s linear` es lo que hace que una web se sienta barata o "robótica". Las máquinas se mueven de forma lineal; los seres vivos y los objetos naturales, no.
+
+## 2. El poder de `cubic-bezier`
+
+En Tyac, usamos curvas de Bezier personalizadas. Nuestra curva favorita es:
+`cubic-bezier(0.16, 1, 0.3, 1)`
+
+Esta curva hace que el elemento salga disparado muy rápido y se frene suavemente al llegar a su destino. Es la misma curva que usa Apple en iOS para sus animaciones, dando una sensación de respuesta inmediata y controlada.
+
+```css
+.tarjeta-hover {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+```
+
+## 3. La Regla de los Tiempos (Timing)
+
+En Tyac seguimos estándares de oro para las duraciones:
+- **Interacciones pequeñas (Hover)**: 150ms a 200ms.
+- **Cambios de estado grandes (Sidebar)**: 300ms a 400ms.
+- **Apertura de Modales**: 400ms con un ligero rebote (overshoot).
+
+Si la animación dura más de 500ms, el usuario sentirá que la web es lenta. Si dura menos de 100ms, el ojo no llegará a percibir el movimiento.
+
+## 4. Staggering (Escalonamiento)
+
+Al entrar a la landing de Tyac, los elementos no aparecen todos a la vez. Usamos `animation-delay` para que aparezcan uno tras otro con una diferencia de 50ms. Este "efecto cascada" guía la vista del usuario y hace que la carga se sienta más amena.
+
+> [!IMPORTANT]
+> **Performance**: Siempre animamos propiedades que no fuercen un re-calculo del layout (como `transform` y `opacity`). Esto asegura que Tyac mantenga los **60 Frames por Segundo (FPS)** incluso en dispositivos móviles.
+
+---
+
+Hemos terminado el Módulo 10. Ahora, entremos en el tramo final de nuestra maestría: Rendimiento Extremo y Escalabilidad.

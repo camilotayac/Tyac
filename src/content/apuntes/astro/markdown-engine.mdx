@@ -1,0 +1,39 @@
+---
+titulo: "El Motor Markdown: Contenidos técnicos premium en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "markdown-engine"
+---
+
+# El Motor Markdown en Tyac
+
+Tyac no sería una plataforma técnica poderosa sin un motor de renderizado de contenido a la altura. Elegimos Markdown como nuestra fuente de verdad porque combina sencillez para el escritor con una potencia de salida ilimitada mediante el ecosistema de Astro.
+
+## 1. De Texto Plano a HTML Estético
+
+Astro integra internamente un procesador de Markdown que transforma archivos `.md` en HTML puro. En Tyac, hemos configurado este motor para que no solo genere etiquetas estándar, sino que inyecte clases y estilos específicos que coincidan con nuestra paleta Dark Mode.
+
+## 2. La Potencia de los Plugins
+
+El motor de Tyac está "hiper-vitaminado" mediante plugins de **Remark** (para el contenido) y **Rehype** (para la estructura final). Esto nos permite:
+- Generar IDs automáticos para los encabezados.
+- Soporte para sintaxis de Github Flavored Markdown (GGFM) como tablas y listas de tareas.
+- Renderizado de componentes de Astro dentro del propio Markdown (vía MDX si fuera necesario).
+
+## 3. Optimización Automática
+
+Una de las joyas de Tyac es que el motor de Markdown optimiza las imágenes automáticamente. Si pones una imagen en un apunte, Astro se encarga de cambiar su tamaño y formato para que pese lo mínimo posible sin que tengas que hacerlo a mano.
+
+## 4. Por qué no usamos un CMS?
+
+Al tener el contenido en archivos Markdown dentro de nuestra propia estructura (`src/pages/apuntes/`), ganamos:
+- **Control de Versiones**: Cada cambio en los apuntes queda registrado en el historial de Git.
+- **Velocidad de Edición**: El autor puede usar su editor de código favorito (como este mismo VS Code).
+- **Offline First**: Podemos escribir y probar lecciones enteras sin conexión a internet.
+
+> [!IMPORTANT]
+> **Filosofía Tyac**: Tratamos el contenido como si fuera código. Los apuntes de Tyac pasan los mismos controles de calidad y despliegue que su propia interfaz.
+
+---
+
+Para que el motor sepa qué hacer con cada archivo, necesitamos los "Metadatos de Cabecera". En la siguiente guía, desarmaremos el Frontmatter.

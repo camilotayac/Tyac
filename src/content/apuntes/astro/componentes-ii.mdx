@@ -1,0 +1,66 @@
+---
+titulo: "Componentes Atómicos II: BotonMateria.astro"
+materia: "Astro"
+curso: "astro"
+id_clase: "componentes-ii"
+---
+
+# Componentes Atómicos II: BotonMateria
+
+El componente `BotonMateria.astro` en Tyac es un ejemplo perfecto de cómo un pequeño elemento puede manejar múltiples estados visuales de forma eficiente. No es solo un botón; es una brújula de color para el usuario.
+
+## 1. El sistema de "Tipos" (Varianza)
+
+En Tyac, cada materia tiene un color asociado (Química es rojo, Astro es púrpura, Matemáticas es amarillo). En lugar de crear 5 botones diferentes, creamos uno solo que recibe una prop `tipo`.
+
+```astro
+---
+interface Props {
+  texto: string;
+  tipo: "rojo" | "purpura" | "azul" | "verde" | "amarillo" | "gris";
+  class?: string;
+}
+const { texto, tipo, class: className, ...rest } = Astro.props;
+---
+```
+
+## 2. Clases Dinámicas
+
+Usamos el valor de la prop `tipo` para inyectar una clase CSS específica. Esto permite que el botón cambie su color de borde, fondo y texto automáticamente:
+
+```astro
+<button class={`btn-materia btn-${tipo} ${className}`} {...rest}>
+  {texto}
+</button>
+```
+
+## 3. Estilos de Interacción
+
+En Tyac, estos botones tienen una "opacidad base" baja (`0.4`) para no distraer cuando no están activos. Al hacer hover o estar en estado `.activo`, la opacidad sube al `1.0` y se activa un brillo de neón.
+
+```css
+.btn-materia {
+    opacity: 0.4;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-purpura.activo {
+    color: var(--dracula-purple);
+    border-color: var(--dracula-purple);
+    box-shadow: 0 0 15px rgba(189, 147, 249, 0.4);
+}
+```
+
+## 4. Reusabilidad Extrema
+
+Este botón se usa tanto en el Index (para filtrar cursos) como en las páginas de materias específicas. Gracias al uso de `...rest` en Astro, podemos pasarle atributos extra como `data-filter` o `onclick` sin necesidad de definirlos explícitamente en las Props.
+
+> [!IMPORTANT]
+> **Detalle Tyac**: Forzamos que todos los botones de filtro en el catálogo principal hereden el color morado de la marca para mantener la armonía, incluso si por dentro tienen asignado otro tipo, demostrando la flexibilidad de los selectores CSS.
+
+---
+
+Hemos completado el Módulo 2. Ahora que el Index es perfecto, subamos la vista al cielo de la página: El Sistema de Navegación Global.

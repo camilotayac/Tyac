@@ -1,0 +1,48 @@
+---
+titulo: "Rutas Dinámicas I: El catálogo de cursos en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "rutas-i"
+---
+
+# Rutas Dinámicas I: Catálogo de cursos
+
+¿Cómo logramos que Tyac genere una página única para "Química General", otra para "Biología" y otra para "Matemáticas" sin crear archivos individuales para cada una? Usamos el sistema de **Rutas Dinámicas de Astro**.
+
+## 1. El archivo comodín `[id].astro`
+
+En Tyac, dentro de `src/pages/cursos/`, creamos un archivo llamado `[id].astro`. Los corchetes le indican a Astro que esta página es dinámica y que el valor de `id` será reemplazado por el identificador real de cada curso.
+
+## 2. La función `getStaticPaths`
+
+Para que esto funcione, debemos decirle a Astro exactamente qué páginas debe generar en el momento de la construcción (build). Lo hacemos exportando una función especial:
+
+```astro
+---
+// src/pages/cursos/[id].astro
+import { cursosCiencia } from '../../data/cursos.js';
+
+export function getStaticPaths() {
+  return cursosCiencia.map(curso => ({
+    params: { id: curso.id }, // Genera /cursos/quimica_general, etc.
+    props: { curso }         // Pasa los datos del curso a la página
+  }));
+}
+---
+```
+
+## 3. Ventajas de la Arquitectura Tyac
+
+- **Escalabilidad**: Si mañana añadimos 10 materias nuevas en nuestro archivo de datos, Astro detectará los nuevos registros y creará las 10 páginas automáticamente.
+- **Mantenimiento**: Si queremos cambiar el diseño de todas las páginas de presentación de cursos, solo editamos este archivo `[id].astro` una vez.
+
+## 4. Recibiendo los datos (Props)
+
+Una vez generada la ruta, los datos del curso seleccionado llegan a la página a través de `Astro.props`. Luego, simplemente los pasamos al layout correspondiente para que se pinten en pantalla.
+
+> [!IMPORTANT]
+> **Performance**: Al usar rutas dinámicas estáticas, Tyac no tiene que consultar una base de datos cuando el usuario entra. El HTML ya está pre-generado y listo para ser servido a la velocidad del rayo.
+
+---
+
+Este mismo concepto lo aplicamos a las lecciones individuales. En la siguiente guía, veremos cómo manejamos las rutas más profundas de la plataforma.

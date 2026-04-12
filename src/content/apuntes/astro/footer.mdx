@@ -1,0 +1,49 @@
+---
+titulo: "Footer: Diseño de cierre y navegación final en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "footer"
+---
+
+# Footer: Diseño de cierre
+
+El **Footer** es a menudo el elemento más ignorado, pero en Tyac lo tratamos con el mismo respeto que al Hero. Es el ancla final del sitio y el lugar donde muchos usuarios buscan información de contacto o enlaces secundarios.
+
+## 1. Estética Atemporal
+
+El Footer de Tyac mantiene la elegancia del modo oscuro. Usa un fondo ligeramente más oscuro que el cuerpo de la página para crear una base visual sólida.
+
+```css
+footer {
+    background-color: #05060a; /* Un tono más profundo que el negro base */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 4rem 5%;
+}
+```
+
+## 2. Organización en Columnas
+
+Dividimos el Footer en bloques lógicos para facilitar la lectura:
+- **Resumen**: Qué es Tyac.
+- **Navegación**: Enlaces rápidos a Cursos y Apuntes.
+- **Redes**: Iconos sociales (GitHub, YouTube).
+- **Créditos**: Propiedad intelectual y año actual.
+
+## 3. Dinamismo con JavaScript (Año Actual)
+
+Incluso en un sitio estático como Tyac, usamos pequeñas piezas de JavaScript para mantener la información al día, como el año del Copyright:
+
+```astro
+<p>&copy; {new Date().getFullYear()} Tyac. Todos los derechos reservados.</p>
+```
+
+## 4. Reusabilidad Global
+
+Al igual que el Navbar, el Footer es parte del Layout Maestro (`00-Layout.astro`). Esto garantiza que, sin importar cuán profundo navegue el estudiante en los apuntes, siempre tendrá un cierre consistente de página.
+
+> [!IMPORTANT]
+> **Toque Maestro**: Los enlaces del Footer tienen el mismo comportamiento de hover que el Navbar, reforzando el sistema de diseño y haciendo que la navegación sea intuitiva.
+
+---
+
+Hemos cerrado el Módulo 3. Ahora, prepárate para entrar en la lección de ingeniería más compleja de Tyac: El Cerebro de Búsqueda.

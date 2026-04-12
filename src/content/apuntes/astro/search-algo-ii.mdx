@@ -1,0 +1,51 @@
+---
+titulo: "Algoritmo de Búsqueda II: Fuzzy Search y Pesos en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "search-algo-ii"
+---
+
+# Algoritmo de Búsqueda II: Fuzzy Search y Pesos
+
+Una vez que el texto está normalizado, Tyac no se limita a buscar una coincidencia exacta. Hemos implementado un sistema de **Puntuación de Relevancia** que decide qué resultados mostrar primero basándose en dónde se encontró la palabra buscada.
+
+## 1. El concepto de "Pesos"
+
+No todos los campos de una lección valen lo mismo. En Tyac, el **Título** es más importante que la **Descripción**. Si buscas "Astro", queremos que las lecciones cuyo título sea "Astro" aparezcan arriba, y las que solo mencionan "Astro" en su texto aparezcan más abajo.
+
+### La escala de Tyac:
+- **Título**: Peso x4.
+- **Materia**: Peso x3.
+- **Descripción**: Peso x1.
+
+## 2. La función `calculateScore`
+
+En nuestro archivo de utilidades `search.js`, definimos la lógica que suma puntos a cada resultado:
+
+```javascript
+export function calculateScore(query, item) {
+    let score = 0;
+    const q = normalize(query);
+
+    if (normalize(item.titulo).includes(q)) score += 100;
+    if (normalize(item.materia).includes(q)) score += 50;
+    if (normalize(item.descripcion).includes(q)) score += 20;
+
+    return score;
+}
+```
+
+## 3. Filtrado por Relevancia (Umbral)
+
+No mostramos todo lo que tenga un punto. En Tyac establecemos un **umbral (threshold)**. Si un resultado tiene una puntuación muy baja (por ejemplo, menos de 15 puntos), simplemente lo descartamos por no ser lo suficientemente relevante.
+
+## 4. Ordenación Instantánea
+
+Finalmente, usamos el método `.sort()` de JavaScript para ordenar los resultados de mayor a menor puntuación antes de pintarlos en pantalla. Esto asegura que el usuario siempre vea lo más útil en la parte superior del buscador.
+
+> [!TIP]
+> **Optimización**: Al limitar los resultados a los "Top 10" más puntuados, mantenemos el DOM ligero y la búsqueda se siente increíblemente rápida incluso en dispositivos antiguos.
+
+---
+
+¿Cómo coordinamos que el clic en un botón abra un modal que vive en otro archivo? En la siguiente guía, desvelaremos el Sistema de Eventos de Tyac.

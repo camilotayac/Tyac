@@ -1,0 +1,36 @@
+---
+titulo: "Optimización de imágenes y Lazy Loading en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "lazy-loading"
+---
+
+# Optimización de imágenes y Lazy Loading
+
+En Tyac, el contenido de media (especialmente las imágenes en los apuntes) puede ser abundante. Para evitar que esto afecte la velocidad de carga inicial, implementamos una estrategia de **Carga Perezosa (Lazy Loading)** y optimización proactiva de activos.
+
+## 1. El Atributo `loading="lazy"`
+
+Por defecto, Astro y Tyac aplican este atributo a todas las imágenes que no están en la parte superior de la pantalla. El navegador no descargará estas imágenes hasta que el usuario haga scroll y estén a punto de aparecer, ahorrando datos y batería.
+
+## 2. Formatos de Nueva Generación
+
+Tyac prefiere el formato **WebP** y **AVIF**. Estos formatos mantienen la calidad visual del PNG pero con un peso reducido hasta en un 80%. 
+
+- **PNG de código**: 200 KB.
+- **WebP de Tyac**: 35 KB.
+
+## 3. Imágenes con "Placeholder"
+
+Para evitar que el contenido "salte" cuando una imagen termina de cargar (layout shift), Tyac reserva el espacio exacto usando las dimensiones pre-calculadas. En el futuro, incluso podríamos implementar colores de acento como placeholder para que la carga se sienta aún más fluida.
+
+## 4. Prioridad de Carga (LCP)
+
+Paradójicamente, la imagen del Hero en el Index NO debe tener lazy loading. Al ser lo primero que ve el usuario, le damos la prioridad máxima (`loading="eager"`) para que aparezca instantáneamente en cuanto se abra la web.
+
+> [!TIP]
+> **Performance Tip**: En Tyac, las imágenes de los apuntes son procesadas automáticamente por el servidor para generar múltiples tamaños. El navegador del estudiante elegirá el tamaño más pequeño que se vea bien en su pantalla.
+
+---
+
+Ya somos rápidos. Ahora veamos cómo somos capaces de crecer sin límites. En la siguiente guía: Escalamiento y soporte de múltiples materias.

@@ -1,0 +1,46 @@
+---
+titulo: "Design Tokens: Centralizando el diseño con palette.css en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "design-tokens"
+---
+
+# Design Tokens: Centralizando el diseño
+
+En Tyac, no usamos colores "al azar". Hemos creado un sistema de **Design Tokens** que actúa como la única fuente de verdad para la apariencia de toda la plataforma. Estos tokens se guardan en el archivo `src/styles/colors/palette.css`.
+
+## 1. Qué es un Design Token?
+
+Un token es un nombre simbólico que representa una decisión de diseño. En lugar de decir "usa el color #bd93f9 directamente", decimos "usa el token `--dracula-purple`". 
+
+### ¿Por qué es mejor?
+Si en el futuro decidimos que el morado de Tyac debe ser un poco más claro, solo cambiamos el valor del token en un solo archivo, y automáticamente se actualizará en botones, bordes, headers y badges de toda la web.
+
+## 2. La Paleta Tyac
+
+Nuestra paleta se divide en tres categorías lógicas:
+
+- **Bases (Fondos)**: `--clr-black-01` (Fondo principal) y `--clr-black-02` (Fondo de secciones).
+- **Acentos (Identidad)**: `--dracula-purple` y `--dracula-cyan`.
+- **Estado (Alertas)**: `--dracula-red` (Error) y `--dracula-green` (Éxito).
+
+## 3. Implementación Global
+
+Para que estos tokens estén disponibles en cualquier rincón de Tyac, importamos el archivo `palette.css` en el Layout Maestro (`00-Layout.astro`):
+
+```astro
+---
+import "../../styles/colors/palette.css";
+---
+```
+
+## 4. Tipografía como Token
+
+No solo los colores son tokens. El tamaño de los textos, el grosor de los bordes y el nivel de desenfoque (blur) también se manejan como variables. Esto nos permite asegurar que una "tarjeta" en la landing se sienta de la misma familia que un "bloque de código" en los apuntes.
+
+> [!TIP]
+> **Consistencia Senior**: Al usar Design Tokens, eliminamos la posibilidad de tener "50 sombras de gris" diferentes en la página, logrando esa sensación de pulido y profesionalismo extremo que caracteriza a Tyac.
+
+---
+
+Los tokens son el "qué". En la siguiente guía, veremos el "cómo": Las Variables Semánticas vs los Colores Sueltos.

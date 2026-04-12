@@ -1,0 +1,43 @@
+---
+titulo: "Media Manager: Imágenes y recursos responsivos en Tyac"
+materia: "Astro"
+curso: "astro"
+id_clase: "media-manager"
+---
+
+# Media Manager: Recursos Visuales
+
+En Tyac, una imagen vale más que mil palabras, pero solo si esa imagen no ralentiza la página. Hemos diseñado un sistema de gestión de medios que asegura que las capturas de pantalla, diagramas e ilustraciones técnicos se carguen de forma óptima sin importar el dispositivo del estudiante.
+
+## 1. El poder de `<Image />` de Astro
+
+En lugar de usar la etiqueta `<img>` estándar de HTML, en Tyac usamos el componente nativo de Astro. Este componente realiza una **optimización en tiempo de build**:
+- **Formatos modernos**: Convierte automáticamente imágenes `.jpg` o `.png` a formato `.webp` o `.avif` (mucho más ligeros).
+- **Redimensionamiento**: Ajusta el tamaño de la imagen al contenedor para que no descargues una foto de 4K en un móvil.
+
+## 2. Diagramas Mermaid: Código que se vuelve imagen
+
+Para procesos complejos (como el ciclo de vida de un componente), no usamos imágenes estáticas. Usamos **Mermaid.js**, que permite escribir diagramas directamente en el Markdown:
+
+```markdown
+graph LR
+    A[Inicio] --> B[Proceso]
+    B --> C[Fin]
+```
+
+Esto asegura que los diagramas se vean nítidos en cualquier nivel de zoom y que sean fáciles de editar si el proceso cambia.
+
+## 3. Glassmorphism en Media
+
+Todas las capturas de pantalla de código o diagramas en Tyac están envueltas en un pequeño borde semi-transparente y una sombra suave. Esto hace que las imágenes parezcan "flotar" e integrarse mejor con el tema oscuro de la plataforma.
+
+## 4. Lazy Loading por Defecto
+
+En Tyac, las imágenes que no están visibles (debajo de la pantalla) no se cargan hasta que el usuario hace scroll hacia ellas. Esto ahorra datos al usuario y permite que el primer contenido de la lección aparezca instantáneamente.
+
+> [!IMPORTANT]
+> **Accesibilidad**: Es obligatorio en Tyac añadir el atributo `alt` (texto alternativo) a cada recurso visual. De esta forma, los estudiantes que usan lectores de pantalla también pueden entender el contexto visual de la lección.
+
+---
+
+Hemos terminado el Módulo 6. Ya dominamos el contenido. Ahora, entremos en el alma del diseño de Tyac: El Módulo de Excelencia Visual.

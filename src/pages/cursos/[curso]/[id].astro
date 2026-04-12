@@ -1,0 +1,26 @@
+---
+// src/pages/cursos/[curso]/[id].astro
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+    const cursosEntries = await getCollection('cursos');
+    return cursosEntries.map((entry: CollectionEntry<'cursos'>) => {
+        const [curso, id_clase_con_ext] = entry.id.split('/');
+        const id_clase = id_clase_con_ext.replace(/\.(md|mdx)$/, '');
+        return {
+            params: { curso, id: id_clase },
+            props: { entry },
+        };
+    });
+}
+
+interface Props {
+    entry: CollectionEntry<'cursos'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Content />

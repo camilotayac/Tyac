@@ -19,7 +19,7 @@
    Clase aplicada en LayoutCurso.astro: <div class="markdown-container">
 ────────────────────────────────────────────────────────── */
 .markdown-container {
-    max-width: 850px;
+    max-width: 70ch;
     /* Ancho óptimo para lectura (65-75 caracteres por línea) */
     margin: 0 auto;
     font-size: 1.15rem;
@@ -46,6 +46,7 @@
    porque H1 siempre aparece sobre el fondo blanco (--fondo-contenido).
 ────────────────────────────────────────────────────────── */
 .markdown-container h1 {
+    font-family: "Outfit", "Inter", sans-serif;
     color: var(--clr-black-text);
     font-size: 2.8rem;
     font-weight: 800;
@@ -79,6 +80,7 @@
 .markdown-container h2,
 .markdown-container h3,
 .markdown-container h4 {
+    font-family: "Outfit", "Inter", sans-serif;
     color: var(--clr-black-text);
     margin-top: 3.5rem;
     margin-bottom: 1.2rem;
@@ -88,28 +90,28 @@
 .markdown-container h2 {
     font-size: 1.85rem;
     font-weight: 700;
+    letter-spacing: -0.5px;
     counter-increment: section;
     counter-reset: subsection;
 }
 
 .markdown-container h2::before {
     content: counter(section) ". ";
-    color: var(--dracula-purple);
+    color: var(--dracula-purple-dark);
     margin-right: 0.5rem;
-    opacity: 0.8;
 }
 
 .markdown-container h3 {
     font-size: 1.4rem;
     font-weight: 700;
+    letter-spacing: -0.3px;
     counter-increment: subsection;
 }
 
 .markdown-container h3::before {
     content: counter(section) "." counter(subsection) " ";
-    color: var(--dracula-purple);
+    color: var(--dracula-purple-dark);
     margin-right: 0.5rem;
-    opacity: 0.7;
     font-size: 0.9em;
 }
 
@@ -139,4 +141,10 @@
 
 .markdown-container li {
     margin-bottom: 0.4rem;
+}
+
+/* Color morado oscuro para los números de las listas enumeradas */
+.markdown-container ol li::marker {
+    color: var(--dracula-purple-dark);
+    font-weight: 800;
 }
