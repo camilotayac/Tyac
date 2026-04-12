@@ -1,212 +1,180 @@
 ---
-/**
- * 00-LAYOUTCOURSES.ASTRO
- * Masterclass Studio Orchestrator
- * Orquestador principal que une el escenario de video y el panel de apuntes.
- */
-
 import Layout from "../head/00-Layout.astro";
-import SidebarVertical from "../../components/SidebarVertical.astro";
-import VideoStage from "./01-VideoStage.astro";
-import TranscriptPane from "./02-TranscriptPane.astro";
-import { todosLosTemarios } from "../../data/temarios.js";
-import { cursosCiencia } from "../../data/cursos.js";
 
-const { frontmatter, videoId } = Astro.props;
-const lessonId = frontmatter.id_clase;
-
-type CourseValidKey = keyof typeof todosLosTemarios;
-const currentCourse = frontmatter.curso as CourseValidKey;
-
-const selectedSyllabus = currentCourse && todosLosTemarios[currentCourse] ? todosLosTemarios[currentCourse] : [];
-const isAcademicCourse = cursosCiencia.some((c) => c.id === currentCourse);
-const urlPrefix = isAcademicCourse ? "/cursos" : "/apuntes";
-
-const lessonData = selectedSyllabus.find((lesson: any) => lesson.id === lessonId);
-const pageTitle = lessonData ? lessonData.titulo : frontmatter.titulo || "Clase Tyac";
-
-const currentIndex = selectedSyllabus.findIndex((lesson: any) => lesson.id === lessonId);
-const prevLesson = currentIndex > 0 ? selectedSyllabus[currentIndex - 1] : null;
-const nextLesson = currentIndex !== -1 && currentIndex < selectedSyllabus.length - 1 ? selectedSyllabus[currentIndex + 1] : null;
+const { frontmatter = {} } = Astro.props;
+const videoId = Astro.props.videoId || frontmatter.videoId || "M7lc1UVf-VE";
+const titulo = Astro.props.titulo || frontmatter.titulo || "Clase Tyac";
 ---
 
-<Layout titulo={`${pageTitle} - Tyac`}>
-    <div class="studio-shell">
-        
-        <!-- SIDEBAR DE NAVEGACIÓN -->
-        <SidebarVertical
-            lecciones={selectedSyllabus}
-            claseActualId={lessonId}
-            cursoActualId={currentCourse}
-        />
-
-        <!-- ÁREA PRINCIPAL DEL ESTUDIO -->
-        <main class="studio-main-viewport" transition:animate="fade">
-            
-            <!-- 01: ESCENARIO DE VIDEO -->
-            <VideoStage 
-                videoId={videoId} 
-                pageTitle={pageTitle} 
-                currentCourse={currentCourse} 
-                urlPrefix={urlPrefix} 
-                lessonData={lessonData}
-                isAcademicCourse={isAcademicCourse}
-            />
-
-            <!-- 02: PANEL DE APUNTES INTERACTIVOS -->
-            <TranscriptPane 
-                frontmatter={frontmatter} 
-                prevLesson={prevLesson} 
-                nextLesson={nextLesson} 
-                urlPrefix={urlPrefix} 
-                currentCourse={currentCourse}
-            >
-                <slot />
-            </TranscriptPane>
-
-        </main>
-    </div>
-</Layout>
-
-<style>
-    /* Layout Framework */
-
-    .studio-shell {
-        display: flex;
-        height: calc(100vh - 64px);
-        background-color: var(--c-stage);
-        overflow: hidden;
-        width: 100%;
-    }
-
-    .studio-main-viewport {
-        flex: 1;
-        display: flex;
-        height: 100%;
-        min-width: 0;
-    }
-
-    @media (max-width: 1300px) {
-        .studio-main-viewport {
-            flex-direction: column;
-            overflow-y: auto;
-        }
-    }
-</style>
-
-<script>
-    /**
-     * BULLETPROOF YOUTUBE ENGINE v3 (API Oficial)
-     * Optimizada para contabilizar vistas reales en el canal de Youtube.
-     */
-    let player: any = null;
-    let syncInterval: ReturnType<typeof setInterval> | null = null;
-    let interactionToken = false;
-    let currentVideoId: string | null = null;
+<Layout titulo={`${titulo} - Tyac`}>
     
-    function startStudioSystem() {
-        const playerDiv = document.getElementById('youtube-player-v3');
-        if (!playerDiv) return;
+    <div class="layout-container">
+        <!-- Reproductor NATIVO, no le agregamos ningún estilo extra -->
+        <div id="ytplayer" data-video-id={videoId}></div>
 
-        const videoId = playerDiv.getAttribute('data-video-id');
-        if (!videoId || currentVideoId === videoId) return;
+        <!-- Panel lateral para el texto -->
+        <div class="transcript-pane">
+            <slot />
+        </div>
+    </div>
 
-        if (syncInterval) clearInterval(syncInterval);
-        player = null;
-        currentVideoId = videoId;
-
-        if (!document.querySelector('script[src*="iframe_api"]')) {
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            document.body.appendChild(tag);
+    <style>
+        .layout-container {
+            display: flex;
+            gap: 20px;
+            /* Usamos alignItems flex-start para no alterar el iframe, y permitimos que crezca horizontalmente */
+            align-items: flex-start;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        const injectPlayer = () => {
-             if ((window as any).YT && (window as any).YT.Player) {
-                player = new (window as any).YT.Player('youtube-player-v3', {
-                    videoId: videoId,
-                    playerVars: { 
-                        'enablejsapi': 1, 
-                        'origin': window.location.origin,
-                        'modestbranding': 1,
-                        'rel': 0,
-                        'showinfo': 0,
-                        'iv_load_policy': 3
-                    },
-                    events: {
-                        'onReady': () => setupSync(),
-                        'onStateChange': (e: { data: number }) => {
-                            if (e.data === (window as any).YT.PlayerState.PLAYING) setupSync();
-                            else stopSync();
+        .transcript-pane {
+            /* Como fijaste el player a 600px de alto en JS, fijamos esto también a 600px para que calcen exacto */
+            height: 600px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* TRUCO: 250px de padding arriba y abajo para que la primera y la última tarjeta logren llegar justo al centro exacto */
+            padding: 250px 10px;
+        }
+
+        .transcript-pane::-webkit-scrollbar {
+            width: 8px;
+        }
+        .transcript-pane::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        /* DISEÑO DE LOS CUADROS BLANCOS */
+        :global(.sync-card) {
+            background: white;
+            color: #1a1a2e;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Transición más suave y majestuosa */
+            opacity: 0.3; /* Cartas NO ACTIVAS son bastante transparentes/opacas */
+            transform: scale(0.95);
+        }
+
+        :global(.sync-card:hover) {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        /* Estilo cuando el cuadro está activo (el video va por ahí) */
+        :global(.sync-card.active) {
+            opacity: 1 !important;
+            border-left: 5px solid #7c4dff;
+            transform: scale(1.05) !important; /* Se agranda en el centro */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            pointer-events: none; /* Evita que el usuario haga hover y arruine el efecto al que ya está activo */
+        }
+
+        :global(.sync-card h2), :global(.sync-card h3) {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        :global(.sync-card p) {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+
+    <script is:inline>
+        var tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/player_api";
+        var firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        var syncInterval;
+
+        function onYouTubePlayerAPIReady() {
+            var ytDiv = document.getElementById("ytplayer");
+            var dynVideoId = ytDiv ? ytDiv.getAttribute("data-video-id") : "M7lc1UVf-VE";
+
+            player = new YT.Player("ytplayer", {
+                height: "600",
+                width: "1000",
+                videoId: dynVideoId,
+                playerVars: {
+                    autoplay: 0,
+                    cc_lang_pref: "es",
+                    cc_load_policy: 0,
+                    color: "white",
+                    controls: 0,
+                    disablekb: 0,
+                    enablejsapi: 1,
+                    fs: 0,
+                    hl: "es",
+                    iv_load_policy: 3,
+                    loop: 0,
+                    playsinline: 1,
+                    rel: 0,
+                    start: 0,
+                },
+                events: {
+                    'onReady': startTranscriptSync,
+                    'onStateChange': function (event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            player.seekTo(0);
+                            player.stopVideo();
                         }
+                    },
+                },
+            });
+        }
+
+        function startTranscriptSync() {
+            var cards = document.querySelectorAll(".sync-card");
+
+            // Evento Click
+            cards.forEach(function (card) {
+                card.addEventListener("click", function () {
+                    var targetTime = parseInt(card.getAttribute("data-time"), 10);
+                    if (!isNaN(targetTime) && player && player.seekTo) {
+                        player.seekTo(targetTime, true);
+                        player.playVideo();
                     }
                 });
-            } else {
-                setTimeout(injectPlayer, 100);
-            }
-        };
-
-        injectPlayer();
-    }
-
-    function setupSync() {
-        if (syncInterval) clearInterval(syncInterval);
-        syncInterval = setInterval(() => {
-            if (player && typeof player.getCurrentTime === 'function') {
-                const time = player.getCurrentTime();
-                updateInteractiveNodes(time);
-            }
-        }, 500);
-    }
-
-    function stopSync() {
-        if (syncInterval) clearInterval(syncInterval);
-    }
-
-    function updateInteractiveNodes(time: number) {
-        const scroller = document.querySelector('.transcript-scroller');
-        const nodes = Array.from(document.querySelectorAll('.sync-card')) as HTMLElement[];
-        if (!nodes.length) return;
-
-        // Auto-detect interaction
-        if (scroller && !scroller.hasAttribute('data-init')) {
-            scroller.addEventListener('mouseenter', () => interactionToken = true);
-            scroller.addEventListener('mouseleave', () => interactionToken = false);
-            scroller.setAttribute('data-init', 'true');
-        }
-
-        let activeNode: HTMLElement | null = null;
-        for (const node of nodes) {
-            const nodeTime = parseFloat(node.getAttribute('data-time') || '0');
-            if (time >= nodeTime) activeNode = node;
-        }
-
-        if (activeNode && !activeNode.classList.contains('active')) {
-            nodes.forEach(n => n.classList.remove('active'));
-            activeNode.classList.add('active');
-            
-            if (!interactionToken) {
-                activeNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-    }
-
-    // Interaction Listeners (Persistent)
-    function attachListeners() {
-        const nodes = document.querySelectorAll('.sync-card');
-        nodes.forEach(node => {
-            node.addEventListener('click', () => {
-                const time = parseFloat(node.getAttribute('data-time') || '0');
-                if (player && typeof player.seekTo === 'function') {
-                    player.seekTo(time, true);
-                    player.playVideo();
-                }
             });
-        });
-    }
 
-    document.addEventListener('astro:page-load', () => {
-        startStudioSystem();
-        attachListeners();
-    });
-</script>
+            // Loop de Sincronización
+            if (syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(function () {
+                if (player && player.getCurrentTime) {
+                    var currentTime = player.getCurrentTime();
+                    var activeIndex = -1;
+
+                    for (var i = 0; i < cards.length; i++) {
+                        var cardTime = parseInt(cards[i].getAttribute("data-time"), 10);
+                        if (cardTime <= currentTime) {
+                            activeIndex = i;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    cards.forEach(function (card, i) {
+                        if (i === activeIndex) {
+                            if (!card.classList.contains("active")) {
+                                card.classList.add("active");
+                                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                            }
+                        } else {
+                            card.classList.remove("active");
+                        }
+                    });
+                }
+            }, 300);
+        }
+    </script>
+</Layout>
