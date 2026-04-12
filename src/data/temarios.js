@@ -70,5 +70,9 @@ export const todosLosTemarios = {
     // 🧪 Curso de Química General
     quimica_general: [
         { id: "atomos", titulo: "1. Estructura Atómica", duracion: "12:00" },
+        { id: "modelos", titulo: "2. Modelos Atómicos", duracion: "15:00" },
+        { id: "tabla", titulo: "3. Tabla Periódica", duracion: "18:00" },
+        { id: "enlaces", titulo: "4. Enlaces Químicos", duracion: "20:00" },
+        { id: "reacciones", titulo: "5. Reacciones Químicas", duracion: "25:00" },
     ],
 };

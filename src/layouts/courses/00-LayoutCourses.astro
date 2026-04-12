@@ -4,177 +4,782 @@ import Layout from "../head/00-Layout.astro";
 const { frontmatter = {} } = Astro.props;
 const videoId = Astro.props.videoId || frontmatter.videoId || "M7lc1UVf-VE";
 const titulo = Astro.props.titulo || frontmatter.titulo || "Clase Tyac";
+const portada = Astro.props.portada || frontmatter.portada;
 ---
 
 <Layout titulo={`${titulo} - Tyac`}>
-    
     <div class="layout-container">
-        <!-- Reproductor NATIVO, no le agregamos ningún estilo extra -->
-        <div id="ytplayer" data-video-id={videoId}></div>
+        <!-- Reproductor NATIVO (Ahora a la IZQUIERDA) -->
+        <div class="player-wrapper">
+            <!-- Portada de Inicio -->
+            <div id="start-cover" class="start-cover" style={portada ? `background-image: url(${portada});` : ''}>
+                <div class="cover-content">
+                    <span class="materia-tag">{frontmatter.materia || "Curso"}</span>
+                    <h1>{titulo}</h1>
+                    <p>{frontmatter.descripcion || "Haz clic para comenzar la lección interactiva."}</p>
+                    <button id="start-btn" class="start-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+                        Empezar Clase
+                    </button>
+                </div>
+            </div>
 
-        <!-- Panel lateral para el texto -->
-        <div class="transcript-pane">
-            <slot />
+            <!-- Overlay de Pausa Mejorado (Estilo Portada) -->
+            <div id="video-overlay" class="video-overlay">
+                <div class="cover-content">
+                    <span class="materia-tag">{frontmatter.materia || "Curso"}</span>
+                    <h1>{titulo}</h1>
+                    <p>Clase Pausada</p>
+                    <button id="resume-btn" class="start-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+                        Continuar Clase
+                    </button>
+                </div>
+            </div>
+            
+            <div id="ytplayer" data-video-id={videoId}></div>
+        </div>
+
+        <!-- Panel lateral para el texto (Ahora a la DERECHA) -->
+        <div class="transcript-pane" id="transcript-pane">
+            <button id="recenter-btn" class="recenter-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                Sincronizar con Video
+            </button>
+            <div class="scroll-content">
+                <slot />
+            </div>
         </div>
     </div>
+
+    <!-- SECCIÓN DE ROADMAP HORIZONTAL (Debajo) -->
+    <section class="roadmap-wrapper">
+        <div class="roadmap-container">
+            <h2 class="roadmap-title">Ruta del Aprendizaje</h2>
+            <div class="roadmap-track-container">
+                <div class="roadmap-track"></div>
+                <div class="roadmap-items">
+                    <slot name="temario" />
+                </div>
+            </div>
+        </div>
+    </section>
 
     <style>
         .layout-container {
             display: flex;
-            gap: 20px;
-            /* Usamos alignItems flex-start para no alterar el iframe, y permitimos que crezca horizontalmente */
-            align-items: flex-start;
-            padding: 20px;
-            max-width: 1400px;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            max-width: 1600px;
             margin: 0 auto;
+            min-height: calc(100vh - 100px);
+        }
+
+        .player-wrapper {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            background: #000;
+            position: relative;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .video-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .video-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: pulsePause 2s infinite ease-in-out;
+        }
+
+        .overlay-box span {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(124, 77, 255, 0.8);
+        }
+
+        @keyframes pulsePause {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        /* Portada de Inicio */
+        .start-cover {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Debajo del Header principal */
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .start-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .start-cover.hidden {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            transform: scale(1.05);
+        }
+
+        .cover-content {
+            z-index: 10;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .start-cover.hidden .cover-content {
+            transform: translateY(-20px);
+        }
+
+        @keyframes fadeInCover {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .materia-tag {
+            background: #7c4dff;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        }
+
+        .cover-content h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .cover-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            background: white;
+            color: #1a1a2e;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(124, 77, 255, 0.4);
+            background: #fdfdfd;
         }
 
         .transcript-pane {
-            /* Como fijaste el player a 600px de alto en JS, fijamos esto también a 600px para que calcen exacto */
-            height: 600px;
+            height: 625px;
             flex: 1;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            /* TRUCO: 250px de padding arriba y abajo para que la primera y la última tarjeta logren llegar justo al centro exacto */
-            padding: 250px 10px;
+            position: relative;
+            /* Efecto de carrusel: desvanecer arriba y abajo */
+            mask-image: linear-gradient(
+                to bottom,
+                transparent,
+                black 20%,
+                black 80%,
+                transparent
+            );
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                transparent,
+                black 20%,
+                black 80%,
+                transparent
+            );
+            scrollbar-width: none; /* Firefox */
+            scroll-behavior: smooth;
         }
 
         .transcript-pane::-webkit-scrollbar {
-            width: 8px;
-        }
-        .transcript-pane::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
+            display: none; /* Chrome, Safari, Edge */
         }
 
-        /* DISEÑO DE LOS CUADROS BLANCOS */
-        :global(.sync-card) {
-            background: white;
-            color: #1a1a2e;
-            padding: 20px;
-            border-radius: 8px;
+        .scroll-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 262.5px 10px; /* Ajustado para 625px */
+        }
+
+        /* Botón de Sincronización */
+        .recenter-btn {
+            position: sticky;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #7c4dff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Transición más suave y majestuosa */
-            opacity: 0.3; /* Cartas NO ACTIVAS son bastante transparentes/opacas */
-            transform: scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 100;
+            box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto -40px auto;
+        }
+
+        .recenter-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .recenter-btn:hover {
+            background: #6200ea;
+            transform: translateX(-50%) translateY(8px) scale(1.05);
+        }
+
+        /* DISEÑO DE LOS CUADROS */
+        :global(.sync-card) {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0.2;
+            transform: scale(0.9) translateX(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         :global(.sync-card:hover) {
-            opacity: 0.8;
-            transform: scale(0.98);
+            opacity: 0.5;
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(0.95);
         }
 
-        /* Estilo cuando el cuadro está activo (el video va por ahí) */
+        /* Estilo cuando el cuadro está activo */
         :global(.sync-card.active) {
             opacity: 1 !important;
-            border-left: 5px solid #7c4dff;
-            transform: scale(1.05) !important; /* Se agranda en el centro */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            pointer-events: none; /* Evita que el usuario haga hover y arruine el efecto al que ya está activo */
+            background: white;
+            color: #1a1a2e;
+            transform: scale(1.05) translateX(0);
+            box-shadow: 0 15px 35px rgba(124, 77, 255, 0.4);
+            border-color: #7c4dff;
+            z-index: 10;
         }
 
-        :global(.sync-card h2), :global(.sync-card h3) {
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
+        :global(.sync-card h2),
+        :global(.sync-card h3) {
+            margin: 0 0 12px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: inherit;
+        }
+
+        :global(.sync-card.active h2),
+        :global(.sync-card.active h3) {
+            color: #7c4dff;
         }
 
         :global(.sync-card p) {
             margin: 0;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
+            opacity: 0.8;
+            color: inherit;
+        }
+
+        :global(.sync-card.active p) {
+            opacity: 1;
+        }
+
+        /* ROADMAP HORIZONTAL */
+        .roadmap-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 0 80px 0; /* Más compacto */
+            margin-top: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .roadmap-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .roadmap-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .roadmap-title {
+            color: #7c4dff;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+            font-weight: 800;
+            opacity: 0.8;
+        }
+
+        .roadmap-track-container {
+            position: relative;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            min-width: 1000px; /* Asegura que la línea sea larga */
+        }
+
+        .roadmap-track {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                rgba(124, 77, 255, 0) 0%, 
+                rgba(124, 77, 255, 0.3) 20%, 
+                rgba(124, 77, 255, 0.3) 80%, 
+                rgba(124, 77, 255, 0) 100%
+            );
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .roadmap-items {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* Fuerza que el contenido del slot se porte como flex horizontal */
+        .roadmap-items :global(div[slot="temario"]),
+        .roadmap-items > :global(div),
+        .roadmap-items > :global(*) {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 80px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        :global(.roadmap-item) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            width: 140px; /* Un poco más ancho para los títulos */
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        :global(.roadmap-diamond) {
+            width: 54px;
+            height: 54px;
+            background: #0f0f1a;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
+            position: relative;
+            transform: rotate(45deg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        :global(.roadmap-diamond span) {
+            transform: rotate(-45deg);
+            display: block;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        :global(.roadmap-item.active .roadmap-diamond) {
+            background: #7c4dff;
+            border-color: #9d7aff;
+            box-shadow: 0 0 30px rgba(124, 77, 255, 0.5), inset 0 0 10px rgba(255,255,255,0.3);
+            transform: rotate(45deg) scale(1.15);
+        }
+
+        :global(.roadmap-item.active .roadmap-diamond span) {
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        :global(.roadmap-info) {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        :global(.roadmap-item:hover .roadmap-info),
+        :global(.roadmap-item.active .roadmap-info) {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+
+        :global(.roadmap-item h3) {
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        :global(.roadmap-item span.duration) {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 1024px) {
+            .roadmap-track-container {
+                justify-content: flex-start;
+                padding-left: 50px;
+                padding-right: 50px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .layout-container {
+                flex-direction: column; /* Video ARRIBA, Texto ABAJO */
+                gap: 25px;
+                padding: 100px 10px 40px 10px; /* Más padding arriba para el Header */
+                min-height: auto;
+            }
+            .player-wrapper {
+                width: 100%;
+                flex: none;
+                height: auto;
+                aspect-ratio: 16 / 9;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            }
+            .transcript-pane {
+                width: 100%;
+                height: 500px;
+                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .cover-content h1 {
+                font-size: 2.2rem;
+            }
+            .cover-content p {
+                font-size: 0.95rem;
+                margin-bottom: 25px;
+            }
+            .start-btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+            .overlay-box span {
+                font-size: 1.4rem;
+                letter-spacing: 4px;
+            }
+            .materia-tag {
+                font-size: 0.65rem;
+                padding: 4px 12px;
+            }
         }
     </style>
 
     <script is:inline>
-        var tag = document.createElement("script");
-        tag.src = "https://www.youtube.com/player_api";
-        var firstScriptTag = document.getElementsByTagName("script")[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+        // Configuración y variables globales
         var player;
         var syncInterval;
+        var isScrolling = false;
+        var isUserInteracting = false;
+        var interactionTimeout;
 
-        function onYouTubePlayerAPIReady() {
+        // Función de inicialización central
+        function initPlayer() {
             var ytDiv = document.getElementById("ytplayer");
-            var dynVideoId = ytDiv ? ytDiv.getAttribute("data-video-id") : "M7lc1UVf-VE";
+            if (!ytDiv) return;
+            
+            var dynVideoId = ytDiv.getAttribute("data-video-id") || "M7lc1UVf-VE";
+
+            // Limpiar si ya existe un player (para navegaciones de Astro)
+            if (player && typeof player.destroy === 'function') {
+                player.destroy();
+            }
+            if (syncInterval) clearInterval(syncInterval);
 
             player = new YT.Player("ytplayer", {
-                height: "600",
-                width: "1000",
+                height: "100%",
+                width: "100%",
                 videoId: dynVideoId,
                 playerVars: {
                     autoplay: 0,
-                    cc_lang_pref: "es",
-                    cc_load_policy: 0,
-                    color: "white",
-                    controls: 0,
-                    disablekb: 0,
-                    enablejsapi: 1,
-                    fs: 0,
-                    hl: "es",
-                    iv_load_policy: 3,
-                    loop: 0,
-                    playsinline: 1,
+                    controls: 0, 
                     rel: 0,
-                    start: 0,
+                    modestbranding: 1,
+                    enablejsapi: 1,
                 },
                 events: {
                     'onReady': startTranscriptSync,
-                    'onStateChange': function (event) {
-                        if (event.data === YT.PlayerState.ENDED) {
-                            player.seekTo(0);
-                            player.stopVideo();
-                        }
-                    },
+                    'onStateChange': onPlayerStateChange,
                 },
             });
         }
 
-        function startTranscriptSync() {
-            var cards = document.querySelectorAll(".sync-card");
+        // Callback global de YouTube
+        window.onYouTubePlayerAPIReady = function() {
+            initPlayer();
+        };
 
-            // Evento Click
-            cards.forEach(function (card) {
-                card.addEventListener("click", function () {
+        function onPlayerStateChange(event) {
+            var overlay = document.getElementById("video-overlay");
+            if (!overlay) return;
+            if (event.data === YT.PlayerState.PAUSED) {
+                overlay.classList.add("visible");
+            } else if (event.data === YT.PlayerState.PLAYING) {
+                overlay.classList.remove("visible");
+            }
+        }
+
+        function startTranscriptSync() {
+            var pane = document.getElementById("transcript-pane");
+            var content = pane ? pane.querySelector(".scroll-content") : null;
+            if (!pane || !content) return;
+
+            var recenterBtn = document.getElementById("recenter-btn");
+            var originalCards = Array.from(content.querySelectorAll(".sync-card"));
+            var startBtn = document.getElementById("start-btn");
+            var startCover = document.getElementById("start-cover");
+            var resumeBtn = document.getElementById("resume-btn");
+            var videoOverlay = document.getElementById("video-overlay");
+            
+            if (originalCards.length === 0) return;
+
+            // Medir altura del pane y padding dinámico
+            var paneHalf = pane.offsetHeight / 2;
+            var originalHeight = content.scrollHeight - (paneHalf * 2);
+
+            // Manejo de Portada y Overlay
+            var coursePortada = startCover ? startCover.style.backgroundImage : null;
+            if (coursePortada && videoOverlay) {
+                videoOverlay.style.backgroundImage = coursePortada;
+            }
+
+            if (startBtn && startCover) {
+                startBtn.onclick = () => {
+                    startCover.classList.add("hidden");
+                    if (player && player.playVideo) player.playVideo();
+                };
+            }
+
+            if (resumeBtn) {
+                resumeBtn.onclick = () => {
+                    if (player && player.playVideo) player.playVideo();
+                };
+            }
+
+            // Clonar cards solo si no están ya clonadas
+            if (!content.querySelector(".clone-end")) {
+                originalCards.forEach(card => {
+                    var clone = card.cloneNode(true);
+                    clone.classList.add("clone-end");
+                    content.appendChild(clone);
+                });
+
+                [...originalCards].reverse().forEach(card => {
+                    var clone = card.cloneNode(true);
+                    clone.classList.add("clone-start");
+                    content.prepend(clone);
+                });
+            }
+
+            var allCards = document.querySelectorAll(".sync-card");
+            pane.scrollTop = originalHeight + paneHalf; 
+
+            // Manejo de Interacción
+            pane.onmouseenter = () => { isUserInteracting = true; };
+            pane.onmouseleave = () => { isUserInteracting = false; };
+            pane.onwheel = () => {
+                isUserInteracting = true;
+                if (recenterBtn) recenterBtn.classList.add("visible");
+            };
+
+            if (recenterBtn) {
+                recenterBtn.onclick = () => {
+                    isUserInteracting = false;
+                    recenterBtn.classList.remove("visible");
+                };
+            }
+
+            // Evento Click en cartas
+            allCards.forEach(function (card) {
+                card.onclick = function () {
                     var targetTime = parseInt(card.getAttribute("data-time"), 10);
                     if (!isNaN(targetTime) && player && player.seekTo) {
                         player.seekTo(targetTime, true);
                         player.playVideo();
+                        isUserInteracting = false;
+                        if (recenterBtn) recenterBtn.classList.remove("visible");
                     }
-                });
+                };
             });
 
             // Loop de Sincronización
-            if (syncInterval) clearInterval(syncInterval);
             syncInterval = setInterval(function () {
                 if (player && player.getCurrentTime) {
                     var currentTime = player.getCurrentTime();
                     var activeIndex = -1;
 
-                    for (var i = 0; i < cards.length; i++) {
-                        var cardTime = parseInt(cards[i].getAttribute("data-time"), 10);
-                        if (cardTime <= currentTime) {
-                            activeIndex = i;
-                        } else {
-                            break;
-                        }
+                    for (var i = 0; i < originalCards.length; i++) {
+                        var cardTime = parseInt(originalCards[i].getAttribute("data-time"), 10);
+                        if (cardTime <= currentTime) activeIndex = i;
+                        else break;
                     }
 
-                    cards.forEach(function (card, i) {
-                        if (i === activeIndex) {
-                            if (!card.classList.contains("active")) {
-                                card.classList.add("active");
-                                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                    if (activeIndex !== -1) {
+                        var targetTimeValue = parseInt(originalCards[activeIndex].getAttribute("data-time"), 10);
+                        allCards.forEach(function (card) {
+                            if (parseInt(card.getAttribute("data-time"), 10) === targetTimeValue) card.classList.add("active");
+                            else card.classList.remove("active");
+                        });
+
+                        if (!isUserInteracting) {
+                            var activeCards = Array.from(document.querySelectorAll(".sync-card.active"));
+                            var closestCard = activeCards[0];
+                            var minDiff = Infinity;
+                            
+                            activeCards.forEach(card => {
+                                var diff = Math.abs(card.offsetTop - (pane.scrollTop + paneHalf));
+                                if (diff < minDiff) { minDiff = diff; closestCard = card; }
+                            });
+
+                            if (closestCard) {
+                                isScrolling = true;
+                                var targetScrollTop = closestCard.offsetTop - (pane.offsetHeight / 2) + (closestCard.offsetHeight / 2);
+                                pane.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+                                if (recenterBtn) recenterBtn.classList.remove("visible");
                             }
-                        } else {
-                            card.classList.remove("active");
                         }
-                    });
+                    }
                 }
-            }, 300);
+            }, 500);
+
+            // DETECTOR DE BUCLE INFINITO
+            pane.onscroll = function() {
+                var scrollPos = pane.scrollTop;
+                if (scrollPos < 100) {
+                    pane.style.scrollBehavior = 'auto';
+                    pane.scrollTop = scrollPos + originalHeight;
+                    pane.style.scrollBehavior = 'smooth';
+                }
+                if (scrollPos > originalHeight + 400) {
+                    pane.style.scrollBehavior = 'auto';
+                    pane.scrollTop = scrollPos - originalHeight;
+                    pane.style.scrollBehavior = 'smooth';
+                }
+            };
         }
+
+        // CONTROL DE CARGA CON VIEW TRANSITIONS
+        function setupPage() {
+            // Cargar API si no existe
+            if (!window.YT) {
+                var tag = document.createElement("script");
+                tag.src = "https://www.youtube.com/player_api";
+                var firstScriptTag = document.getElementsByTagName("script")[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            } else if (window.YT && window.YT.Player) {
+                // Si la API ya está cargada, inicializar directamente
+                initPlayer();
+            }
+        }
+
+        // Astro events
+        document.addEventListener("astro:page-load", setupPage);
     </script>
 </Layout>
