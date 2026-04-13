@@ -1,7 +1,10 @@
 ---
-// src/layouts/landing/00-LandingLayout.astro
 import Layout from "../head/00-Layout.astro";
-import { todosLosTemarios } from "../../data/temarios.js";
+import { getTemario } from "../../data/temarios.js";
+import { getCursosCiencia } from "../../data/cursos.js";
+import { getApuntesTecnicos } from "../../data/apuntes.js";
+import IconoElegante from "../../components/IconoElegante.astro";
+import TarjetaHorizontal from "../../components/TarjetaHorizontal.astro";
 
 interface Props {
     curso: {
@@ -20,12 +23,22 @@ interface Props {
 
 const { curso, tipo } = Astro.props;
 
-// Obtener el temario
-type TemarioKey = keyof typeof todosLosTemarios;
-const temarioRaw = todosLosTemarios[curso.id as TemarioKey] || [];
+// 1. Obtener sub-cursos (si es un portal)
+const allCollection = tipo === "curso" ? await getCursosCiencia() : await getApuntesTecnicos();
+const subCursos = allCollection.filter(c => (c as any).parentId === curso.id);
+const esPortal = subCursos.length > 0;
 
 // Definir el prefijo de URL según el tipo
 const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
+
+// 2. Obtener el temario automáticamente o de forma manual (Híbrido)
+const temarioRaw = await getTemario(curso.id);
+
+// 3. Obtener el ID de la primera lección para el botón CTA
+const primerIdClase = temarioRaw.length > 0 ? temarioRaw[0].id : "#";
+
+// Variable para rastrear secciones en el loop
+let lastSection = "";
 ---
 
 <Layout titulo={`${curso.titulo} - Tyac`}>
@@ -49,84 +62,125 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
             </div>
         </header>
 
-        <!-- 2. CONTENIDO PRINCIPAL -->
+        <!-- Contenido principal / Main Content -->
         <main class="grid-section">
-            <div class="container main-grid">
-                <!-- Columna Izquierda: Temario -->
+            <div class:list={["container main-grid", { "is-portal": esPortal }]} data-portal={esPortal}>
+                <!-- Columna Izquierda: Temario o Portal -->
                 <section class="syllabus-column">
-                    <h2 class="section-subtitle">{tipo === "curso" ? "Estructura del curso" : "Contenido técnico"}</h2>
-                    <div class="timeline">
-                        {temarioRaw.length > 0 ? (
-                            temarioRaw.map((leccion, index) => (
-                                <a href={`${urlPrefix}/${curso.id}/${leccion.id}`} class="timeline-item">
-                                    <div class="timeline-v-line"></div>
-                                    <div class="marker-container">
-                                        <div class="diamond-marker">
-                                            <span>{index + 1}</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="lesson-card">
-                                            <div class="lesson-text">
-                                                <h3>{leccion.titulo}</h3>
-                                                {tipo === "curso" ? (
-                                                    <span class="duration">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                                        {(leccion as any).duracion} min
-                                                    </span>
-                                                ) : (
-                                                    <span class="difficulty-tag">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                                                        {(leccion as any).dificultad}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <span class="action-hint">Leer más &rarr;</span>
-                                        </div>
-                                    </div>
+                    <h2 class="section-subtitle">
+                        {esPortal ? "Sub-cursos disponibles" : (tipo === "curso" ? "Estructura del curso" : "Contenido técnico")}
+                    </h2>
+
+                    {esPortal ? (
+                        <div class="portal-grid">
+                            {subCursos.map((sub: any) => (
+                                <a href={sub.href} class="portal-link">
+                                    <TarjetaHorizontal
+                                        titulo={sub.titulo}
+                                        descripcion={sub.descripcion}
+                                        icono={sub.icono}
+                                        cantidadTemas={String(sub.lecciones)}
+                                    />
                                 </a>
-                            ))
-                        ) : (
-                            <div class="empty-state">
-                                <p>El contenido se está preparando. Vuelve pronto para explorar los temas.</p>
-                            </div>
-                        )}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="timeline">
+                            {temarioRaw.length > 0 ? (
+                                temarioRaw.map((leccion: any, index: number) => {
+                                    const isNewSection = (leccion as any).subcurso && (leccion as any).subcurso !== lastSection;
+                                    if (isNewSection) {
+                                        lastSection = (leccion as any).subcurso;
+                                    }
+
+                                    return (
+                                        <>
+                                            {isNewSection && (
+                                                <div class="timeline-section-title">
+                                                    <span>{(leccion as any).subcurso}</span>
+                                                </div>
+                                            )}
+                                            <a href={`${urlPrefix}/${curso.id}/${leccion.id}`} class="timeline-item">
+                                        <div class="timeline-v-line"></div>
+                                        <div class="marker-container">
+                                            <div class="diamond-marker">
+                                                <span>{index + 1}</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="lesson-card">
+                                                <div class="lesson-text">
+                                                    <h3>{leccion.titulo}</h3>
+                                                    {tipo === "curso" ? (
+                                                        <span class="duration">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                                            {(leccion as any).duracion} min
+                                                        </span>
+                                                    ) : (
+                                                        <div class="difficulty-tag">
+                                                            <IconoElegante nombre="niveles" size="14px" />
+                                                            <span>{(leccion as any).dificultad}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <span class="action-hint">Leer más &rarr;</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                        </>
+                                    );
+                                })
+                            ) : (
+                                <div class="empty-state">
+                                    <p>El contenido se está preparando. Vuelve pronto para explorar los temas.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </section>
 
-                <!-- Columna Derecha: Sidebar Sticky -->
-                <aside class="sidebar-column">
-                    <div class="sticky-wrapper">
-                        <div class="glass-card">
+                <!-- Columna Derecha: Sidebar Sticky (Solo si NO es portal) -->
+                {!esPortal && (
+                    <aside class="sidebar-column">
+                        <div class="glass-card sticky-cta">
                             <div class="preview-hero">
                                 <div class="preview-overlay"></div>
                                 <div class="preview-visual"></div>
-                                <span class="play-trigger">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                </span>
+                                <div class="play-trigger">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#bd93f9" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                </div>
                             </div>
-                            
+
                             <div class="card-content-body">
                                 <div class="pricing-info">
                                     <span class="label">Acceso Abierto</span>
-                                    <h3 class="value">Gratis y Público</h3>
+                                    <div class="value">Gratis y Público</div>
                                 </div>
 
                                 <div class="cta-box">
-                                    <a href={temarioRaw.length > 0 ? `${urlPrefix}/${curso.id}/${temarioRaw[0].id}` : "#"} class="cta-button">
+                                    <a href={`${urlPrefix}/${curso.id}/${primerIdClase}`} class="cta-button">
                                         Empezar lectura
                                     </a>
                                 </div>
 
                                 <ul class="feature-list">
-                                    <li><span class="check-icon">✓</span> Contenido premium</li>
-                                    <li><span class="check-icon">✓</span> 100% gratuito</li>
-                                    <li><span class="check-icon">✓</span> Tu ritmo, tu tiempo</li>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        Contenido premium
+                                    </li>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        100% gratuito
+                                    </li>
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        Tu ritmo, tu tiempo
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                </aside>
+                    </aside>
+                )}
             </div>
         </main>
     </div>
@@ -218,9 +272,17 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
 
     .main-grid {
         display: grid;
-        grid-template-columns: 1fr 340px;
+        grid-template-columns: 1fr 380px;
         gap: 4rem;
-        align-items: start;
+        align-items: flex-start;
+    }
+
+    .main-grid.is-portal {
+        grid-template-columns: 1fr;
+    }
+
+    .main-grid.is-portal .sidebar-column {
+        display: none !important;
     }
 
     /* --- TIMELINE (Diamond) --- */
@@ -231,7 +293,48 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
         color: var(--clr-white-soft);
     }
 
+    /* --- PORTAL GRID --- */
+    .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .main-grid.is-portal .portal-grid {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 3rem;
+    }
+
+    .portal-link {
+        text-decoration: none;
+        display: block;
+    }
+
+    @media (max-width: 600px) {
+        .portal-grid { grid-template-columns: 1fr; }
+    }
+
     .timeline { display: flex; flex-direction: column; }
+
+    .timeline-section-title {
+        padding: 2.5rem 0 1rem 0;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        background: var(--clr-black-01);
+    }
+
+    .timeline-section-title span {
+        font-size: 0.8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--dracula-purple);
+        background: rgba(189, 147, 249, 0.1);
+        padding: 6px 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(189, 147, 249, 0.2);
+    }
 
     .timeline-item {
         position: relative;
@@ -272,15 +375,15 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 0 12px rgba(189, 147, 249, 0.15);
-        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(189, 147, 249, 0.2);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .diamond-marker span {
         transform: rotate(-45deg);
         font-weight: 800;
         font-size: 1rem;
-        color: var(--dracula-purple);
+        color: var(--clr-white-soft);
     }
 
     .timeline-item:hover .diamond-marker {
@@ -319,13 +422,16 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
     .duration, .difficulty-tag {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         color: var(--clr-gray-muted);
     }
 
-    .difficulty-tag svg {
-        color: var(--dracula-cyan);
+    .difficulty-tag {
+        color: #0369a1; /* Azul océano profundo */
     }
 
     .action-hint {
@@ -452,7 +558,11 @@ const urlPrefix = tipo === "curso" ? "/cursos" : "/apuntes";
         line-height: 1.4;
     }
 
-    .check-icon { color: var(--dracula-green); font-weight: 900; }
+    .check-svg { 
+        color: #50fa7b; 
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
 
     /* --- RESPONSIVE --- */
     @media (max-width: 900px) {

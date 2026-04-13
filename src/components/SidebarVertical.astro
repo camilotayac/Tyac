@@ -1,13 +1,16 @@
 ---
 // src/components/SidebarVertical.astro
-import { cursosCiencia } from "../data/cursos.js";
-import { apuntesTecnicos } from "../data/apuntes.js";
+import { getCursosCiencia } from "../data/cursos.js";
+import { getApuntesTecnicos } from "../data/apuntes.js";
+
+import IconoElegante from "./IconoElegante.astro";
 
 export interface Leccion {
     id: string;
     titulo: string;
     duracion?: string;
     dificultad?: string;
+    subcurso?: string;
 }
 
 export interface Props {
@@ -18,16 +21,25 @@ export interface Props {
 
 const { claseActualId, cursoActualId, lecciones = [] } = Astro.props as Props;
 
+// Obtener datos dinámicamente
+const [allCursos, allApuntes] = await Promise.all([
+    getCursosCiencia(),
+    getApuntesTecnicos()
+]);
+
 // Determinar el prefijo correcto (cursos vs apuntes)
-const esCursoAcadémico = cursosCiencia.some((c) => c.id === cursoActualId);
+const esCursoAcadémico = allCursos.some((c) => c.id === cursoActualId);
 const urlPrefix = esCursoAcadémico ? "/cursos" : "/apuntes";
 
 // Obtener la metadata del curso/apunte actual
 const infoGrupo = esCursoAcadémico 
-    ? cursosCiencia.find(c => c.id === cursoActualId)
-    : apuntesTecnicos.find(a => a.id === cursoActualId);
+    ? allCursos.find(c => c.id === cursoActualId)
+    : allApuntes.find(a => a.id === cursoActualId);
 
 const dificultad = infoGrupo?.nivel || "Básico";
+
+// Variable auxiliar para rastrear cambios de sección
+let lastSubcurso = "";
 ---
 
 <aside 
@@ -72,37 +84,53 @@ const dificultad = infoGrupo?.nivel || "Básico";
         <ul class="lesson-list">
             {
                 lecciones.map((leccion: Leccion, index) => {
+                    const isNewSubcurso = leccion.subcurso && leccion.subcurso !== lastSubcurso;
+                    if (isNewSubcurso) {
+                        lastSubcurso = leccion.subcurso || "";
+                    }
+
                     return (
-                        <li
-                            class="lesson-item"
-                            data-leccion-id={leccion.id}
-                        >
-                            <a
-                                href={`${urlPrefix}/${cursoActualId}/${leccion.id}`}
-                                class="lesson-link"
-                                title={leccion.titulo}
+                        <>
+                            {isNewSubcurso && (
+                                <li class="section-header">
+                                    <span class="section-title-text">{leccion.subcurso}</span>
+                                    <div class="section-line"></div>
+                                </li>
+                            )}
+                            <li
+                                class="lesson-item"
+                                data-leccion-id={leccion.id}
                             >
-                                <div class="diamond-marker">
-                                    <div class="diamond-box">
-                                        <span>{index + 1}</span>
+                                <a
+                                    href={`${urlPrefix}/${cursoActualId}/${leccion.id}`}
+                                    class="lesson-link"
+                                    title={leccion.titulo}
+                                >
+                                    <div class="diamond-marker">
+                                        <div class="diamond-box">
+                                            <span>{index + 1}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="lesson-info">
-                                    <span class="lesson-title">
-                                        {leccion.titulo}
-                                    </span>
-                                    {esCursoAcadémico ? (
-                                        <span class="lesson-time">
-                                            {leccion.duracion} min
+                                    <div class="lesson-info">
+                                        <span class="lesson-title">
+                                            {leccion.titulo}
                                         </span>
-                                    ) : (
-                                        <span class="lesson-difficulty">
-                                            {leccion.dificultad || dificultad}
-                                        </span>
-                                    )}
-                                </div>
-                            </a>
-                        </li>
+                                        {esCursoAcadémico ? (
+                                            <span class="lesson-time">
+                                                {leccion.duracion} min
+                                            </span>
+                                        ) : (
+                                            <div class="lesson-difficulty-wrapper">
+                                                <IconoElegante nombre="niveles" size="10px" />
+                                                <span class="lesson-difficulty">
+                                                    {leccion.dificultad || dificultad}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </a>
+                            </li>
+                        </>
                     );
                 })
             }
@@ -206,6 +234,30 @@ const dificultad = infoGrupo?.nivel || "Básico";
         margin: 0;
     }
 
+    /* Section Headers */
+    .section-header {
+        padding: 1.5rem 1.5rem 0.8rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0.8;
+    }
+
+    .section-title-text {
+        font-size: 0.65rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--dracula-purple);
+        white-space: nowrap;
+    }
+
+    .section-line {
+        height: 1px;
+        flex: 1;
+        background: linear-gradient(to right, rgba(189, 147, 249, 0.3), transparent);
+    }
+
     .lesson-item {
         margin-bottom: 2px;
         transition: all 0.3s;
@@ -281,18 +333,27 @@ const dificultad = infoGrupo?.nivel || "Básico";
         transition: color 0.2s;
     }
 
+    .lesson-difficulty-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #0369a1; /* Azul océano profundo */
+    }
+
     .lesson-time, .lesson-difficulty {
         font-size: 0.72rem;
         color: var(--clr-gray-muted);
-        opacity: 0.5;
+        opacity: 0.6;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
     .lesson-difficulty {
-        color: var(--dracula-cyan);
-        opacity: 0.8;
+        color: inherit;
+        opacity: 1;
+        font-weight: 800;
+        letter-spacing: 1px;
     }
 
     /* --- ACTIVE STATE --- */

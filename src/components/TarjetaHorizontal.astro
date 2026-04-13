@@ -7,13 +7,15 @@ export interface Props {
     cantidadTemas: string;
 }
 
+import IconoElegante from "./IconoElegante.astro";
+
 const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
 ---
 
 <div class="tarjeta-platzi">
     <div class="cuerpo-superior">
         <div class="icono-contenedor">
-            <span class="emoji">{icono}</span>
+            <IconoElegante nombre={icono} class="icono-tarjeta" size="3.5rem" />
         </div>
         <div class="info-contenedor">
             <h3>{titulo}</h3>
@@ -21,13 +23,14 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
         </div>
     </div>
     <div class="pie-inferior">
-        <span>{cantidadTemas} rutas de aprendizaje</span>
+        <IconoElegante nombre="clases" size="16px" />
+        <span>{cantidadTemas} {cantidadTemas === "1" ? "tema" : "temas"}</span>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="2.5"
             stroke-linecap="round"
             stroke-linejoin="round"
             class="chevron"
@@ -71,13 +74,14 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
     }
 
     .icono-contenedor {
-        font-size: 4rem; /* Icono muy grande (como el escudo de Platzi) */
         width: 80px;
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        line-height: 1;
+        color: #bd93f9; /* Color estricto para máxima visibilidad */
+        background-color: rgba(189, 147, 249, 0.05);
+        border-radius: 12px;
     }
 
     .info-contenedor h3 {
@@ -107,11 +111,13 @@ const { titulo, descripcion, icono, cantidadTemas } = Astro.props;
     }
 
     .pie-inferior span {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(
-            --color-cyan
-        ); /* Color turquesa simulando el verde de la foto */
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0284c7; /* Azul más oscuro y legible como pidió el usuario */
+    }
+
+    .pie-inferior :global(svg) {
+        color: #0284c7;
     }
 
     .chevron {

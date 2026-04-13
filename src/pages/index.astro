@@ -3,10 +3,28 @@ import Layout from "../layouts/head/00-Layout.astro";
 import TarjetaHorizontal from "../components/TarjetaHorizontal.astro";
 import BotonMateria from "../components/BotonMateria.astro";
 import Buscador from "../components/Buscador.astro";
-import { todosLosTemarios } from "../data/temarios.js";
 
-import { cursosCiencia } from "../data/cursos.js";
-import { apuntesTecnicos } from "../data/apuntes.js";
+import { getCursosCiencia } from "../data/cursos.js";
+import { getApuntesTecnicos } from "../data/apuntes.js";
+import IconoElegante from "../components/IconoElegante.astro";
+
+const cursosCiencia = await getCursosCiencia();
+const apuntesTecnicos = await getApuntesTecnicos();
+
+// 1. Materias únicas para filtros dinámicos
+const materiasCursos = [...new Set(cursosCiencia.map(c => c.materia))].sort();
+const materiasApuntes = [...new Set(apuntesTecnicos.map(a => a.materia))].sort();
+
+// 2. Mapeo de colores por materia
+const colorMap: Record<string, 'purpura' | 'rojo' | 'verde' | 'amarillo' | 'gris'> = {
+    "Astro": "purpura",
+    "Química": "rojo",
+    "Biología": "verde",
+    "Tecnología": "purpura",
+    "Desarrollo": "verde"
+};
+
+const getTipoMateria = (materia: string) => colorMap[materia] || "gris";
 ---
 
 <Layout titulo="Tyac - Plataforma Educativa">
@@ -87,7 +105,10 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                 <section class="seccion-grid" id="cursos">
                     <div class="info-sticky">
                         <h2 class="titulo-seccion">
-                            <span class="icono-seccion">📚</span> Cursos
+                            <span class="icono-seccion">
+                                <IconoElegante nombre="libros" size="1.2em" />
+                            </span>{" "}
+                            Cursos
                         </h2>
                         <p class="desc-seccion">
                             Explora nuestra lista de materias enfocadas en las
@@ -101,12 +122,14 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                                 data-filter="all"
                                 class="filtro-btn activo"
                             />
-                            <BotonMateria
-                                texto="Química"
-                                tipo="rojo"
-                                data-filter="Química"
-                                class="filtro-btn"
-                            />
+                            {materiasCursos.map((materia) => (
+                                <BotonMateria
+                                    texto={materia}
+                                    tipo={getTipoMateria(materia)}
+                                    data-filter={materia}
+                                    class="filtro-btn"
+                                />
+                            ))}
                         </div>
                     </div>
                     <div class="contenido-scroll">
@@ -138,33 +161,34 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                 <section class="seccion-grid invertida" id="apuntes">
                     <div class="contenido-scroll">
                         <div class="grid-tarjetas">
-                            {
-                                apuntesTecnicos.map((apunte) => (
-                                    <a
-                                        href={apunte.href}
-                                        style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
-                                        data-materia={apunte.materia}
-                                        class="tarjeta-link"
-                                    >
-                                        <TarjetaHorizontal
-                                            titulo={apunte.titulo}
-                                            descripcion={apunte.descripcion}
-                                            icono={apunte.icono}
-                                            cantidadTemas={String(apunte.lecciones)}
-                                        />
-                                    </a>
-                                ))
-                            }
+                            {apuntesTecnicos.map((apunte) => (
+                                <a
+                                    href={apunte.href}
+                                    style="text-decoration: none; color: inherit; transition: all 0.3s ease;"
+                                    data-materia={apunte.materia}
+                                    class="tarjeta-link"
+                                >
+                                    <TarjetaHorizontal
+                                        titulo={apunte.titulo}
+                                        descripcion={apunte.descripcion}
+                                        icono={apunte.icono}
+                                        cantidadTemas={String(apunte.lecciones)}
+                                    />
+                                </a>
+                            ))}
                         </div>
                     </div>
                     <div class="info-sticky">
                         <h2 class="titulo-seccion">
-                            <span class="icono-seccion">📝</span> Apuntes
+                            <span class="icono-seccion">
+                                <IconoElegante nombre="notas" size="1.2em" />
+                            </span>{" "}
+                            Apuntes
                         </h2>
                         <p class="desc-seccion">
-                            Guías de desarrollo, documentación tecnológica y resúmenes
-                            sobre herramientas modernas. Todo lo que necesitas para tu
-                            carrera técnica en un solo lugar.
+                            Guías de desarrollo, documentación tecnológica y
+                            resúmenes sobre herramientas modernas. Todo lo que
+                            necesitas para tu carrera técnica en un solo lugar.
                         </p>
                         <div class="contenedor-pildoras">
                             <BotonMateria
@@ -173,12 +197,14 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                                 data-filter="all"
                                 class="filtro-btn activo"
                             />
-                            <BotonMateria
-                                texto="Astro"
-                                tipo="purpura"
-                                data-filter="Astro"
-                                class="filtro-btn"
-                            />
+                            {materiasApuntes.map((materia) => (
+                                <BotonMateria
+                                    texto={materia}
+                                    tipo={getTipoMateria(materia)}
+                                    data-filter={materia}
+                                    class="filtro-btn"
+                                />
+                            ))}
                         </div>
                     </div>
                 </section>
@@ -508,14 +534,20 @@ import { apuntesTecnicos } from "../data/apuntes.js";
                     });
 
                     // Lógica de filtrado inmediata
-                    const filter = (btn as HTMLElement).dataset.filter;
+                    const filter = (btn as HTMLElement).dataset.filter || "all";
                     filterBtns.forEach((b) => b.classList.remove("activo"));
                     btn.classList.add("activo");
 
+                    // Función de normalización interna para comparar sin tildes ni mayúsculas
+                    const normalize = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                    const normalizedFilter = normalize(filter);
+
                     cards.forEach((card) => {
                         const cardEl = card as HTMLElement;
-                        const cardMateria = cardEl.dataset.materia;
-                        if (filter === "all" || cardMateria === filter) {
+                        const cardMateria = cardEl.dataset.materia || "";
+                        const normalizedCardMateria = normalize(cardMateria);
+
+                        if (normalizedFilter === "all" || normalizedCardMateria === normalizedFilter) {
                             cardEl.style.display = "block";
                             cardEl.classList.remove("hidden-card");
                         } else {

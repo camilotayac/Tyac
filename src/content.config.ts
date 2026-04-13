@@ -8,6 +8,10 @@ const apuntesCollection = defineCollection({
         materia: z.string(),
         curso: z.string(),
         id_clase: z.string(),
+        orden: z.number().optional().default(999),
+        subcurso: z.string().optional(),
+        dificultad: z.string().optional(),
+        draft: z.boolean().optional().default(false),
         layout: z.string().optional(),
     }),
 });
@@ -19,6 +23,10 @@ const cursosCollection = defineCollection({
         materia: z.string(),
         curso: z.string(),
         id_clase: z.string(),
+        orden: z.number().optional().default(999),
+        subcurso: z.string().optional(),
+        dificultad: z.string().optional(),
+        draft: z.boolean().optional().default(false),
         layout: z.string().optional(),
     }),
 });

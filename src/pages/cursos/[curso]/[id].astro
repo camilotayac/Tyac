@@ -6,14 +6,17 @@ import type { CollectionEntry } from 'astro:content';
 export async function getStaticPaths() {
     const cursosEntries = await getCollection('cursos');
     return cursosEntries.map((entry: CollectionEntry<'cursos'>) => {
-        const [curso, id_clase_con_ext] = entry.id.split('/');
-        const id_clase = id_clase_con_ext.replace(/\.(md|mdx)$/, '');
         return {
-            params: { curso, id: id_clase },
+            params: { 
+                curso: entry.data.curso, 
+                id: entry.data.id_clase 
+            },
             props: { entry },
         };
     });
 }
+
+import LayoutLessons from "../../../layouts/lessons/00-LayoutLessons.astro";
 
 interface Props {
     entry: CollectionEntry<'cursos'>;
@@ -23,4 +26,6 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<Content />
+<LayoutLessons frontmatter={entry.data}>
+    <Content />
+</LayoutLessons>

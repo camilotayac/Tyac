@@ -1,21 +1,25 @@
-// src/data/cursos.js
-import { todosLosTemarios } from "./temarios.js";
+import { getCollection } from 'astro:content';
+import { getTemario } from "./temarios.js";
 
-// Lista base de todos los cursos
-const allCursos = [
-    {
-        id: "quimica_general",
-        titulo: "Química General",
-        descripcion: "Desde los átomos hasta las reacciones: comprende cómo funciona la materia a nivel fundamental.",
-        icono: "🧪",
-        materia: "Química",
-        href: "/cursos/quimica_general",
-        lecciones: todosLosTemarios.quimica_general.length,
-        nivel: "Básico",
-        profesor: "Tyac Team",
-        draft: true // Al estar en TRUE, el curso se vuelve "oculto" en toda la plataforma
-    },
-];
+// 1. Cursos MANUALES (HTML / Control Total)
+const manualCursos = [];
 
-// Solo exportamos los que NO están en draft
-export const cursosCiencia = allCursos.filter(curso => !curso.draft);
+/**
+ * Obtiene la lista de cursos de ciencia, combinando manuales y automáticos.
+ */
+export async function getCursosCiencia() {
+    // Procesar cursos manuales y calcular sus lecciones automáticamente
+    const cursosProcesados = await Promise.all(manualCursos.map(async (curso) => {
+        const temario = await getTemario(curso.id);
+        return {
+            ...curso,
+            lecciones: temario.length
+        };
+    }));
+
+    return cursosProcesados.filter(curso => !curso.draft);
+}
+
+// Retrocompatibilidad (solo para avisar que cambió a async)
+export const cursosCiencia = [];
+

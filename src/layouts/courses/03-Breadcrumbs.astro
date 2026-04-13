@@ -16,10 +16,6 @@ const folderLabel = courseId ? courseId.replace(/_/g, " ") : "";
         <a href="/">Inicio</a>
     </div>
     <div class="breadcrumb-separator">/</div>
-    <div class="breadcrumb-item">
-        <a href={urlPrefix}>{urlPrefix === "/cursos" ? "Cursos" : "Apuntes"}</a>
-    </div>
-    <div class="breadcrumb-separator">/</div>
     <div class="breadcrumb-item active">
         <span class="capitalize">{folderLabel}</span>
     </div>
@@ -47,7 +43,7 @@ const folderLabel = courseId ? courseId.replace(/_/g, " ") : "";
     }
 
     .breadcrumb-item.active {
-        color: var(--dracula-cyan, #8be9fd);
+        color: #0369a1; /* Azul océano más profundo y profesional */
     }
 
     .breadcrumb-separator {

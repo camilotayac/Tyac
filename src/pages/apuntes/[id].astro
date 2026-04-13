@@ -1,10 +1,11 @@
 ---
 // src/pages/apuntes/[id].astro
 import LandingLayout from "../../layouts/landing/00-LandingLayout.astro";
-import { apuntesTecnicos } from "../../data/apuntes.js";
+import { getApuntesTecnicos } from "../../data/apuntes.js";
 
 export async function getStaticPaths() {
-    return apuntesTecnicos.map((apunte) => ({
+    const allApuntes = await getApuntesTecnicos();
+    return allApuntes.map((apunte) => ({
         params: { id: apunte.id },
         props: { apunte },
     }));

@@ -2,21 +2,24 @@
 // Este archivo genera el índice de búsqueda para Tyac
 // Se ejecuta durante el build para crear un JSON estático.
 
-import { cursosCiencia } from "../../data/cursos.js";
-import { apuntesTecnicos } from "../../data/apuntes.js";
+import { getCursosCiencia } from "../../data/cursos.js";
+import { getApuntesTecnicos } from "../../data/apuntes.js";
 
 import { getCollection } from 'astro:content';
 
 export async function GET() {
+    // Top-level async values for data
+    const allCursos = await getCursosCiencia();
+    const allApuntes = await getApuntesTecnicos();
+    const cursoIcons = {};
+    
+    [...allCursos, ...allApuntes].forEach(c => {
+        cursoIcons[c.id] = c.icono;
+    });
+
     // 1. Recoger todas las lecciones de ambos directorios mediante Content Collections
     const apuntes = await getCollection('apuntes');
     const cursos = await getCollection('cursos');
-    
-    // Mapeo de iconos dinámico desde cursos.js
-    const cursoIcons = {};
-    [...cursosCiencia, ...apuntesTecnicos].forEach(c => {
-        cursoIcons[c.id] = c.icono;
-    });
     
     // Función auxiliar para extraer el cuerpo de MDX
     const extractContent = (rawContent) => {
@@ -33,11 +36,11 @@ export async function GET() {
 
     const leccionesIndices = leccionesAgrupadas.map((entry) => {
         const idCurso = entry.data.curso || "";
-        const idClase = entry.id.split('/')[1].replace(/\.(md|mdx)$/, '');
-        const collectionPath = apuntes.includes(entry) ? 'apuntes' : 'cursos';
+        const idClase = entry.data.id_clase;
+        const collectionPath = apuntes.some(a => a.id === entry.id) ? 'apuntes' : 'cursos';
 
         return {
-            titulo: entry.data.titulo || idCurso,
+            titulo: entry.data.titulo || idClase,
             descripcion: entry.data.descripcion || "",
             cuerpo: extractContent(entry.body),
             url: `/${collectionPath}/${idCurso}/${idClase}`,
@@ -48,13 +51,13 @@ export async function GET() {
         };
     });
 
-    // 2. Generar índices de cursos dinámicamente desde cursos.js
-    const cursosIndices = [...cursosCiencia, ...apuntesTecnicos].map(curso => ({
+    // 2. Generar índices de cursos dinámicamente
+    const cursosIndices = [...allCursos, ...allApuntes].map(curso => ({
         titulo: `Curso de ${curso.materia}`,
         subtitulo: curso.titulo,
         descripcion: curso.descripcion,
         cuerpo: `${curso.titulo} ${curso.descripcion} ${curso.materia} academia ciencia tecnologia`,
-        url: curso.href, // Ahora apunta a la LANDING dinámica (/cursos/id o /apuntes/id)
+        url: curso.href,
         tipo: "curso",
         curso: curso.id,
         materia: curso.materia,

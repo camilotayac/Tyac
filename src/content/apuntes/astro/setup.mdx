@@ -1,48 +1,26 @@
 ---
-titulo: "Setup Profesional y dependencias en Tyac"
+titulo: "Instalación y Configuración de Tyac"
 materia: "Astro"
 curso: "astro"
+subcurso: "Conceptos Fundamentales"
 id_clase: "setup"
+orden: 2
 ---
 
-# Setup Profesional y dependencias
+# Configuración Inicial
 
-Para construir una plataforma como Tyac, no basta con ejecutar un comando básico. Necesitamos un entorno preparado para el diseño premium y el rendimiento.
+Para empezar a desarrollar en Tyac, primero necesitamos preparar nuestro entorno local.
 
-## 1. El comando de inicio
+## Requisitos Previos
 
-Todo comenzó con `npm create astro@latest`. Durante la instalación, elegimos:
-- **TypeScript**: Para evitar errores de tipado en nuestros datos.
-- **Strict Mode**: Para asegurar la calidad del código.
-- **Sample Files**: Para limpiar y empezar desde cero.
+- **Node.js**: Versión 18.14.1 o superior.
+- **NPM** o **PNPM**: Para gestionar las dependencias.
+- **VS Code**: Recomendamos instalar la extensión oficial de Astro.
 
-## 2. DependenciasClave en Tyac
+## Instalación
 
-Tyac utiliza pocas pero potentes herramientas externas para mantener la ligereza:
+1.  Clona el repositorio: `git clone https://github.com/camilotayac/Tyac`
+2.  Instala las dependencias: `npm install`
+3.  Inicia el servidor de desarrollo: `npm run dev`
 
-- **Lucide / Tabler Icons**: Para la iconografía vectorial (SVG) que ves en el Sidebar y botones.
-- **Glassmorphism Utils**: CSS personalizado para los efectos de transparencia.
-- **View Transitions**: Integrado nativamente en Astro para la fluidez de "App".
-
-## 3. Configuración de `astro.config.mjs`
-
-Este es el archivo de configuración central. Aquí habilitamos las características avanzadas que usamos en Tyac:
-
-```javascript
-import { defineConfig } from 'astro/config';
-
-export default defineConfig({
-  // Habilitamos transiciones de vista globales
-  experimental: {
-    viewTransitions: true 
-  },
-  // Prefijamos la salida para mejor SEO
-  build: {
-    format: 'directory'
-  }
-});
-```
-
----
-
-¡Ya tenemos el motor encendido! En la siguiente guía, veremos cómo configuramos el "rostro invisible" de Tyac: los metadatos.
+¡Listo! El sitio estará disponible en `localhost:4321`.

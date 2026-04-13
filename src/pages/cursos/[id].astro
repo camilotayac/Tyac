@@ -1,10 +1,11 @@
 ---
 // src/pages/cursos/[id].astro
 import LandingLayout from "../../layouts/landing/00-LandingLayout.astro";
-import { cursosCiencia } from "../../data/cursos.js";
+import { getCursosCiencia } from "../../data/cursos.js";
 
 export async function getStaticPaths() {
-    return cursosCiencia.map((curso) => ({
+    const allCursos = await getCursosCiencia();
+    return allCursos.map((curso) => ({
         params: { id: curso.id },
         props: { curso },
     }));
